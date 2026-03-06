@@ -51,12 +51,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [updateState]);
 
   const nextPhase = useCallback(() => {
-    console.log('nextPhase called!');
+    console.log('GameContext.nextPhase called!');
     if (gameEngine) {
       const beforePhase = gameEngine.getGameState().phase;
       gameEngine.nextPhase();
       const state = gameEngine.getGameState();
-      console.log('Phase:', beforePhase, '->', state.phase, 'Player:', state.currentPlayer);
+      console.log('GameContext: Phase', beforePhase, '->', state.phase, 'Player:', state.currentPlayer);
       updateState(gameEngine);
     }
   }, [gameEngine, updateState]);
