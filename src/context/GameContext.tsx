@@ -14,6 +14,7 @@ interface GameContextType {
   setSelectedCardId: (id: string | null) => void;
   setTargetingMode: (mode: 'attack' | 'ability' | null) => void;
   startGame: (p1: string, p2: string) => void;
+  endGame: () => void;
   nextPhase: () => void;
   playCard: (cardId: string) => void;
   resolveCombat: (attackerId: string, defenderId?: string) => void;
@@ -96,6 +97,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [gameEngine, gameState, updateState]);
 
+  const endGame = useCallback(() => {
+    setGameEngine(null);
+    setGameState(null);
+    setBattleLog([]);
+    setSelectedCardId(null);
+    setTargetingMode(null);
+    // Navigate to home
+    window.location.hash = '#/';
+  }, []);
+
   return (
     <GameContext.Provider value={{
       gameState,
@@ -106,6 +117,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSelectedCardId,
       setTargetingMode,
       startGame,
+      endGame,
       nextPhase,
       playCard,
       resolveCombat,

@@ -58,8 +58,8 @@ export default function BattleScreen() {
       startGame('Sorcerer', 'Cursed Spirit');
     }
     
-    // Force hash change - use replace to avoid history issues
-    window.location.hash = '#/';
+    // Don't manually set hash - let the GameContext handle showing the game
+    // The gameState being set will cause App to show GameBoard
   };
 
   const deckStats = (deck: SavedDeck) => {
