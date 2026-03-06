@@ -140,8 +140,8 @@ export class GameModel {
 
   mainPhase1(): void {
     this.addToBattleLog(`Turn ${this.gameState.turn} - Main Phase 1`);
-    // Set phase to main1 for player actions
-    this.setPhase('main1');
+    // Move to battle phase after Main Phase 1 actions
+    this.setPhase('battle');
   }
 
   battlePhase(): void {
