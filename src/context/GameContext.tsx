@@ -37,8 +37,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const startGame = useCallback((p1: string, p2: string) => {
     const engine = GameEngine.createNewGame(p1, p2);
-    // In a real app, we'd fetch cards here. For now, we'll use the engine's internal logic.
-    engine.startGame();
+    // createNewGame already initializes decks and draws initial hands
     setGameEngine(engine);
     updateState(engine);
   }, [updateState]);
