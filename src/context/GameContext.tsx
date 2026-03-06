@@ -32,7 +32,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [targetingMode, setTargetingMode] = useState<'attack' | 'ability' | null>(null);
 
   const updateState = useCallback((engine: GameEngine) => {
-    setGameState(engine.getGameState());
+    const newState = engine.getGameState();
+    console.log('updateState called, phase:', newState.phase, 'player:', newState.currentPlayer);
+    setGameState(newState);
     setBattleLog([...engine.getBattleLog()]);
   }, []);
 
@@ -45,7 +47,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const nextPhase = useCallback(() => {
     if (gameEngine) {
+      console.log('nextPhase called, current phase:', gameEngine.getGameState().phase);
       gameEngine.nextPhase();
+      const newState = gameEngine.getGameState();
+      console.log('nextPhase after, phase:', newState.phase, 'player:', newState.currentPlayer);
       updateState(gameEngine);
       
       // If it's now the AI's turn (Player 2), trigger AI logic

@@ -280,7 +280,10 @@ export const GameBoard: React.FC = () => {
           )}
           {isMyTurn && (
             <Button 
-              onClick={nextPhase}
+              onClick={() => {
+                console.log('End Phase button clicked!');
+                nextPhase();
+              }}
               className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold shadow-lg shadow-purple-500/25"
             >
               End Phase <ArrowRight size={16} className="ml-2" />
