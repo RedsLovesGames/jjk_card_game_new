@@ -73,7 +73,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const playCard = useCallback((cardId: string) => {
     if (gameEngine && gameState) {
       const player = gameEngine.getCurrentPlayer();
-      if (gameEngine.playCard(player.id, cardId)) {
+      if (gameEngine.playCard(player.getId(), cardId)) {
         updateState(gameEngine);
       }
     }
@@ -91,7 +91,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const switchPosition = useCallback((cardId: string) => {
     if (gameEngine && gameState) {
       const player = gameEngine.getCurrentPlayer();
-      if (gameEngine.switchPosition(player.id, cardId)) {
+      if (gameEngine.switchPosition(player.getId(), cardId)) {
         updateState(gameEngine);
       }
     }
