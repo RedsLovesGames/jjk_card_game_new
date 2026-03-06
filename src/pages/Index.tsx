@@ -91,7 +91,7 @@ export default function Index() {
             onClick={() => {
               // Clear query params before setting hash
               window.history.replaceState(null, '', window.location.pathname);
-              window.location.hash = 'battle';
+              window.location.hash = '#/battle';
             }}
           >
             {/* Card glow */}
