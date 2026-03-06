@@ -29,17 +29,17 @@ const AppContent = () => {
     return <GameBoard />;
   }
   
-  // Otherwise show route
-  if (hash === '#/battle') {
+  // Otherwise show route (use startsWith for query params)
+  if (hash.startsWith('#/battle')) {
     return <BattleScreen />;
   }
-  if (hash === '#/collection') {
+  if (hash.startsWith('#/collection')) {
     return <Collection />;
   }
-  if (hash === '#/deck-builder') {
+  if (hash.startsWith('#/deck-builder')) {
     return <DeckBuilder />;
   }
-  if (hash === '#/' || hash === '') {
+  if (hash === '#/' || hash === '' || hash === '#') {
     return <Index />;
   }
   return <NotFound />;
