@@ -67,7 +67,7 @@ export class SimpleAI {
       if (!cardToPlay) break;
 
       // Play the card
-      const success = this.engine.playCard(currentPlayer.id, cardToPlay.id);
+      const success = this.engine.playCard(currentPlayer.id, cardToPlay.instanceId);
       if (success) {
         energy -= cardToPlay.cost;
       } else {

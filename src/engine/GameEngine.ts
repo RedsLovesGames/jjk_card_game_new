@@ -124,16 +124,13 @@ export class GameEngine {
         this.game.energyPhase();
         break;
       case 'main1':
-        this.game.setPhase('battle');
-        this.game.addToBattleLog('Entering Battle Phase');
+        this.game.mainPhase1();
         break;
       case 'battle':
-        this.game.setPhase('main2');
-        this.game.addToBattleLog('Entering Main Phase 2');
+        this.game.battlePhase();
         break;
       case 'main2':
-        this.game.setPhase('end');
-        this.game.addToBattleLog('Entering End Phase');
+        this.game.mainPhase2();
         break;
       case 'end':
         this.game.endPhase();
