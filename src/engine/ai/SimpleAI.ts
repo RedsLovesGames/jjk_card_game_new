@@ -12,7 +12,7 @@ export class SimpleAI {
     let gameState = this.engine.getGameState();
     let currentPlayer = this.engine.getCurrentPlayer();
     let moves = 0;
-    const maxMoves = 20; // Prevent infinite loops
+    const maxMoves = 30; // Prevent infinite loops
     
     // Keep making moves until we pass turn back to player or hit max
     while (moves < maxMoves) {
@@ -25,11 +25,21 @@ export class SimpleAI {
       
       switch (gameState.phase) {
         case 'main1':
-        case 'main2':
-          this.playCardsAndAbilities(currentPlayer);
+        case 'main2': {
+          // Try to play cards/abilities
+          const played = this.playCardsAndAbilities(currentPlayer);
+          // Refresh player reference to get updated energy
+          currentPlayer = this.engine.getCurrentPlayer();
+          // If couldn't play anything or no more energy, move to next phase
+          if (!played || !currentPlayer || currentPlayer.energy <= 0) {
+            this.engine.nextPhase();
+          }
           break;
+        }
         case 'battle':
           this.attackWithCreatures(currentPlayer, gameState);
+          // After attacking, move to next phase
+          this.engine.nextPhase();
           break;
         case 'end':
           // End of turn - advance to next player's turn
@@ -51,10 +61,11 @@ export class SimpleAI {
     return this.engine.getGameState();
   }
 
-  private playCardsAndAbilities(currentPlayer: any): void {
+  private playCardsAndAbilities(currentPlayer: any): boolean {
     // Priority: Areas > Spells > Creatures
     
     let energy = currentPlayer.energy;
+    let playedAny = false;
     
     // Keep playing while we have energy and playable cards
     while (energy > 0) {
@@ -90,6 +101,7 @@ export class SimpleAI {
       const success = this.engine.playCard(currentPlayer.id, cardToPlay.instanceId);
       if (success) {
         energy -= cardToPlay.cost;
+        playedAny = true;
       } else {
         // Can't play this card, try next one
         break;
@@ -98,6 +110,8 @@ export class SimpleAI {
 
     // Try to activate abilities on creatures on the field
     this.activateAbilities(currentPlayer);
+    
+    return playedAny;
   }
 
   private activateAbilities(currentPlayer: any): void {
