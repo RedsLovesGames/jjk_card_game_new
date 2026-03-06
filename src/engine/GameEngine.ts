@@ -113,7 +113,7 @@ export class GameEngine {
 
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
-    console.log('nextPhase called, current phase:', currentPhase);
+    console.log(`[${Date.now()}] nextPhase called, current: ${currentPhase}`);
     switch (currentPhase) {
       case 'start':
         this.game.startPhase();
