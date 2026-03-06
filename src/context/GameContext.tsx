@@ -30,12 +30,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [battleLog, setBattleLog] = useState<string[]>([]);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [targetingMode, setTargetingMode] = useState<'attack' | 'ability' | null>(null);
+  const [aiTrigger, setAiTrigger] = useState<number>(0);
 
   const updateState = useCallback((engine: GameEngine) => {
     const newState = engine.getGameState();
     console.log('updateState called, phase:', newState.phase, 'player:', newState.currentPlayer);
     setGameState(newState);
     setBattleLog([...engine.getBattleLog()]);
+    // Trigger AI if it's not the player's turn and there's no winner
+    if (newState.currentPlayer === 1 && !newState.winner) {
+      setAiTrigger(prev => prev + 1);
+    }
   }, []);
 
   const startGame = useCallback((p1: string, p2: string) => {
@@ -53,19 +58,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const state = gameEngine.getGameState();
       console.log('Phase:', beforePhase, '->', state.phase, 'Player:', state.currentPlayer);
       updateState(gameEngine);
-      
-      // If it's now the AI's turn (Player 2), trigger AI logic
-      if (state.currentPlayer === 1 && !state.winner) {
-        setTimeout(() => {
-          if (gameEngine) {
-            const ai = new SimpleAI(gameEngine);
-            const finalState = ai.makeMove();
-            if (finalState) {
-              updateState(gameEngine);
-            }
-          }
-        }, 500);
-      }
     }
   }, [gameEngine, updateState]);
 
@@ -78,6 +70,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
   }, [gameEngine, updateState]);
+
+  // AI turn trigger effect
+  useEffect(() => {
+    if (aiTrigger > 0 && gameEngine && gameState && gameState.currentPlayer === 1 && !gameState.winner) {
+      console.log('AI turn triggered!');
+      const ai = new SimpleAI(gameEngine);
+      const finalState = ai.makeMove();
+      if (finalState) {
+        updateState(gameEngine);
+      }
+    }
+  }, [aiTrigger, gameEngine, gameState, updateState]);
 
   const playCard = useCallback((cardId: string): boolean => {
     if (gameEngine && gameState) {
