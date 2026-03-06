@@ -1,16 +1,17 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { GameBoard } from '@/components/game/GameBoard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BookOpen, Layout, Play } from 'lucide-react';
+import { useGame } from '@/context/GameContext';
 
 export default function Index() {
-  const [gameStarted, setGameStarted] = useState(false);
+  const { gameState, startGame } = useGame();
 
-  if (gameStarted) {
-    return <GameBoard gameId="demo-game" />;
+  if (gameState) {
+    return <GameBoard />;
   }
 
   return (
@@ -26,7 +27,10 @@ export default function Index() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="bg-slate-900 border-slate-800 p-6 text-center hover:border-purple-500 transition-all cursor-pointer group" onClick={() => setGameStarted(true)}>
+          <Card 
+            className="bg-slate-900 border-slate-800 p-6 text-center hover:border-purple-500 transition-all cursor-pointer group" 
+            onClick={() => startGame('Sorcerer', 'Cursed Spirit')}
+          >
             <Play className="mx-auto mb-4 text-purple-500 group-hover:scale-110 transition-transform" size={48} />
             <h3 className="text-xl font-bold mb-2">Quick Play</h3>
             <p className="text-sm text-slate-400">Jump into a battle against the AI.</p>
