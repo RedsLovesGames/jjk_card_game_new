@@ -113,10 +113,10 @@ export class GameEngine {
 
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
-    alert(`Phase before: ${currentPhase}`);
     
     // Determine next phase based on current phase
     let nextPhase = currentPhase;
+    
     switch (currentPhase) {
       case 'start':
         nextPhase = 'draw';
@@ -137,12 +137,13 @@ export class GameEngine {
         nextPhase = 'end';
         break;
       case 'end':
+        // End of turn - switch to other player and start their turn
         nextPhase = 'start';
+        this.game.nextTurn();
         break;
     }
     
     this.game.setPhase(nextPhase);
-    alert(`Phase after: ${this.game.getPhase()}`);
   }
 
   playCard(playerId: string, cardId: string): boolean {
