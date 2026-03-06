@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card as CardUI } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { getCardAsset } from '@/data/assets';
-import { Search, Swords, Shield, Zap, Home, Sparkles, Star, Diamond, Circle, Square } from 'lucide-react';
+import { Search, Swords, Shield, Zap, Home, Sparkles, Star, Diamond, Circle, Square, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Collection() {
@@ -16,6 +17,7 @@ export default function Collection() {
   const [typeFilter, setTypeFilter] = useState('all');
   const [rarityFilter, setRarityFilter] = useState('all');
   const [mounted, setMounted] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
   useEffect(() => {
     import('@/data/cards.json').then(data => setCards(data.default as Card[]));
@@ -139,12 +141,13 @@ export default function Collection() {
               return (
                 <CardUI 
                   key={card.id} 
+                  onClick={() => setSelectedCard(card)}
                   className={`
                     group relative bg-gradient-to-b from-slate-900 to-slate-950 
                     border border-slate-800/50 overflow-hidden
                     hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]
                     transition-all duration-500 hover:scale-105 hover:-translate-y-2
-                    opacity-0 animate-fade-in
+                    opacity-0 animate-fade-in cursor-pointer
                   `}
                   style={{ 
                     animationDelay: `${index * 50}ms`,
@@ -246,6 +249,92 @@ export default function Collection() {
             </div>
           )}
         </div>
+
+        {/* Card Detail Dialog */}
+        <Dialog open={!!selectedCard} onOpenChange={() => setSelectedCard(null)}>
+          <DialogContent className="max-w-2xl bg-slate-900 border-slate-700 text-white">
+            {selectedCard && (
+              <div className="relative">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSelectedCard(null)}
+                  className="absolute top-0 right-0 hover:bg-slate-800 rounded-full z-10"
+                >
+                  <X size={24} />
+                </Button>
+                <div className="flex flex-col md:flex-row gap-6">
+                  {/* Card Image */}
+                  <div className="w-full md:w-64 flex-shrink-0">
+                    <img
+                      src={getCardAsset(selectedCard.id).url}
+                      alt={selectedCard.name}
+                      className="w-full rounded-lg"
+                    />
+                  </div>
+                  
+                  {/* Card Details */}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className={`
+                        px-3 py-1 rounded-md font-black text-sm
+                        bg-gradient-to-r ${getRarityColor(selectedCard.rarity)}
+                        ${selectedCard.rarity === 'SSR' ? 'text-black' : 'text-white'}
+                      `}>
+                        {getRarityIcon(selectedCard.rarity)}
+                        {selectedCard.rarity}
+                      </span>
+                      <span className="text-2xl font-black">{selectedCard.cost}</span>
+                    </div>
+                    
+                    <h2 className="text-3xl font-black mb-1">{selectedCard.name}</h2>
+                    <p className="text-slate-400 mb-4">{selectedCard.variant} • {selectedCard.type}</p>
+                    
+                    {/* Stats for creatures */}
+                    {selectedCard.type === 'creature' && (
+                      <div className="flex gap-6 mb-4">
+                        <div className="flex items-center gap-2 text-red-400">
+                          <Swords size={24} />
+                          <span className="text-3xl font-black">{selectedCard.attack}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-blue-400">
+                          <Shield size={24} />
+                          <span className="text-3xl font-black">{selectedCard.defense}</span>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Effect */}
+                    <div className="mb-4">
+                      <h4 className="text-sm font-black text-slate-400 mb-1">EFFECT</h4>
+                      <p className="text-lg italic">"{selectedCard.effect}"</p>
+                    </div>
+                    
+                    {/* Ultimate for creatures */}
+                    {selectedCard.type === 'creature' && selectedCard.ultimateEffect && (
+                      <div>
+                        <h4 className="text-sm font-black text-orange-400 mb-1 flex items-center gap-1">
+                          <Sparkles size={14} />
+                          ULTIMATE TECHNIQUE
+                        </h4>
+                        <p className="text-lg italic">"{selectedCard.ultimateEffect}"</p>
+                      </div>
+                    )}
+                    
+                    {/* Faction/Synergy */}
+                    {selectedCard.synergy && (
+                      <div className="mt-4 pt-4 border-t border-slate-700">
+                        <p className="text-sm text-slate-400">
+                          <span className="font-black">FACTION:</span> {selectedCard.synergy}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
 
       <style>{`
