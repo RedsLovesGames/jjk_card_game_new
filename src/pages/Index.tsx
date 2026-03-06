@@ -1,23 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { GameBoard } from '@/components/game/GameBoard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BookOpen, Layout, Play, Sparkles, Zap, Skull, Swords, Shield, Crown } from 'lucide-react';
-import { useGame } from '@/context/GameContext';
 
 export default function Index() {
-  const { gameState, startGame } = useGame();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  if (gameState) {
-    return <GameBoard />;
-  }
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
@@ -95,7 +88,7 @@ export default function Index() {
               ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
             style={{ transitionDelay: '0.2s' }}
-            onClick={() => startGame('Sorcerer', 'Cursed Spirit')}
+            onClick={() => window.location.hash = '#/battle'}
           >
             {/* Card glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
