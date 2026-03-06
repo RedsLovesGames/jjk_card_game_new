@@ -281,6 +281,7 @@ export const GameBoard: React.FC = () => {
           {isMyTurn && (
             <Button 
               onClick={() => {
+                alert('End Phase clicked! Phase: ' + document.querySelector('[class*="phase"]')?.textContent);
                 console.log('End Phase button clicked!');
                 nextPhase();
               }}
