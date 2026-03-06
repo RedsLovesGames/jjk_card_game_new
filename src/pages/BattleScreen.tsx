@@ -56,6 +56,9 @@ export default function BattleScreen() {
     } else {
       startGame('Sorcerer', 'Cursed Spirit');
     }
+    
+    // Force hash change - use replace to avoid history issues
+    window.location.hash = '#/';
   };
 
   const deckStats = (deck: SavedDeck) => {
