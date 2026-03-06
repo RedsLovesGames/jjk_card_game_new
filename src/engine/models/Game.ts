@@ -49,7 +49,7 @@ export class GameModel {
   }
 
   setPhase(phase: string): void {
-    console.log(`[${Date.now()}] setPhase called: ${this.gameState.phase} -> ${phase}`);
+    console.log(`[${Date.now()}] setPhase called: ${this.gameState.phase} -> ${phase} (caller: ${new Error().stack?.split('\n')[2]?.trim()})`);
     this.gameState.phase = phase;
   }
 
