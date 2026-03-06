@@ -150,8 +150,8 @@
     "faction": "Tokyo Jujutsu High Sorcerers"
   },
   {
-    "id": "kasumimiwa-secondyear",
-    "name": "Kasumi Miwa",
+    "id": "kasumimiwanewbie-secondyear",
+    "name": "Kasumi Miwa (Newbie)",
     "variant": "Second Year",
     "type": "creature",
     "attack": 220,
@@ -1419,7 +1419,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Cursed Speech \u2013 \"Deal 200 damage to one creature. Your opponent's creatures cannot attack next turn.\"",
-    "ultimateEffect": "Cursed Wave (2 Energy) \u2013 \"Deal 300 damage to all enemy creatures.\"",
+    "ultimateEffect": "",
     "synergy": "Cursed Speech Users",
     "rarity": "R",
     "faction": "Cursed Speech Users"
@@ -1434,7 +1434,7 @@
     "health": 0,
     "cost": 5,
     "effect": "Unlimited Void \u2013 \"All enemy creatures lose 200 ATK and DEF. They cannot use effects.\"",
-    "ultimateEffect": "True Void (4 Energy) \u2013 \"Destroy all enemy creatures. Your opponent skips their next turn.\"",
+    "ultimateEffect": "",
     "synergy": "Six Eyes Users",
     "rarity": "SR",
     "faction": "Six Eyes Users"
@@ -1449,7 +1449,7 @@
     "health": 0,
     "cost": 5,
     "effect": "Cursed Technique \u2013 \"All your creatures gain +100 ATK.\"",
-    "ultimateEffect": "Divine Punishment (4 Energy) \u2013 \"Deal 400 damage to all enemy creatures.\"",
+    "ultimateEffect": "",
     "synergy": "Cursed Object Users",
     "rarity": "SR",
     "faction": "Cursed Object Users"
@@ -1464,7 +1464,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Spatial Strike \u2013 \"Deal 250 damage to one creature. This damage cannot be reduced.\"",
-    "ultimateEffect": "Second Impact (2 Energy) \u2013 \"Deal 350 damage to one creature and stun it for one turn.\"",
+    "ultimateEffect": "",
     "synergy": "Grade 1 Sorcerers",
     "rarity": "R",
     "faction": "Grade 1 Sorcerers"
@@ -1479,7 +1479,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Positive Energy \u2013 \"Deal 300 damage to one creature. Restore 100 DEF to one of your creatures.\"",
-    "ultimateEffect": "Reversal: Blue (3 Energy) \u2013 \"Deal 400 damage to one creature and pull it one space closer.\"",
+    "ultimateEffect": "",
     "synergy": "Six Eyes Users",
     "rarity": "SR",
     "faction": "Six Eyes Users"
@@ -1494,7 +1494,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Attraction \u2013 \"Pull one enemy creature toward your side of the field.\"",
-    "ultimateEffect": "Hollow Purple (4 Energy) \u2013 \"Deal 500 damage to any target, ignoring all defense.\"",
+    "ultimateEffect": "",
     "synergy": "Six Eyes Users",
     "rarity": "SR",
     "faction": "Six Eyes Users"
@@ -1509,7 +1509,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Barrier Defense \u2013 \"One of your creatures gains a shield that blocks 200 damage.\"",
-    "ultimateEffect": "Domain Amplication (3 Energy) \u2013 \"One creature cannot be targeted by enemy effects for 2 turns.\"",
+    "ultimateEffect": "",
     "synergy": "Barrier Users",
     "rarity": "R",
     "faction": "Barrier Users"
@@ -1524,7 +1524,7 @@
     "health": 0,
     "cost": 4,
     "effect": "Volcanic Eruption \u2013 \"Deal 350 damage to one creature and 100 splash damage to adjacent creatures.\"",
-    "ultimateEffect": "Catastrophe (4 Energy) \u2013 \"Deal 500 damage to one creature. If it has less than 300 DEF, destroy it.\"",
+    "ultimateEffect": "",
     "synergy": "Disaster Flames",
     "rarity": "SR",
     "faction": "Disaster Flames"
@@ -1539,7 +1539,7 @@
     "health": 0,
     "cost": 4,
     "effect": "Maximum Output \u2013 \"Deal 300 damage to one creature. If you control a Special Grade creature, deal 400 instead.\"",
-    "ultimateEffect": "Total Annihilation (5 Energy) \u2013 \"Deal 600 damage to one creature. Ignore all defensive abilities.\"",
+    "ultimateEffect": "",
     "synergy": "Special Grade Sorcerers",
     "rarity": "SR",
     "faction": "Special Grade Sorcerers"
@@ -1554,7 +1554,7 @@
     "health": 0,
     "cost": 1,
     "effect": "Lightning Strike \u2013 \"Deal 150 damage to one creature.\"",
-    "ultimateEffect": "Thunder V2 (2 Energy) \u2013 \"Deal 250 damage to one creature. If it has the 'Electric' effect, deal 350 instead.\"",
+    "ultimateEffect": "",
     "synergy": "Thunder Users",
     "rarity": "R",
     "faction": "Thunder Users"
@@ -1569,7 +1569,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Flame Burst \u2013 \"Deal 200 damage to one creature. If it has less ATK than DEF, deal 250.\"",
-    "ultimateEffect": "Inferno (3 Energy) \u2013 \"Deal 350 damage to one creature and burn it for 100 damage over 2 turns.\"",
+    "ultimateEffect": "",
     "synergy": "Flame Users",
     "rarity": "R",
     "faction": "Flame Users"
@@ -1584,7 +1584,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Body Manipulation \u2013 \"Transform one enemy creature into a 0/100 creature for 2 turns.\"",
-    "ultimateEffect": "Complete Transfiguration (4 Energy) \u2013 \"Take control of one enemy creature with 200 ATK or less for 3 turns.\"",
+    "ultimateEffect": "",
     "synergy": "Cursed Spirit Users",
     "rarity": "SR",
     "faction": "Cursed Spirit Users"
@@ -1599,7 +1599,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Spirit Sight \u2013 \"Look at the top 3 cards of your opponent's deck.\"",
-    "ultimateEffect": "Soul Strike (3 Energy) \u2013 \"Deal 250 damage to one creature. If it's a Cursed Spirit, deal 400 instead.\"",
+    "ultimateEffect": "",
     "synergy": "Spirit Users",
     "rarity": "R",
     "faction": "Spirit Users"
@@ -1614,7 +1614,7 @@
     "health": 0,
     "cost": 1,
     "effect": "Quick Escape \u2013 \"Switch one of your creatures to the bench. It cannot be attacked this turn.\"",
-    "ultimateEffect": "Reverse Vow (2 Energy) \u2013 \"One of your creatures gains +200 DEF until end of turn.\"",
+    "ultimateEffect": "",
     "synergy": "Cursed Speech Users",
     "rarity": "R",
     "faction": "Cursed Speech Users"
@@ -1629,7 +1629,7 @@
     "health": 0,
     "cost": 1,
     "effect": "Freeze Command \u2013 \"One enemy creature cannot attack next turn.\"",
-    "ultimateEffect": "Total Silence (2 Energy) \u2013 \"All enemy creatures lose their effects for 1 turn.\"",
+    "ultimateEffect": "",
     "synergy": "Cursed Speech Users",
     "rarity": "R",
     "faction": "Cursed Speech Users"
@@ -1644,7 +1644,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Absorption \u2013 \"Restore 150 DEF to one of your creatures.\"",
-    "ultimateEffect": "Consumption (3 Energy) \u2013 \"Destroy one of your creatures. Draw 2 cards.\"",
+    "ultimateEffect": "",
     "synergy": "Cursed Spirit Users",
     "rarity": "R",
     "faction": "Cursed Spirit Users"
@@ -1659,7 +1659,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Technique Imitation \u2013 \"Copy the effect of one enemy spell card in your hand.\"",
-    "ultimateEffect": "Perfect Copy (4 Energy) \u2013 \"Use one of your opponent's creature's effects immediately.\"",
+    "ultimateEffect": "",
     "synergy": "Copy Users",
     "rarity": "SR",
     "faction": "Copy Users"
@@ -1674,7 +1674,7 @@
     "health": 0,
     "cost": 1,
     "effect": "Spirit Summon \u2013 \"Summon a 'Lesser Cursed Spirit' (ATK 100/DEF 100) that lasts for 2 turns.\"",
-    "ultimateEffect": "Spirit Swarm (3 Energy) \u2013 \"Summon 3 'Lesser Cursed Spirit' tokens (ATK 100/DEF 100 each).\"",
+    "ultimateEffect": "",
     "synergy": "Cursed Spirit Users",
     "rarity": "R",
     "faction": "Cursed Spirit Users"
@@ -1689,7 +1689,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Counter Barrier \u2013 \"Negate the next attack on one of your creatures.\"",
-    "ultimateEffect": "Counter Offensive (3 Energy) \u2013 \"Reflect 200 damage back to the attacker.\"",
+    "ultimateEffect": "",
     "synergy": "Barrier Users",
     "rarity": "R",
     "faction": "Barrier Users"
@@ -1704,7 +1704,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Fluid Strike \u2013 \"Deal 200 damage to one creature. Reduce its ATK by 50.\"",
-    "ultimateEffect": "Piercing Blood (3 Energy) \u2013 \"Deal 350 damage to one creature, ignoring DEF bonuses.\"",
+    "ultimateEffect": "",
     "synergy": "Blood Users",
     "rarity": "R",
     "faction": "Blood Users"
@@ -1719,7 +1719,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Precise Strike \u2013 \"Deal 250 damage to one creature with higher DEF than ATK.\"",
-    "ultimateEffect": "Final Ratio (3 Energy) \u2013 \"Deal 400 damage to one creature. If it has higher DEF than ATK, stun it.\"",
+    "ultimateEffect": "",
     "synergy": "Ratio Users",
     "rarity": "R",
     "faction": "Ratio Users"
@@ -1734,7 +1734,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Position Swap \u2013 \"Swap the positions of two creatures on the field.\"",
-    "ultimateEffect": "Double Trouble (4 Energy) \u2013 \"Swap two creatures and deal 200 damage to each.\"",
+    "ultimateEffect": "",
     "synergy": "Boogie Woogie Users",
     "rarity": "SR",
     "faction": "Boogie Woogie Users"
@@ -1749,7 +1749,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Divine Strike \u2013 \"Deal 300 damage to one Cursed Spirit creature.\"",
-    "ultimateEffect": "Heaven's Judgment (4 Energy) \u2013 \"Destroy one Cursed Spirit creature. Draw 1 card.\"",
+    "ultimateEffect": "",
     "synergy": "Angel Users",
     "rarity": "SR",
     "faction": "Angel Users"
@@ -1764,7 +1764,7 @@
     "health": 0,
     "cost": 4,
     "effect": "Shadow Army \u2013 \"Summon 2 Shadow Shikigami tokens (ATK 150/DEF 150 each).\"",
-    "ultimateEffect": "Divine General (5 Energy) \u2013 \"Summon 'Mahoraga' (ATK 400/DEF 400) for 3 turns.\"",
+    "ultimateEffect": "",
     "synergy": "Ten Shadows Users",
     "rarity": "SR",
     "faction": "Ten Shadows Users"
@@ -1779,7 +1779,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Bound Spirit \u2013 \"One creature gains +150 ATK and +100 DEF.\"",
-    "ultimateEffect": "Rika's Wrath (4 Energy) \u2013 \"Deal 350 damage to all enemy creatures.\"",
+    "ultimateEffect": "",
     "synergy": "Rika Users",
     "rarity": "SR",
     "faction": "Rika Users"
@@ -1794,7 +1794,7 @@
     "health": 0,
     "cost": 5,
     "effect": "Psychic Overload \u2013 \"All enemy creatures lose their effects for 2 turns.\"",
-    "ultimateEffect": "Void Expansion (5 Energy) \u2013 \"All enemy creatures cannot attack or use effects for 3 turns.\"",
+    "ultimateEffect": "",
     "synergy": "Six Eyes Users",
     "rarity": "SR",
     "faction": "Six Eyes Users"
@@ -1809,7 +1809,7 @@
     "health": 0,
     "cost": 4,
     "effect": "Chaos Field \u2013 \"All creatures take 50 extra damage from attacks.\"",
-    "ultimateEffect": "Purge (4 Energy) \u2013 \"Destroy all creatures with cost 3 or lower.\"",
+    "ultimateEffect": "",
     "synergy": "Disaster Curses",
     "rarity": "SR",
     "faction": "Disaster Curses"
@@ -1824,7 +1824,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Training Grounds \u2013 \"All your Grade 2 or higher creatures gain +50 ATK.\"",
-    "ultimateEffect": "Graduation (4 Energy) \u2013 \"One of your creatures gains +200 ATK permanently.\"",
+    "ultimateEffect": "",
     "synergy": "Tokyo Jujutsu High",
     "rarity": "SR",
     "faction": "Tokyo Jujutsu High"
@@ -1839,7 +1839,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Tradition \u2013 \"All your Kyoto students gain +50 DEF.\"",
-    "ultimateEffect": "Mass Graduation (4 Energy) \u2013 \"All your creatures gain +100 ATK and DEF.\"",
+    "ultimateEffect": "",
     "synergy": "Kyoto Jujutsu High",
     "rarity": "SR",
     "faction": "Kyoto Jujutsu High"
@@ -1854,7 +1854,7 @@
     "health": 0,
     "cost": 2,
     "effect": "Spirit Storage \u2013 \"When you summon a Cursed Spirit, it gains +50 ATK.\"",
-    "ultimateEffect": "Mass Summoning (4 Energy) \u2013 \"Summon 2 'Greater Cursed Spirits' (ATK 250/DEF 200 each).\"",
+    "ultimateEffect": "",
     "synergy": "Cursed Spirit Users",
     "rarity": "R",
     "faction": "Cursed Spirit Users"
@@ -1869,7 +1869,7 @@
     "health": 0,
     "cost": 4,
     "effect": "Dead Zone \u2013 \"Enemy creatures lose 50 ATK when summoned.\"",
-    "ultimateEffect": "Graveyard Shift (4 Energy) \u2013 \"Destroy all creatures with less than 200 ATK.\"",
+    "ultimateEffect": "",
     "synergy": "Ancient Sorcerers",
     "rarity": "SR",
     "faction": "Ancient Sorcerers"
@@ -1884,7 +1884,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Sword Mastery \u2013 \"All creatures with 'Curse Tool' gain +100 ATK.\"",
-    "ultimateEffect": "Clan Assembly (4 Energy) \u2013 \"Summon 3 'Zenin Clan Members' (ATK 150/DEF 150 each).\"",
+    "ultimateEffect": "",
     "synergy": "Zenin Clan",
     "rarity": "SR",
     "faction": "Zenin Clan"
@@ -1899,7 +1899,7 @@
     "health": 0,
     "cost": 5,
     "effect": "Eternal Prison \u2013 \"One enemy creature cannot attack or use effects.\"",
-    "ultimateEffect": "Complete Sealing (5 Energy) \u2013 \"Remove one creature from the game for 3 turns.\"",
+    "ultimateEffect": "",
     "synergy": "Barrier Masters",
     "rarity": "SR",
     "faction": "Barrier Masters"
@@ -1914,7 +1914,7 @@
     "health": 0,
     "cost": 4,
     "effect": "Battle Royale \u2013 \"All creatures gain +25 ATK and DEF at the start of each turn.\"",
-    "ultimateEffect": "Last Survivor (5 Energy) \u2013 \"Your surviving creatures gain +200 ATK.\"",
+    "ultimateEffect": "",
     "synergy": "Culling Game Players",
     "rarity": "SR",
     "faction": "Culling Game Players"
@@ -1929,7 +1929,7 @@
     "health": 0,
     "cost": 3,
     "effect": "Power Transfer \u2013 \"When a creature is destroyed, draw 1 card.\"",
-    "ultimateEffect": "Fusion (4 Energy) \u2013 \"Combine two of your creatures into one with combined ATK/DEF.\"",
+    "ultimateEffect": "",
     "synergy": "Plasma Users",
     "rarity": "SR",
     "faction": "Plasma Users"
