@@ -72,6 +72,10 @@ export class PlayerModel {
     this.player.mulliganUsed = true;
   }
 
+  setDeck(deck: CardInstance[]): void {
+    this.player.deck = deck;
+  }
+
   drawCards(count: number): CardInstance[] {
     const drawn: CardInstance[] = [];
     

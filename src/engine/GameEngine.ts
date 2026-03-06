@@ -57,6 +57,10 @@ export class GameEngine {
 
     const engine = new GameEngine(gameState);
     engine.initializeDecks();
+    // Note: startGame() is NOT called here because initializeDecks() 
+    // already sets up the decks and draws initial hands
+    engine.getGameState().phase = 'start';
+    engine.addToBattleLog('Game started! Players ready with 5 card hands.');
     return engine;
   }
 
@@ -73,6 +77,7 @@ export class GameEngine {
         
         deck.push({
           ...cardTemplate,
+          id: cardTemplate.id,
           instanceId,
           ownerId: player.getId(),
           location: 'deck',
@@ -86,9 +91,11 @@ export class GameEngine {
         });
       }
       
-      // Set the deck and shuffle
-      player.toJSON().deck = deck;
+      // Set the deck using the player's setDeck method
+      player.setDeck(deck);
       player.shuffleDeck();
+      // Draw opening hand of 5 cards
+      player.drawCards(5);
     });
   }
 
@@ -186,6 +193,10 @@ export class GameEngine {
 
   getBattleLog(): string[] {
     return this.game.getBattleLog();
+  }
+
+  addToBattleLog(message: string): void {
+    this.game.addToBattleLog(message);
   }
 
   isGameOver(): boolean {

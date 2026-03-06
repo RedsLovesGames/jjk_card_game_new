@@ -130,7 +130,7 @@ export default function Index() {
               ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
             style={{ transitionDelay: '0.4s' }}
-            onClick={() => window.location.href = '/deck-builder'}
+            onClick={() => window.location.hash = '#/deck-builder'}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
@@ -164,7 +164,7 @@ export default function Index() {
               ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
             style={{ transitionDelay: '0.6s' }}
-            onClick={() => window.location.href = '/collection'}
+            onClick={() => window.location.hash = '#/collection'}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
