@@ -15,14 +15,21 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const { gameState } = useGame();
-  const [hash, setHash] = useState(window.location.hash || '#/');
+  const [hash, setHash] = useState(() => window.location.hash || '#/');
   
   // Listen for hash changes
   useEffect(() => {
-    const handleHash = () => setHash(window.location.hash || '#/');
+    const handleHash = () => {
+      console.log('Hash changed:', window.location.hash);
+      setHash(window.location.hash || '#/');
+    };
     window.addEventListener('hashchange', handleHash);
+    // Initial check after mount
+    setTimeout(handleHash, 100);
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
+  
+  console.log('AppContent render, hash:', hash, 'gameState:', !!gameState);
   
   // Show game if gameState exists
   if (gameState) {
