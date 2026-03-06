@@ -15,28 +15,31 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const { gameState } = useGame();
-  const [hash, setHash] = useState(() => window.location.hash || '#/');
+  const [hash, setHash] = useState<string | null>(null);
   
   // Listen for hash changes
   useEffect(() => {
+    // Set initial hash
+    setHash(window.location.hash || '#/');
+    
     const handleHash = () => {
-      console.log('Hash changed:', window.location.hash);
       setHash(window.location.hash || '#/');
     };
     window.addEventListener('hashchange', handleHash);
-    // Initial check after mount
-    setTimeout(handleHash, 100);
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
   
-  console.log('AppContent render, hash:', hash, 'gameState:', !!gameState);
+  // Show loading until we have hash
+  if (hash === null) {
+    return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">Loading...</div>;
+  }
   
   // Show game if gameState exists
   if (gameState) {
     return <GameBoard />;
   }
   
-  // Otherwise show route (use startsWith for query params)
+  // Otherwise show route
   if (hash.startsWith('#/battle')) {
     return <BattleScreen />;
   }
@@ -46,10 +49,7 @@ const AppContent = () => {
   if (hash.startsWith('#/deck-builder')) {
     return <DeckBuilder />;
   }
-  if (hash === '#/' || hash === '' || hash === '#') {
-    return <Index />;
-  }
-  return <NotFound />;
+  return <Index />;
 };
 
 const App = () => (
