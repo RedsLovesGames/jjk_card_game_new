@@ -46,8 +46,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const startGame = useCallback((p1: string, p2: string) => {
     const engine = GameEngine.createNewGame(p1, p2);
     // createNewGame already initializes decks and draws initial hands
+    // First set gameEngine, THEN call updateState
     setGameEngine(engine);
-    updateState(engine);
+    // Small delay to ensure gameEngine is set before updateState triggers AI
+    setTimeout(() => {
+      updateState(engine);
+    }, 50);
   }, [updateState]);
 
   const nextPhase = useCallback(() => {
