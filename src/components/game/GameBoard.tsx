@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useGame } from '@/context/GameContext';
 import { CardInstance } from '@/types/game';
-import { Swords, Shield, Zap, ArrowRight, Trophy, Skull } from 'lucide-react';
+import { Swords, Shield, Zap, ArrowRight, Trophy, Skull, Flame, Home } from 'lucide-react';
+import { getCardAsset } from '@/data/assets';
 
 export const GameBoard: React.FC = () => {
   const { 
@@ -19,7 +20,8 @@ export const GameBoard: React.FC = () => {
     nextPhase, 
     playCard, 
     resolveCombat, 
-    switchPosition 
+    switchPosition,
+    gameEngine
   } = useGame();
 
   const logEndRef = useRef<HTMLDivElement>(null);
@@ -59,50 +61,76 @@ export const GameBoard: React.FC = () => {
     }
   };
 
+  const handleUltimate = () => {
+    if (selectedCardId && gameEngine) {
+      const card = currentPlayer.field.find(c => c.instanceId === selectedCardId) || 
+                   currentPlayer.hand.find(c => c.instanceId === selectedCardId);
+      if (card && gameEngine.useUltimate(currentPlayer.id, card.id)) {
+        setSelectedCardId(null);
+      }
+    }
+  };
+
   const renderCard = (card: CardInstance, ownerId: string, location: string) => {
     const isSelected = selectedCardId === card.instanceId;
     const canBeTargeted = targetingMode === 'attack' && ownerId === opponent.id && card.type === 'creature';
     const isExhausted = card.oncePerTurnUsed;
+    const asset = getCardAsset(card.id);
     
     return (
       <CardUI 
         key={card.instanceId}
-        className={`relative w-32 h-48 cursor-pointer transition-all duration-200 border-2 ${
-          isSelected ? 'border-yellow-400 scale-105 z-10 shadow-lg shadow-yellow-400/20' : 
+        className={`relative w-32 h-48 cursor-pointer transition-all duration-300 border-2 ${
+          isSelected ? 'border-purple-400 scale-105 z-10 shadow-xl shadow-purple-500/30' : 
           canBeTargeted ? 'border-red-500 animate-pulse' : 'border-slate-800'
         } ${isExhausted && location === 'field' ? 'opacity-60 grayscale-[0.5]' : ''} bg-slate-900 overflow-hidden group`}
         onClick={() => handleCardClick(card, ownerId)}
       >
-        <div className="p-2 h-full flex flex-col">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
+        
+        <img 
+          src={asset.url} 
+          alt={card.name} 
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+
+        <div className="relative p-2 h-full flex flex-col z-20">
           <div className="flex justify-between items-start mb-1">
-            <span className="text-[10px] font-bold truncate pr-1">{card.name}</span>
-            <Badge className="h-3 px-1 text-[8px] bg-purple-600">{card.rarity}</Badge>
+            <Badge className="h-4 px-1 text-[8px] bg-black/60 backdrop-blur-md border-slate-700">
+              {card.cost}
+            </Badge>
+            <Badge className={`h-4 px-1 text-[8px] ${card.rarity === 'SSR' ? 'bg-yellow-500 text-black' : 'bg-purple-600'}`}>
+              {card.rarity}
+            </Badge>
           </div>
           
-          <div className="flex-1 bg-slate-800 rounded mb-1 flex items-center justify-center overflow-hidden relative">
-             <Zap size={24} className="text-slate-700" />
-             {isExhausted && location === 'field' && (
-               <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                 <span className="text-[8px] font-bold text-white uppercase tracking-tighter">Exhausted</span>
-               </div>
-             )}
-          </div>
+          <div className="flex-1" />
 
-          {card.type === 'creature' && (
-            <div className="flex justify-between items-center text-[10px] font-bold bg-slate-800 p-1 rounded">
-              <div className="flex items-center text-red-400">
-                <Swords size={10} className="mr-1" /> {card.currentAttack || card.attack}
-              </div>
-              <div className="flex items-center text-blue-400">
-                <Shield size={10} className="mr-1" /> {card.currentHealth || card.defense}
-              </div>
+          <div className="bg-black/60 backdrop-blur-md p-1.5 rounded-lg border border-white/10">
+            <div className="text-[9px] font-black truncate text-white mb-0.5 uppercase tracking-tighter">
+              {card.name}
             </div>
-          )}
 
-          <div className="mt-1 text-[8px] text-slate-400 line-clamp-2">
-            {card.effect}
+            {card.type === 'creature' && (
+              <div className="flex justify-between items-center text-[10px] font-black">
+                <div className="flex items-center text-red-400">
+                  <Swords size={10} className="mr-0.5" /> {card.currentAttack || card.attack}
+                </div>
+                <div className="flex items-center text-blue-400">
+                  <Shield size={10} className="mr-0.5" /> {card.currentHealth || card.defense}
+                </div>
+              </div>
+            )}
           </div>
         </div>
+
+        {isExhausted && location === 'field' && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-30 backdrop-blur-[1px]">
+            <span className="text-[10px] font-black text-white uppercase tracking-widest rotate-[-15deg] border-2 border-white px-2 py-0.5">
+              Exhausted
+            </span>
+          </div>
+        )}
       </CardUI>
     );
   };
@@ -139,14 +167,17 @@ export const GameBoard: React.FC = () => {
       {/* Top Bar: Opponent Info */}
       <div className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-full bg-red-900 flex items-center justify-center border border-red-700">
-            <span className="font-bold">AI</span>
+          <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white" onClick={() => window.location.reload()}>
+            <Home size={20} />
+          </Button>
+          <div className="w-10 h-10 rounded-full bg-red-900 flex items-center justify-center border border-red-700 overflow-hidden">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=opponent" alt="AI" />
           </div>
           <div>
             <div className="text-sm font-bold">{opponent.name}</div>
             <div className="flex gap-2">
-              <Badge variant="outline" className="text-red-400 border-red-900">LP: {opponent.life}</Badge>
-              <Badge variant="outline" className="text-blue-400 border-blue-900">E: {opponent.energy}</Badge>
+              <Badge variant="outline" className="text-red-400 border-red-900 h-4 text-[10px]">LP: {opponent.life}</Badge>
+              <Badge variant="outline" className="text-blue-400 border-blue-900 h-4 text-[10px]">E: {opponent.energy}</Badge>
             </div>
           </div>
         </div>
@@ -165,7 +196,7 @@ export const GameBoard: React.FC = () => {
         <Button 
           disabled={!isMyTurn || !!winner} 
           onClick={nextPhase}
-          className="bg-purple-600 hover:bg-purple-500 text-white font-bold"
+          className="bg-purple-600 hover:bg-purple-500 text-white font-bold shadow-lg shadow-purple-500/20"
         >
           Next Phase <ArrowRight size={16} className="ml-2" />
         </Button>
@@ -194,10 +225,10 @@ export const GameBoard: React.FC = () => {
           </div>
 
           {/* Divider / Action Area */}
-          <div className="w-full h-px bg-slate-800 relative">
+          <div className="w-full h-px bg-slate-800/50 relative">
             {targetingMode === 'attack' && (
               <Button 
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-500 animate-bounce shadow-lg shadow-red-500/50"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-500 animate-bounce shadow-lg shadow-red-500/50 font-black uppercase tracking-tighter"
                 onClick={handleDirectAttack}
               >
                 Attack Player Directly
@@ -212,50 +243,87 @@ export const GameBoard: React.FC = () => {
         </div>
 
         {/* Right: Selected Card Actions */}
-        <div className="w-64 bg-slate-900/50 border-l border-slate-800 p-4">
+        <div className="w-64 bg-slate-900/50 border-l border-slate-800 p-4 flex flex-col">
           <div className="text-xs font-bold uppercase tracking-tighter text-slate-500 mb-4">Actions</div>
-          {selectedCardId ? (
-            <div className="space-y-3">
-              {gameState.phase === 'main1' || gameState.phase === 'main2' ? (
-                <>
-                  {currentPlayer.hand.find(c => c.instanceId === selectedCardId) && (
-                    <Button 
-                      className="w-full bg-blue-600 hover:bg-blue-500" 
-                      onClick={() => playCard(selectedCardId)}
-                      disabled={currentPlayer.hand.find(c => c.instanceId === selectedCardId)!.cost > currentPlayer.energy}
-                    >
-                      Play Card
-                    </Button>
-                  )}
-                  {currentPlayer.field.find(c => c.instanceId === selectedCardId) && (
-                    <Button className="w-full bg-slate-800 hover:bg-slate-700" onClick={() => switchPosition(selectedCardId)}>Switch Row</Button>
-                  )}
-                </>
-              ) : null}
-              
-              {gameState.phase === 'battle' && currentPlayer.field.find(c => c.instanceId === selectedCardId) && (
-                <Button 
-                  className={`w-full ${targetingMode === 'attack' ? 'bg-red-700' : 'bg-red-600 hover:bg-red-500'}`}
-                  onClick={() => setTargetingMode(targetingMode === 'attack' ? null : 'attack')}
-                  disabled={currentPlayer.field.find(c => c.instanceId === selectedCardId)!.oncePerTurnUsed}
-                >
-                  {targetingMode === 'attack' ? 'Cancel Attack' : 'Declare Attack'}
-                </Button>
-              )}
-            </div>
-          ) : (
-            <div className="text-xs text-slate-600 italic">Select a card to see actions</div>
-          )}
+          <div className="flex-1 overflow-y-auto">
+            {selectedCardId ? (
+              <div className="space-y-3">
+                {/* Card Preview in Actions Panel */}
+                {(() => {
+                  const card = [...currentPlayer.hand, ...currentPlayer.field, ...opponent.field].find(c => c.instanceId === selectedCardId);
+                  if (!card) return null;
+                  return (
+                    <div className="bg-slate-900 p-3 rounded-lg border border-slate-800 mb-4">
+                      <div className="text-xs font-bold text-purple-400 mb-1">{card.name}</div>
+                      <div className="text-[10px] text-slate-400 leading-relaxed">{card.effect}</div>
+                      {card.ultimateEffect && (
+                        <div className="mt-2 pt-2 border-t border-slate-800">
+                          <div className="text-[9px] font-bold text-orange-400 uppercase mb-1">Ultimate</div>
+                          <div className="text-[10px] text-slate-400 leading-relaxed italic">{card.ultimateEffect}</div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
+                {gameState.phase === 'main1' || gameState.phase === 'main2' ? (
+                  <>
+                    {currentPlayer.hand.find(c => c.instanceId === selectedCardId) && (
+                      <Button 
+                        className="w-full bg-blue-600 hover:bg-blue-500 font-bold" 
+                        onClick={() => playCard(selectedCardId)}
+                        disabled={currentPlayer.hand.find(c => c.instanceId === selectedCardId)!.cost > currentPlayer.energy}
+                      >
+                        Play Card
+                      </Button>
+                    )}
+                    {currentPlayer.field.find(c => c.instanceId === selectedCardId) && (
+                      <>
+                        <Button className="w-full bg-slate-800 hover:bg-slate-700 font-bold" onClick={() => switchPosition(selectedCardId)}>
+                          Switch Row
+                        </Button>
+                        <Button 
+                          className="w-full bg-orange-600 hover:bg-orange-500 font-bold" 
+                          onClick={handleUltimate}
+                          disabled={currentPlayer.ultimateEnergy < (currentPlayer.field.find(c => c.instanceId === selectedCardId)?.ultimateCost || 0)}
+                        >
+                          <Flame size={14} className="mr-2" /> Use Ultimate
+                        </Button>
+                      </>
+                    )}
+                  </>
+                ) : null}
+                
+                {gameState.phase === 'battle' && currentPlayer.field.find(c => c.instanceId === selectedCardId) && (
+                  <Button 
+                    className={`w-full font-bold ${targetingMode === 'attack' ? 'bg-red-700' : 'bg-red-600 hover:bg-red-500'}`}
+                    onClick={() => setTargetingMode(targetingMode === 'attack' ? null : 'attack')}
+                    disabled={currentPlayer.field.find(c => c.instanceId === selectedCardId)!.oncePerTurnUsed}
+                  >
+                    {targetingMode === 'attack' ? 'Cancel Attack' : 'Declare Attack'}
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div className="text-xs text-slate-600 italic">Select a card to see actions</div>
+            )}
+          </div>
           
-          <div className="mt-8 p-4 bg-slate-900 rounded-lg border border-slate-800">
+          <div className="mt-auto pt-4 border-t border-slate-800">
             <div className="text-[10px] text-slate-500 uppercase mb-2">Your Stats</div>
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-xs">Life Points</span>
-              <span className="text-sm font-bold text-red-400">{currentPlayer.life}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-xs">Energy</span>
-              <span className="text-sm font-bold text-blue-400">{currentPlayer.energy}/10</span>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-slate-400">Life Points</span>
+                <span className="text-sm font-black text-red-400">{currentPlayer.life}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-slate-400">Energy</span>
+                <span className="text-sm font-black text-blue-400">{currentPlayer.energy}/10</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-slate-400">Cursed Energy</span>
+                <span className="text-sm font-black text-orange-400">{currentPlayer.ultimateEnergy}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -263,7 +331,7 @@ export const GameBoard: React.FC = () => {
 
       {/* Bottom Bar: Player Hand */}
       <div className="h-56 bg-slate-900 border-t border-slate-800 p-4 flex items-center justify-center gap-4">
-        <div className="flex gap-2 overflow-x-auto pb-2 max-w-full">
+        <div className="flex gap-3 overflow-x-auto pb-2 max-w-full px-4">
           {currentPlayer.hand.map(card => renderCard(card, currentPlayer.id, 'hand'))}
         </div>
       </div>
