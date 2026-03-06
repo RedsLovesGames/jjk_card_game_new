@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card } from '@/types/game';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,14 +18,16 @@ interface SavedDeck {
 }
 
 export default function BattleScreen() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const { startGame } = useGame();
   
   const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
   const [selectedDeck, setSelectedDeck] = useState<SavedDeck | null>(null);
   const [loading, setLoading] = useState(false);
   const [battleType, setBattleType] = useState<'quick' | 'deck'>('quick');
+
+  // Navigation helpers
+  const goHome = () => window.location.hash = '#/';
+  const goDeckBuilder = () => window.location.hash = '#/deck-builder';
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -72,7 +73,7 @@ export default function BattleScreen() {
     <div className="min-h-screen bg-slate-950 text-white flex flex-col">
       {/* Header */}
       <header className="p-4 border-b border-slate-800 flex items-center gap-4 bg-slate-900">
-        <Button variant="ghost" onClick={() => navigate('/')}>
+        <Button variant="ghost" onClick={goHome}>
           <ArrowLeft className="mr-2" size={18} /> Back
         </Button>
         <h1 className="text-2xl font-bold bg-gradient-to-r from-red-400 to-purple-500 bg-clip-text text-transparent">
@@ -177,7 +178,7 @@ export default function BattleScreen() {
                 <Sparkles size={40} className="text-slate-600" />
               </div>
               <p className="text-slate-400 mb-4">No saved decks yet</p>
-              <Button onClick={() => navigate('/deck-builder')} className="bg-purple-600 hover:bg-purple-700">
+              <Button onClick={goDeckBuilder} className="bg-purple-600 hover:bg-purple-700">
                 Build Your First Deck
               </Button>
             </div>
