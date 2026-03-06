@@ -179,7 +179,8 @@ export class GameModel {
     const player = this.players.find(p => p.getId() === playerId);
     if (!player) return false;
 
-    const card = player.getCardById(cardId);
+    // Use instanceId since UI passes the unique card instance ID
+    const card = player.getCardByInstanceId(cardId);
     if (!card) return false;
 
     const cardModel = new CardModel(card);

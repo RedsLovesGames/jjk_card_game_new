@@ -90,7 +90,8 @@ export class PlayerModel {
   }
 
   playCard(cardId: string): CardInstance | null {
-    const cardIndex = this.player.hand.findIndex(card => card.id === cardId);
+    // Use instanceId for matching since that's what the UI passes
+    const cardIndex = this.player.hand.findIndex(card => card.instanceId === cardId);
     if (cardIndex === -1) return null;
 
     const card = this.player.hand.splice(cardIndex, 1)[0];
