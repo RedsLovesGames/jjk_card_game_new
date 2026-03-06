@@ -1,5 +1,5 @@
 import { GameEngine } from '../GameEngine';
-import { CardInstance } from '@/types/game';
+import { CardInstance, GameState } from '@/types/game';
 
 export class SimpleAI {
   private engine: GameEngine;
@@ -8,27 +8,47 @@ export class SimpleAI {
     this.engine = engine;
   }
 
-  makeMove(): void {
-    const gameState = this.engine.getGameState();
-    const currentPlayer = this.engine.getCurrentPlayer();
+  makeMove(): GameState | null {
+    let gameState = this.engine.getGameState();
+    let currentPlayer = this.engine.getCurrentPlayer();
+    let moves = 0;
+    const maxMoves = 20; // Prevent infinite loops
     
-    // Determine phase and make appropriate moves
-    switch (gameState.phase) {
-      case 'main1':
-      case 'main2':
-        this.playCardsAndAbilities(currentPlayer);
-        break;
-      case 'battle':
-        this.attackWithCreatures(currentPlayer, gameState);
-        break;
-      case 'end':
-        // End the turn
-        break;
-      default:
-        // Move to next phase
-        this.engine.nextPhase();
-        break;
+    // Keep making moves until we pass turn back to player or hit max
+    while (moves < maxMoves) {
+      gameState = this.engine.getGameState();
+      
+      // If it's now the player's turn (player 0), stop AI
+      if (gameState.currentPlayer === 0) {
+        return gameState;
+      }
+      
+      switch (gameState.phase) {
+        case 'main1':
+        case 'main2':
+          this.playCardsAndAbilities(currentPlayer);
+          break;
+        case 'battle':
+          this.attackWithCreatures(currentPlayer, gameState);
+          break;
+        case 'end':
+          // End of turn - advance to next player's turn
+          this.engine.nextPhase();
+          break;
+        default:
+          // For start, draw, energy phases - move to next phase
+          this.engine.nextPhase();
+          break;
+      }
+      
+      moves++;
+      
+      // Update current player reference
+      currentPlayer = this.engine.getCurrentPlayer();
     }
+    
+    // Return the final game state
+    return this.engine.getGameState();
   }
 
   private playCardsAndAbilities(currentPlayer: any): void {

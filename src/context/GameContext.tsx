@@ -47,47 +47,31 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const nextPhase = useCallback(() => {
     if (gameEngine) {
-      const beforePhase = gameEngine.getGameState().phase;
-      console.log('nextPhase called, current phase:', beforePhase);
       gameEngine.nextPhase();
-      const afterState = gameEngine.getGameState();
-      console.log('nextPhase after, phase:', afterState.phase, 'player:', afterState.currentPlayer);
-      alert(`Phase: ${beforePhase} -> ${afterState.phase}, Player: ${afterState.currentPlayer}`);
+      const state = gameEngine.getGameState();
       updateState(gameEngine);
       
       // If it's now the AI's turn (Player 2), trigger AI logic
-      setTimeout(() => {
-        if (gameEngine && gameEngine.getGameState().currentPlayer === 1 && !gameEngine.getGameState().winner) {
-          const ai = new SimpleAI(gameEngine);
-          ai.makeMove();
-          updateState(gameEngine);
-          
-          // If still AI's turn, keep going
-          const state = gameEngine.getGameState();
-          if (state.currentPlayer === 1 && !state.winner) {
-            setTimeout(() => {
-              if (gameEngine) {
-                const ai2 = new SimpleAI(gameEngine);
-                ai2.makeMove();
-                updateState(gameEngine);
-              }
-            }, 1000);
+      if (state.currentPlayer === 1 && !state.winner) {
+        setTimeout(() => {
+          if (gameEngine) {
+            const ai = new SimpleAI(gameEngine);
+            const finalState = ai.makeMove();
+            if (finalState) {
+              updateState(gameEngine);
+            }
           }
-        }
-      }, 1000);
+        }, 500);
+      }
     }
   }, [gameEngine, updateState]);
 
   const aiTurn = useCallback(() => {
     if (gameEngine) {
       const ai = new SimpleAI(gameEngine);
-      ai.makeMove();
-      updateState(gameEngine);
-      
-      // If still AI's turn, keep going
-      const state = gameEngine.getGameState();
-      if (state.currentPlayer === 1 && !state.winner) {
-        setTimeout(() => aiTurn(), 1000);
+      const finalState = ai.makeMove();
+      if (finalState) {
+        updateState(gameEngine);
       }
     }
   }, [gameEngine, updateState]);
