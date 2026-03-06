@@ -40,6 +40,7 @@ const AppContent = () => {
   }
   
   // Otherwise show route
+  console.log('Routing to:', hash);
   if (hash.startsWith('#/battle')) {
     return <BattleScreen />;
   }
