@@ -1,0 +1,43 @@
+Name,Variant,ATK,DEF,HP,Cost,Ultimate_Cost,Effect,Ultimate_Effect,Rarity,Faction
+Gojo Satoru,Base,3000,2500,10,7,15,"Cannot be targeted by enemy effects. Once per turn, negate one enemy effect.","Domain Expansion: Infinite Void (Ultimate), destroys all enemy creatures, costs 15 energy",SSR,Sorcerer
+Sukuna,Base,2800,2300,9,6,12,"When this creature attacks, destroy one enemy creature. Cannot be blocked by more than one creature.","Malevolent Shrine (Ultimate), deals 10 damage to all enemies, costs 12 energy",SSR,Cursed Spirit
+Nanami Kento,Base,2200,2000,8,4,8,"When this creature destroys an enemy, gain 2 energy. Cannot attack if no other creatures are on your field.","Mythical Beast Amber (Ultimate), summon a token with 2000 ATK/DEF, costs 8 energy",SR,Sorcerer
+Nobara Kugisaki,Base,1800,1600,7,3,6,"When this creature deals damage to an enemy, that enemy loses 1 DEF. Cannot be targeted by enemy effects.","Straw Doll (Ultimate), target enemy loses 3 DEF, costs 6 energy",SR,Sorcerer
+Megumi Fushiguro,Base,2000,1800,7,3,6,"When this creature is summoned, summon one Toad shikigami with 1000 ATK/DEF. Cannot be destroyed by effects.","Shikigami Army (Ultimate), summon three Toad shikigami, costs 6 energy",SR,Sorcerer
+Yuji Itadori,Base,1900,1700,7,3,6,"When this creature takes damage, gain 1 energy per 2 damage taken. Cannot be affected by negative status effects.","Black Flash (Ultimate), deal 5 damage to all enemies, costs 6 energy",SR,Sorcerer
+Mahito,Base,2100,1900,8,4,8,"When this creature destroys an enemy, that enemy is revived as a token under your control with half stats.","Idle Death Gamble (Ultimate), target enemy creature becomes yours, costs 8 energy",SR,Cursed Spirit
+Jogo,Base,2300,2100,8,5,10,"When this creature attacks, deal 2 damage to all enemy creatures. Cannot be destroyed by fire effects.","Cleave and Cleave (Ultimate), deal 8 damage to all enemies, costs 10 energy",SR,Cursed Spirit
+Hanami,Base,2000,2000,8,4,8,"When this creature is on the field, all plant creatures gain +500 ATK. Cannot be targeted by non-plant effects.","Floral (Ultimate), all plant creatures gain +1000 ATK, costs 8 energy",SR,Cursed Spirit
+Choso,Base,2200,2000,8,4,8,"When this creature deals damage, gain 1 ultimate energy. Cannot be affected by blood manipulation effects.","Blood Manipulation (Ultimate), deal 6 damage to target enemy, costs 8 energy",SR,Cursed Spirit
+Maki Zenin,Base,2400,2200,8,5,10,"When this creature attacks, ignore enemy DEF. Cannot be affected by cursed energy effects.","Blade Dance (Ultimate), deal 7 damage to all enemies, costs 10 energy",SR,Sorcerer
+Todo Aoi,Base,2100,1900,8,4,8,"When this creature is summoned, all allies gain +300 ATK for this turn. Cannot be affected by electricity effects.","Boogie Woogie (Ultimate), switch positions of two creatures, costs 8 energy",SR,Sorcerer
+Ino Takuma,Base,1900,1700,7,3,6,"When this creature is on the field, all sorcerer allies gain +200 DEF. Cannot be targeted by enemy ultimates.","Cursed Speech (Ultimate), target enemy loses 3 ATK, costs 6 energy",SR,Sorcerer
+Yuta Okkotsu,Base,2600,2400,9,6,12,"When this creature attacks, gain 1 energy per ally creature. Cannot be affected by cursed spirits.","Rika Orimoto (Ultimate), deal 9 damage to all enemies, costs 12 energy",SSR,Sorcerer
+Sukuna (Finger),Base,2500,2200,9,5,11,"When this creature destroys an enemy, gain 1 ultimate energy. Cannot be blocked by weak creatures.","Dismantle (Ultimate), destroy all enemy equipment, costs 11 energy",SSR,Cursed Spirit
+Geto Suguru,Base,2400,2200,9,5,11,"When this creature is on the field, all cursed spirit allies gain +400 ATK. Cannot be affected by sorcerer effects.","Idle Death Gamble (Ultimate), target enemy becomes cursed spirit, costs 11 energy",SSR,Cursed Spirit
+Toji Fushiguro,Base,2700,2500,9,6,12,"When this creature attacks, ignore enemy DEF. Cannot be affected by cursed energy.","Hollow Purple (Ultimate), destroy all enemy creatures, costs 12 energy",SSR,Sorcerer
+Kento Nanami (Grade 1),Base,2000,1800,7,3,6,"When this creature destroys an enemy, gain 2 energy. Cannot attack if no other creatures are on your field.","Mythical Beast Amber (Ultimate), summon a token with 2000 ATK/DEF, costs 6 energy",R,Sorcerer
+Nobara Kugisaki (Resolute),Base,1900,1700,7,3,6,"When this creature deals damage to an enemy, that enemy loses 1 DEF. Cannot be targeted by enemy effects.","Straw Doll (Ultimate), target enemy loses 3 DEF, costs 6 energy",R,Sorcerer
+Megumi Fushiguro (Shadow),Base,2100,1900,7,3,6,"When this creature is summoned, summon one Toad shikigami with 1000 ATK/DEF. Cannot be destroyed by effects.","Shikigami Army (Ultimate), summon three Toad shikigami, costs 6 energy",R,Sorcerer
+Yuji Itadori (Determined),Base,2000,1800,7,3,6,"When this creature takes damage, gain 1 energy per 2 damage taken. Cannot be affected by negative status effects.","Black Flash (Ultimate), deal 5 damage to all enemies, costs 6 energy",R,Sorcerer
+Mahito (Curse),Base,2200,2000,8,4,8,"When this creature destroys an enemy, that enemy is revived as a token under your control with half stats.","Idle Death Gamble (Ultimate), target enemy creature becomes yours, costs 8 energy",R,Cursed Spirit
+Jogo (Flame),Base,2400,2200,8,5,10,"When this creature attacks, deal 2 damage to all enemy creatures. Cannot be destroyed by fire effects.","Cleave and Cleave (Ultimate), deal 8 damage to all enemies, costs 10 energy",R,Cursed Spirit
+Hanami (Nature),Base,2100,2100,8,4,8,"When this creature is on the field, all plant creatures gain +500 ATK. Cannot be targeted by non-plant effects.","Floral (Ultimate), all plant creatures gain +1000 ATK, costs 8 energy",R,Cursed Spirit
+Choso (Blood),Base,2300,2100,8,4,8,"When this creature deals damage, gain 1 ultimate energy. Cannot be affected by blood manipulation effects.","Blood Manipulation (Ultimate), deal 6 damage to target enemy, costs 8 energy",R,Cursed Spirit
+Maki Zenin (Blade),Base,2500,2300,8,5,10,"When this creature attacks, ignore enemy DEF. Cannot be affected by cursed energy effects.","Blade Dance (Ultimate), deal 7 damage to all enemies, costs 10 energy",R,Sorcerer
+Todo Aoi (Flash),Base,2200,2000,8,4,8,"When this creature is summoned, all allies gain +300 ATK for this turn. Cannot be affected by electricity effects.","Boogie Woogie (Ultimate), switch positions of two creatures, costs 8 energy",R,Sorcerer
+Ino Takuma (Speech),Base,2000,1800,7,3,6,"When this creature is on the field, all sorcerer allies gain +200 DEF. Cannot be targeted by enemy ultimates.","Cursed Speech (Ultimate), target enemy loses 3 ATK, costs 6 energy",R,Sorcerer
+Yuta Okkotsu (Bound),Base,2700,2500,9,6,12,"When this creature attacks, gain 1 energy per ally creature. Cannot be affected by cursed spirits.","Rika Orimoto (Ultimate), deal 9 damage to all enemies, costs 12 energy",SSR,Sorcerer
+Shibuya Incident,Area,,,"When played, both players lose 5 HP per turn. Cannot be destroyed by effects.",,,SSR,
+Domain Expansion: Unlimited Void,Area,,,"When played, all enemy creatures lose 1000 ATK. Cannot be destroyed by effects.",,,SSR,
+Heavenly Restriction,Area,,,"When played, all sorcerer creatures gain +500 ATK but lose 1000 DEF. Cannot be destroyed by effects.",,,SR,
+Malevolent Shrine,Area,,,"When played, all cursed spirit creatures gain +500 ATK. Cannot be destroyed by effects.",,,SR,
+Cursed Speech,Spell,,,"Deal 3 damage to target creature. Can be used once per turn.",,,SR,Sorcerer
+Black Flash,Spell,,,"Deal 5 damage to target creature. Cannot be blocked.",,,SR,Sorcerer
+Blood Manipulation,Spell,,,"Target creature gains +2 ATK for 3 turns.",,,SR,Cursed Spirit
+Hollow Purple,Spell,,,"Destroy target creature with 3000 DEF or less.",,,SSR,Sorcerer
+Domain Expansion,Spell,,,"Choose one: destroy all enemy creatures OR all enemy spells.",,,SSR,
+Mythical Beast Amber,Spell,,,"Summon a Toad token with 1500 ATK/DEF.",,,SR,Sorcerer
+Shikigami Army,Spell,,,"Summon two Toad tokens with 1000 ATK/DEF each.",,,SR,Sorcerer
+Idle Death Gamble,Spell,,,"Target enemy creature becomes yours with half stats.",,,SR,Cursed Spirit
+Cleave and Cleave,Spell,,,"Deal 4 damage to all enemy creatures.",,,SR,Cursed Spirit
