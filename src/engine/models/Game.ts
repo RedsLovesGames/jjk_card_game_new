@@ -140,20 +140,20 @@ export class GameModel {
 
   mainPhase1(): void {
     this.addToBattleLog(`Turn ${this.gameState.turn} - Main Phase 1`);
-    // Main phase actions will be handled by the effect system
-    this.setPhase('battle');
+    // Set phase to main1 for player actions
+    this.setPhase('main1');
   }
 
   battlePhase(): void {
     this.addToBattleLog(`Turn ${this.gameState.turn} - Battle Phase`);
-    // Battle phase logic will be handled by the battle resolver
-    this.setPhase('main2');
+    // Set phase to battle for attack actions
+    this.setPhase('battle');
   }
 
   mainPhase2(): void {
     this.addToBattleLog(`Turn ${this.gameState.turn} - Main Phase 2`);
-    // Main phase actions will be handled by the effect system
-    this.setPhase('end');
+    // Set phase to main2 for player actions
+    this.setPhase('main2');
   }
 
   endPhase(): void {
@@ -176,28 +176,22 @@ export class GameModel {
   }
 
   playCard(playerId: string, cardId: string): boolean {
-    console.log('Game.playCard called with playerId:', playerId, 'cardId:', cardId);
     const player = this.players.find(p => p.getId() === playerId);
-    console.log('Found player:', player?.getName());
     if (!player) return false;
 
     // Use instanceId since UI passes the unique card instance ID
     const card = player.getCardByInstanceId(cardId);
-    console.log('Found card:', card?.name);
     if (!card) return false;
 
     const cardModel = new CardModel(card);
     const cost = cardModel.getCost();
-    console.log('Card cost:', cost, 'Player energy:', player.getEnergy());
 
     if (player.getEnergy() < cost) {
-      console.log('Not enough energy!');
       return false;
     }
 
     player.setEnergy(player.getEnergy() - cost);
     const playedCard = player.playCard(cardId);
-    console.log('Played card:', playedCard?.name);
     
     if (playedCard) {
       this.addToBattleLog(`${player.getName()} played ${playedCard.name}`);

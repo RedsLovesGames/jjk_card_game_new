@@ -91,14 +91,10 @@ export class PlayerModel {
 
   playCard(cardId: string): CardInstance | null {
     // Use instanceId for matching since that's what the UI passes
-    console.log('Player.playCard called with cardId:', cardId);
-    console.log('Hand:', this.player.hand.map(c => `${c.name}(${c.instanceId})`));
     const cardIndex = this.player.hand.findIndex(card => card.instanceId === cardId);
-    console.log('Card index:', cardIndex);
     if (cardIndex === -1) return null;
 
     const card = this.player.hand.splice(cardIndex, 1)[0];
-    console.log('Playing card:', card.name);
     card.location = 'field';
     this.player.field.push(card);
     
