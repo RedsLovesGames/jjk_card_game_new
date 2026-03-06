@@ -104,7 +104,6 @@ export class GameModel {
   }
 
   startPhase(): void {
-    console.log('startPhase called, setting to draw');
     this.addToBattleLog(`Turn ${this.gameState.turn} - Start Phase`);
     
     // Apply start of turn effects
@@ -118,7 +117,7 @@ export class GameModel {
       });
     }
 
-    this.setPhase('draw');
+    // Phase will be advanced by GameEngine.nextPhase()
   }
 
   drawPhase(): void {
@@ -127,7 +126,7 @@ export class GameModel {
     const currentPlayer = this.getCurrentPlayer();
     currentPlayer.drawCards(1);
     
-    this.setPhase('energy');
+    // Phase will be advanced by GameEngine.nextPhase()
   }
 
   energyPhase(): void {
@@ -136,25 +135,22 @@ export class GameModel {
     const currentPlayer = this.getCurrentPlayer();
     currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
     
-    this.setPhase('main1');
+    // Phase will be advanced by GameEngine.nextPhase()
   }
 
   mainPhase1(): void {
     this.addToBattleLog(`Turn ${this.gameState.turn} - Main Phase 1`);
-    // Stay at main1 phase to allow player to play cards
-    this.setPhase('main1');
+    // Phase will be advanced by GameEngine.nextPhase()
   }
 
   battlePhase(): void {
     this.addToBattleLog(`Turn ${this.gameState.turn} - Battle Phase`);
-    // Set phase to battle for attack actions
-    this.setPhase('battle');
+    // Phase will be advanced by GameEngine.nextPhase()
   }
 
   mainPhase2(): void {
     this.addToBattleLog(`Turn ${this.gameState.turn} - Main Phase 2`);
-    // Set phase to main2 for player actions
-    this.setPhase('main2');
+    // Phase will be advanced by GameEngine.nextPhase()
   }
 
   endPhase(): void {
