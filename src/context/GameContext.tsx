@@ -45,11 +45,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const nextPhase = useCallback(() => {
     if (gameEngine) {
-      const stateBefore = gameEngine.getGameState();
-      console.log('nextPhase clicked, phase before:', stateBefore.phase);
       gameEngine.nextPhase();
-      const stateAfter = gameEngine.getGameState();
-      console.log('nextPhase clicked, phase after:', stateAfter.phase);
       updateState(gameEngine);
       
       // If it's now the AI's turn (Player 2), trigger AI logic

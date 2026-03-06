@@ -114,29 +114,35 @@ export class GameEngine {
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
     console.log(`[${Date.now()}] nextPhase called, current: ${currentPhase}`);
+    
+    // Determine next phase based on current phase
+    let nextPhase = currentPhase;
     switch (currentPhase) {
       case 'start':
-        this.game.startPhase();
+        nextPhase = 'draw';
         break;
       case 'draw':
-        this.game.drawPhase();
+        nextPhase = 'energy';
         break;
       case 'energy':
-        this.game.energyPhase();
+        nextPhase = 'main1';
         break;
       case 'main1':
-        this.game.mainPhase1();
+        nextPhase = 'battle';
         break;
       case 'battle':
-        this.game.battlePhase();
+        nextPhase = 'main2';
         break;
       case 'main2':
-        this.game.mainPhase2();
+        nextPhase = 'end';
         break;
       case 'end':
-        this.game.endPhase();
+        nextPhase = 'start';
         break;
     }
+    
+    this.game.setPhase(nextPhase);
+    console.log(`[${Date.now()}] nextPhase set to: ${nextPhase}`);
   }
 
   playCard(playerId: string, cardId: string): boolean {
