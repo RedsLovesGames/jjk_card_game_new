@@ -176,22 +176,28 @@ export class GameModel {
   }
 
   playCard(playerId: string, cardId: string): boolean {
+    console.log('Game.playCard called with playerId:', playerId, 'cardId:', cardId);
     const player = this.players.find(p => p.getId() === playerId);
+    console.log('Found player:', player?.getName());
     if (!player) return false;
 
     // Use instanceId since UI passes the unique card instance ID
     const card = player.getCardByInstanceId(cardId);
+    console.log('Found card:', card?.name);
     if (!card) return false;
 
     const cardModel = new CardModel(card);
     const cost = cardModel.getCost();
+    console.log('Card cost:', cost, 'Player energy:', player.getEnergy());
 
     if (player.getEnergy() < cost) {
+      console.log('Not enough energy!');
       return false;
     }
 
     player.setEnergy(player.getEnergy() - cost);
     const playedCard = player.playCard(cardId);
+    console.log('Played card:', playedCard?.name);
     
     if (playedCard) {
       this.addToBattleLog(`${player.getName()} played ${playedCard.name}`);
