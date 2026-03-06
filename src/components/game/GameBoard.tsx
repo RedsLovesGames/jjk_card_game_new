@@ -51,7 +51,7 @@ export const GameBoard: React.FC = () => {
 
   const player = gameState.players[0];
   const opponent = gameState.players[1];
-  const isMyTurn = gameState.currentPlayer === 0;
+  const isMyTurn = gameState && gameState.currentPlayer === 0;
   const winner = gameState.winner;
 
   // Get current active player info

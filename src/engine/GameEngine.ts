@@ -113,6 +113,7 @@ export class GameEngine {
 
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
+    alert(`Phase before: ${currentPhase}`);
     
     // Determine next phase based on current phase
     let nextPhase = currentPhase;
@@ -141,6 +142,7 @@ export class GameEngine {
     }
     
     this.game.setPhase(nextPhase);
+    alert(`Phase after: ${this.game.getPhase()}`);
   }
 
   playCard(playerId: string, cardId: string): boolean {
