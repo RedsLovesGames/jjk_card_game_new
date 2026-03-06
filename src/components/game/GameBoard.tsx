@@ -281,9 +281,11 @@ export const GameBoard: React.FC = () => {
           {isMyTurn && (
             <Button 
               onClick={() => {
-                alert('End Phase clicked! Phase: ' + document.querySelector('[class*="phase"]')?.textContent);
-                console.log('End Phase button clicked!');
-                nextPhase();
+                console.log('END PHASE button clicked! Current phase:', gameState?.phase);
+                // Use setTimeout to ensure React state is ready
+                setTimeout(() => {
+                  nextPhase();
+                }, 10);
               }}
               className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold shadow-lg shadow-purple-500/25"
             >

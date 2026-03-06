@@ -46,7 +46,7 @@ export class GameEngine {
           mulliganUsed: false
         }
       ],
-      currentPlayer: 1, // AI goes first for testing
+      currentPlayer: 0,
       turn: 1,
       phase: 'start',
       stack: [],
