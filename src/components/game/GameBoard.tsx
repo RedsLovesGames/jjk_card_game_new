@@ -191,7 +191,9 @@ export const GameBoard: React.FC = () => {
   // Phase display helper
   const getPhaseDisplay = () => {
     const phases: Record<string, { name: string; color: string; icon: React.ReactNode }> = {
+      start: { name: 'Start Phase', color: 'text-yellow-400', icon: <Sparkles size={14} /> },
       draw: { name: 'Draw Phase', color: 'text-blue-400', icon: <Zap size={14} /> },
+      energy: { name: 'Energy Phase', color: 'text-cyan-400', icon: <Zap size={14} /> },
       standby: { name: 'Standby Phase', color: 'text-yellow-400', icon: <Sparkles size={14} /> },
       main1: { name: 'Main Phase 1', color: 'text-green-400', icon: <Swords size={14} /> },
       battle: { name: 'Battle Phase', color: 'text-red-400', icon: <Swords size={14} /> },
