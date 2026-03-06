@@ -104,6 +104,7 @@ export class GameModel {
   }
 
   startPhase(): void {
+    console.log('startPhase called, setting to draw');
     this.addToBattleLog(`Turn ${this.gameState.turn} - Start Phase`);
     
     // Apply start of turn effects

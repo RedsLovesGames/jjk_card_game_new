@@ -45,6 +45,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const nextPhase = useCallback(() => {
     if (gameEngine) {
+      console.log('nextPhase clicked');
       gameEngine.nextPhase();
       updateState(gameEngine);
       
