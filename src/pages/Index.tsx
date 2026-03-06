@@ -88,7 +88,11 @@ export default function Index() {
               ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
             style={{ transitionDelay: '0.2s' }}
-            onClick={() => window.location.hash = '#/battle'}
+            onClick={() => {
+              // Clear query params before setting hash
+              window.history.replaceState(null, '', window.location.pathname);
+              window.location.hash = 'battle';
+            }}
           >
             {/* Card glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
