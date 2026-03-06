@@ -1,20 +1,18 @@
 import { GameModel } from './models/Game';
 import { EffectEngine } from './effects/EffectEngine';
 import { BattleResolver } from './BattleResolver';
-import { DataImporter } from '../data/importer';
-import { GameState, Effect } from '@/types/game';
+import { GameState, Effect, Card } from '@/types/game';
+import cardData from '../data/cards.json';
 
 export class GameEngine {
   private game: GameModel;
   private effectEngine: EffectEngine;
   private battleResolver: BattleResolver;
-  private dataImporter: DataImporter;
 
   constructor(gameState: GameState) {
     this.game = new GameModel(gameState);
     this.effectEngine = new EffectEngine(this.game);
     this.battleResolver = new BattleResolver(this.game);
-    this.dataImporter = new DataImporter();
   }
 
   static createNewGame(player1Name: string, player2Name: string): GameEngine {
@@ -57,7 +55,41 @@ export class GameEngine {
       updatedAt: new Date()
     };
 
-    return new GameEngine(gameState);
+    const engine = new GameEngine(gameState);
+    engine.initializeDecks();
+    return engine;
+  }
+
+  private initializeDecks(): void {
+    const players = this.game.getPlayers();
+    const allCards = cardData as Card[];
+
+    players.forEach((player, index) => {
+      // Create a basic deck of 40 cards by repeating the available cards
+      const deck: any[] = [];
+      for (let i = 0; i < 40; i++) {
+        const cardTemplate = allCards[i % allCards.length];
+        const instanceId = `card_${player.getId()}_${i}_${Math.random().toString(36).substr(2, 5)}`;
+        
+        deck.push({
+          ...cardTemplate,
+          instanceId,
+          ownerId: player.getId(),
+          location: 'deck',
+          currentAttack: cardTemplate.attack,
+          currentDefense: cardTemplate.defense,
+          currentHealth: cardTemplate.health || cardTemplate.defense,
+          status: [],
+          oncePerTurnUsed: false,
+          oncePerGameUsed: false,
+          position: 'front'
+        });
+      }
+      
+      // Set the deck and shuffle
+      player.toJSON().deck = deck;
+      player.shuffleDeck();
+    });
   }
 
   static generateGameId(): string {
@@ -68,13 +100,13 @@ export class GameEngine {
     return `player_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  // Game flow methods
   startGame(): void {
     this.game.startGame();
   }
 
   nextPhase(): void {
-    switch (this.game.getPhase()) {
+    const currentPhase = this.game.getPhase();
+    switch (currentPhase) {
       case 'start':
         this.game.startPhase();
         break;
@@ -85,13 +117,16 @@ export class GameEngine {
         this.game.energyPhase();
         break;
       case 'main1':
-        this.game.mainPhase1();
+        this.game.setPhase('battle');
+        this.game.addToBattleLog('Entering Battle Phase');
         break;
       case 'battle':
-        this.game.battlePhase();
+        this.game.setPhase('main2');
+        this.game.addToBattleLog('Entering Main Phase 2');
         break;
       case 'main2':
-        this.game.mainPhase2();
+        this.game.setPhase('end');
+        this.game.addToBattleLog('Entering End Phase');
         break;
       case 'end':
         this.game.endPhase();
@@ -99,7 +134,6 @@ export class GameEngine {
     }
   }
 
-  // Card play methods
   playCard(playerId: string, cardId: string): boolean {
     return this.game.playCard(playerId, cardId);
   }
@@ -108,14 +142,14 @@ export class GameEngine {
     return this.game.useUltimate(playerId, cardId);
   }
 
-  // Position methods
   switchPosition(playerId: string, cardId: string): boolean {
     return this.game.switchPosition(playerId, cardId);
   }
 
-  // Battle methods
   resolveCombat(attackerInstanceId: string, defenderInstanceId?: string): any {
-    return this.battleResolver.resolveCombat(attackerInstanceId, defenderInstanceId);
+    const result = this.battleResolver.resolveCombat(attackerInstanceId, defenderInstanceId);
+    this.game.checkWinConditions();
+    return result;
   }
 
   canAttack(attackerInstanceId: string): boolean {
@@ -134,27 +168,10 @@ export class GameEngine {
     return this.battleResolver.getValidBlockers();
   }
 
-  // Effect methods
   resolveEffect(effect: Effect): boolean {
     return this.effectEngine.resolveEffect(effect);
   }
 
-  addToStack(effect: Effect): void {
-    this.game.addToStack(effect);
-  }
-
-  // Data import methods
-  importCardsFromCSV(): void {
-    const cards = this.dataImporter.importFromCSV();
-    // Store cards for deck building
-    this.importedCards = cards;
-  }
-
-  getImportedCards(): any[] {
-    return this.importedCards || [];
-  }
-
-  // Utility methods
   getGameState(): GameState {
     return this.game.toJSON();
   }
@@ -178,7 +195,4 @@ export class GameEngine {
   getWinner(): string | undefined {
     return this.game.getWinner();
   }
-
-  // Private properties
-  private importedCards: any[] = [];
 }
