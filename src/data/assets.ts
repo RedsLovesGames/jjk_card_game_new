@@ -6,155 +6,191 @@ export interface AssetMetadata {
 }
 
 export const CARD_ASSETS: Record<string, AssetMetadata> = {
-  // Main characters from Fandom Wiki (IDs match cards.json - includes -base suffix)
-  "gojo-satoru-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/e/ef/Satoru_Gojo_%28Anime_2%29.png/revision/latest/scale-to-width-down/306?cb=20250726003655",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Satoru_Gojo",
-  },
-  "sukuna-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/7/74/Sukuna_%28Volume_29%29.png/revision/latest/scale-to-width-down/326?cb=20250726003512",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Sukuna",
-  },
-  "nanami-kento-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/b/b0/Kento_Nanami_%28Anime%29.png/revision/latest/scale-to-width-down/362?cb=20240618014214",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kento_Nanami",
-  },
-  "nobara-kugisaki-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/d/dd/Nobara_Kugisaki_%28Anime_2%29.png/revision/latest/scale-to-width-down/250?cb=20240621133809",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Nobara_Kugisaki",
-  },
-  "megumi-fushiguro-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/6/6e/Megumi_Fushiguro_%28Anime_4%29.png/revision/latest/scale-to-width-down/432?cb=20251230155327",
+  "fushiguro-megumi": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/6/6e/Megumi_Fushiguro_%28Anime_4%29.png/revision/latest/scale-to-width-down/173?cb=20251230155327",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
     sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Megumi_Fushiguro",
   },
-  "yuji-itadori-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/3/35/Yuji_Itadori_%28Anime_4%29.png/revision/latest/scale-to-width-down/364?cb=20251230155050",
+  "akari-nitta": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/9/95/Akari_Nitta_%28Anime_2%29.png/revision/latest/scale-to-width-down/217?cb=20231124132458",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Yuji_Itadori",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Akari_Nitta",
   },
-  "mahito-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/4/4e/Mahito_%28Anime%29.png/revision/latest/scale-to-width-down/416?cb=20240618013419",
+  "kiyotaka-ijichi": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/1/19/Kiyotaka_Ijichi_%28Anime_2%29.png/revision/latest/scale-to-width-down/240?cb=20231124132418",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Mahito",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kiyotaka_Ijichi",
   },
-  "jogo-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/29/Jogo_%28Anime%29.png/revision/latest/scale-to-width-down/360?cb=20210109005534",
+  "panda": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/2b/Panda_%28Anime_2%29.png/revision/latest/scale-to-width-down/338?cb=20211225181425",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Jogo",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Panda",
   },
-  "hanami-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/7/76/Hanami_%28Anime%29.png/revision/latest/scale-to-width-down/362?cb=20210318193331",
+  "shoko-ieiri": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/a/af/Shoko_Ieiri_%28Anime_2%29.png/revision/latest/scale-to-width-down/229?cb=20231124131631",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Hanami",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Shoko_Ieiri",
   },
-  "choso-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/c/c6/Choso_%28Anime_3%29.png/revision/latest/scale-to-width-down/396?cb=20251230164541",
+  "kasumi-miwa": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/6/64/Kasumi_Miwa_%28Anime%29.png/revision/latest/scale-to-width-down/189?cb=20240621021537",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Choso",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kasumi_Miwa",
   },
-  "maki-zenin-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/2c/Maki_Zen%27in_%28Anime_4%29.png/revision/latest/scale-to-width-down/402?cb=20251230144642",
+  "rin-amai": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/0/0c/Rin_Amai_%28Anime%29.png/revision/latest/scale-to-width-down/156?cb=20260212163614",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Rin_Amai",
+  },
+  "toge-inumaki": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/c/cb/Toge_Inumaki_%28Anime_2%29.png/revision/latest/scale-to-width-down/103?cb=20240622024715",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Toge_Inumaki",
+  },
+  "kokichi-muta": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/e/ea/Kokichi_Muta_%28Anime%29.png/revision/latest/scale-to-width-down/232?cb=20230903190822",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kokichi_Muta",
+  },
+  "tsumiki-fushiguro": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/f/f0/Tsumiki_Fushiguro_%28Anime%29.png/revision/latest/scale-to-width-down/240?cb=20230903193403",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Tsumiki_Fushiguro",
+  },
+  "fumihiko-takaba": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/5/5f/Fumihiko_Takaba_%28Anime%29.png/revision/latest/scale-to-width-down/187?cb=20251230190319",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Fumihiko_Takaba",
+  },
+  "hiromi-higuruma": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/6/62/Hiromi_Higuruma_%28Anime%29.png/revision/latest/scale-to-width-down/143?cb=20251230190230",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Hiromi_Higuruma",
+  },
+  "kirara-hoshi": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/21/Kirara_Hoshi_%28Anime%29.png/revision/latest/scale-to-width-down/170?cb=20251230190130",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kirara_Hoshi",
+  },
+  "momo-nishimiya": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/9/98/Momo_Nishimiya_%28Anime%29.png/revision/latest/scale-to-width-down/215?cb=20240621021443",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Momo_Nishimiya",
+  },
+  "masamichi-yaga": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/e/ee/Masamichi_Yaga_%28Anime_3%29.png/revision/latest/scale-to-width-down/215?cb=20260129200521",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Masamichi_Yaga",
+  },
+  "noritoshi-kamo": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/d/d5/Noritoshi_Kamo_%28Anime%29.png/revision/latest/scale-to-width-down/205?cb=20240620131805",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Noritoshi_Kamo",
+  },
+  "mai-zenin": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/8/86/Mai_Zen%27in_%28Anime_4%29.png/revision/latest/scale-to-width-down/161?cb=20260122164350",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Mai_Zenin",
+  },
+  "maki-zenin": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/2c/Maki_Zen%27in_%28Anime_4%29.png/revision/latest/scale-to-width-down/161?cb=20251230144642",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
     sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Maki_Zenin",
   },
-  "todo-aoi-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/9/9d/Aoi_Todo_%28Anime%29.png/revision/latest/scale-to-width-down/350?cb=20210831121027",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Aoi_Todo",
-  },
-  "ino-takuma-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/4/49/Takuma_Ino_%28Anime%29.png/revision/latest/scale-to-width-down/350?cb=20220329140254",
+  "takuma-ino": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/9/9a/Takuma_Ino_%28Anime_2%29.png/revision/latest/scale-to-width-down/221?cb=20231124134442",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
     sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Takuma_Ino",
   },
-  "yuta-okkotsu-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/e/e6/Yuta_Okkotsu_%28Anime_2%29.png/revision/latest/scale-to-width-down/324?cb=20251230155621",
+  "yoshinobu-gakuganji": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/3/3c/Yoshinobu_Gakuganji_%28Anime%29.png/revision/latest/scale-to-width-down/303?cb=20201025154546",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Yuta_Okkotsu",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Yoshinobu_Gakuganji",
   },
-  "geto-suguru-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/8/86/Suguru_Geto_%28Anime%29.png/revision/latest/scale-to-width-down/350?cb=20210215095345",
+  "haba": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/9/9a/Haba_%28Anime%29.png/revision/latest/scale-to-width-down/273?cb=20260301042022",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Haba",
+  },
+  "kinji-hakari": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/c/cf/Kinji_Hakari_%28Anime%29.png/revision/latest/scale-to-width-down/179?cb=20251230185947",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kinji_Hakari",
+  },
+  "suguru-geto": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/c/c2/Suguru_Geto_%28Prequel_Anime%29.png/revision/latest/scale-to-width-down/275?cb=20250726004422",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
     sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Suguru_Geto",
   },
-  "toji-fushiguro-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/d/db/Toji_Fushiguro_%28Anime%29.png/revision/latest/scale-to-width-down/350?cb=20250726005401",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Toji_Fushiguro",
-  },
-  // Variant characters - use base images
-  "kento-nanami-grade-1-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/b/b0/Kento_Nanami_%28Anime%29.png/revision/latest/scale-to-width-down/362?cb=20240618014214",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kento_Nanami",
-  },
-  "nobara-kugisaki-resolute-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/d/dd/Nobara_Kugisaki_%28Anime_2%29.png/revision/latest/scale-to-width-down/250?cb=20240621133809",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Nobara_Kugisaki",
-  },
-  "megumi-fushiguro-shadow-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/6/6e/Megumi_Fushiguro_%28Anime_4%29.png/revision/latest/scale-to-width-down/432?cb=20251230155327",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Megumi_Fushiguro",
-  },
-  "yuji-itadori-determined-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/3/35/Yuji_Itadori_%28Anime_4%29.png/revision/latest/scale-to-width-down/364?cb=20251230155050",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Yuji_Itadori",
-  },
-  "mahito-curse-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/4/4e/Mahito_%28Anime%29.png/revision/latest/scale-to-width-down/416?cb=20240618013419",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Mahito",
-  },
-  "jogo-flame-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/29/Jogo_%28Anime%29.png/revision/latest/scale-to-width-down/360?cb=20210109005534",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Jogo",
-  },
-  "hanami-nature-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/7/76/Hanami_%28Anime%29.png/revision/latest/scale-to-width-down/362?cb=20210318193331",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Hanami",
-  },
-  "choso-blood-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/c/c6/Choso_%28Anime_3%29.png/revision/latest/scale-to-width-down/396?cb=20251230164541",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Choso",
-  },
-  "maki-zenin-blade-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/2c/Maki_Zen%27in_%28Anime_4%29.png/revision/latest/scale-to-width-down/402?cb=20251230144642",
-    attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Maki_Zenin",
-  },
-  "todo-aoi-flash-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/9/9d/Aoi_Todo_%28Anime%29.png/revision/latest/scale-to-width-down/350?cb=20210831121027",
+  "aoi-todo": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/7/79/Aoi_Todo_%28Anime%29.png/revision/latest/scale-to-width-down/175?cb=20240621022047",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
     sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Aoi_Todo",
   },
-  "ino-takuma-speech-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/4/49/Takuma_Ino_%28Anime%29.png/revision/latest/scale-to-width-down/350?cb=20220329140254",
+  "mei-mei": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/a/a8/Mei_Mei_%28Anime_2%29.png/revision/latest/scale-to-width-down/232?cb=20231124134449",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
-    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Takuma_Ino",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Mei_Mei",
   },
-  "yuta-okkotsu-bound-base": {
-    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/e/e6/Yuta_Okkotsu_%28Anime_2%29.png/revision/latest/scale-to-width-down/324?cb=20251230155621",
+  "hana-kurusu": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/d/df/Hana_Kurusu_%28Volume_24%29.png/revision/latest/scale-to-width-down/263?cb=20230919122646",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Hana_Kurusu",
+  },
+  "takako-uro": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/e/e6/Takako_Uro.png/revision/latest/scale-to-width-down/265?cb=20220313051339",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Takako_Uro",
+  },
+  "naoya-zenin": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/27/Naoya_Zenin_%28Anime%29.png/revision/latest/scale-to-width-down/176?cb=20251230174702",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Naoya_Zenin",
+  },
+  "kento-nanami": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/b/b0/Kento_Nanami_%28Anime%29.png/revision/latest/scale-to-width-down/144?cb=20240618014214",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kento_Nanami",
+  },
+  "yuta-okkotsu": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/e/e6/Yuta_Okkotsu_%28Anime_2%29.png/revision/latest/scale-to-width-down/130?cb=20251230155621",
     attribution: "Jujutsu Kaisen Wiki (Fandom)",
     sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Yuta_Okkotsu",
   },
-  // Spells and Areas
-  "shibuya-incident": {
-    url: "/placeholder.svg",
-    attribution: "System Placeholder",
-    sourceUrl: "#",
+  "kenjaku": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/2b/Kenjaku_%28Anime%29.png/revision/latest/scale-to-width-down/153?cb=20250726010244",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Kenjaku",
   },
-  // Fallback for missing assets
+  "gojo-satoru": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/e/ef/Satoru_Gojo_%28Anime_2%29.png/revision/latest/scale-to-width-down/122?cb=20250726003655",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Satoru_Gojo",
+  },
+  "ryomen-sukuna": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/7/74/Sukuna_%28Volume_29%29.png/revision/latest/scale-to-width-down/261?cb=20250726003512",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Sukuna",
+  },
+  "ryu-ishigori": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/f/f9/Ryu_Ishigori_%28Volume_20%29.png/revision/latest/scale-to-width-down/264?cb=20220704162906",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Ryu_Ishigori",
+  },
+  "hajime-kashimo": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/0/02/Hajime_Kashimo_%28Anime%29.png/revision/latest/scale-to-width-down/162?cb=20260205162107",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Hajime_Kashimo",
+  },
+  "naobito-zenin": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/1/17/Naobito_Zenin_%28Anime_2%29.png/revision/latest/scale-to-width-down/229?cb=20230903191639",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Naobito_Zenin",
+  },
+  "yuki-tsukumo": {
+    url: "https://static.wikia.nocookie.net/jujutsu-kaisen/images/2/22/Yuki_Tsukumo_%28Anime_3%29.png/revision/latest/scale-to-width-down/165?cb=20251230190559",
+    attribution: "Jujutsu Kaisen Wiki (Fandom)",
+    sourceUrl: "https://jujutsu-kaisen.fandom.com/wiki/Yuki_Tsukumo",
+  },
   "default": {
     url: "/placeholder.svg",
     attribution: "System Placeholder",
@@ -163,5 +199,20 @@ export const CARD_ASSETS: Record<string, AssetMetadata> = {
 };
 
 export const getCardAsset = (cardId: string): AssetMetadata => {
-  return CARD_ASSETS[cardId] || CARD_ASSETS["default"];
+  // Try exact match first
+  if (CARD_ASSETS[cardId]) return CARD_ASSETS[cardId];
+  
+  // Try to find matching base character
+  // Card IDs are like "fushiguro-megumi-child", we want to match "fushiguro-megumi"
+  const cardIdLower = cardId.toLowerCase();
+  
+  // Check each base character
+  for (const baseKey of Object.keys(CARD_ASSETS)) {
+    if (baseKey === 'default') continue;
+    if (cardIdLower.startsWith(baseKey + '-')) {
+      return CARD_ASSETS[baseKey];
+    }
+  }
+  
+  return CARD_ASSETS["default"];
 };
