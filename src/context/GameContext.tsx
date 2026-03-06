@@ -70,13 +70,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [gameEngine, updateState]);
 
-  const playCard = useCallback((cardId: string) => {
+  const playCard = useCallback((cardId: string): boolean => {
+    console.log('playCard called with:', cardId);
+    console.log('gameEngine:', !!gameEngine, 'gameState:', !!gameState);
     if (gameEngine && gameState) {
       const player = gameEngine.getCurrentPlayer();
-      if (gameEngine.playCard(player.getId(), cardId)) {
+      console.log('current player:', player.getId(), 'energy:', player.getEnergy());
+      const result = gameEngine.playCard(player.getId(), cardId);
+      console.log('playCard result:', result);
+      if (result) {
         updateState(gameEngine);
       }
+      return result;
     }
+    return false;
   }, [gameEngine, gameState, updateState]);
 
   const resolveCombat = useCallback((attackerId: string, defenderId?: string) => {
