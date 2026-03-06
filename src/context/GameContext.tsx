@@ -45,16 +45,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const nextPhase = useCallback(() => {
     if (gameEngine) {
-      const stateBefore = gameEngine.getGameState();
-      console.log('nextPhase clicked, phase before:', stateBefore.phase, 'currentPlayer:', stateBefore.currentPlayer);
+      alert('End Phase clicked!');
       gameEngine.nextPhase();
-      const stateAfter = gameEngine.getGameState();
-      console.log('nextPhase clicked, phase after:', stateAfter.phase, 'currentPlayer:', stateAfter.currentPlayer);
       updateState(gameEngine);
       
       // If it's now the AI's turn (Player 2), trigger AI logic
-      if (stateAfter.currentPlayer === 1 && !stateAfter.winner) {
-        console.log('Triggering AI turn...');
+      if (gameEngine.getGameState().currentPlayer === 1 && !gameEngine.getGameState().winner) {
         setTimeout(() => aiTurn(), 1000);
       }
     }
