@@ -153,9 +153,15 @@ export const getCardAsset = (cardId: string, variant?: string): AssetMetadata =>
         // Get the original extension from the base asset
         const baseUrl = CARD_ASSETS[baseKey].url;
         const ext = baseUrl.includes('.webp') ? '.webp' : baseUrl.includes('.png') ? '.png' : '.svg';
+        
+        // Extract character name from baseKey (e.g., "fushiguro-megumi" -> "Megumi")
+        const charName = baseKey.split('-').pop();
+        const charNameCapitalized = charName ? charName.charAt(0).toUpperCase() + charName.slice(1) : '';
+        const charVariant = charNameCapitalized ? charNameCapitalized + '_' + variant : variant;
+        
         return { 
           ...CARD_ASSETS[baseKey], 
-          url: `/images/${baseKey}/${variant.replace(/[^a-zA-Z0-9]/g, '_')}${ext}`,
+          url: `/images/${baseKey}/${charVariant.replace(/[^a-zA-Z0-9]/g, '_')}${ext}`,
           variant: variant 
         };
       }
