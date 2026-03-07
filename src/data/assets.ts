@@ -134,6 +134,9 @@ export const CARD_ASSETS: Record<string, AssetMetadata> = {
 };
 
 export const getCardAsset = (cardId: string, variant?: string): AssetMetadata => {
+  // Debug logging
+  console.log('getCardAsset called:', cardId, variant);
+  
   // Direct match
   if (CARD_ASSETS[cardId]) return CARD_ASSETS[cardId];
   
