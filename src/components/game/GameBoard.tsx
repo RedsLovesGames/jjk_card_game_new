@@ -94,7 +94,7 @@ export const GameBoard: React.FC = () => {
     const isSelected = selectedCardId === card.instanceId;
     const canBeTargeted = targetingMode === 'attack' && ownerId === opponent.id && card.type === 'creature';
     const isExhausted = card.oncePerTurnUsed;
-    const asset = getCardAsset(card.id);
+    const asset = getCardAsset(card.id, card.variant);
     const bgColor = getCardBackground(card.id, card.rarity || 'C');
     
     return (
@@ -156,7 +156,7 @@ export const GameBoard: React.FC = () => {
   };
 
   const renderHandCard = (card: CardInstance) => {
-    const asset = getCardAsset(card.id);
+    const asset = getCardAsset(card.id, card.variant);
     const bgColor = getCardBackground(card.id, card.rarity || 'C');
     const canPlay = isMyTurn && card.cost <= player.energy && !winner;
     
@@ -412,7 +412,7 @@ export const GameBoard: React.FC = () => {
               {(() => {
                 const card = [...player.hand, ...player.field, ...opponent.field].find(c => c.instanceId === selectedCardId);
                 if (!card) return null;
-                const asset = getCardAsset(card.id);
+                const asset = getCardAsset(card.id, card.variant);
                 const bgColor = getCardBackground(card.id, card.rarity || 'C');
                 return (
                   <div className="rounded-lg overflow-hidden border border-slate-700" style={{ background: `linear-gradient(to bottom, ${bgColor}dd, ${bgColor}99)` }}>

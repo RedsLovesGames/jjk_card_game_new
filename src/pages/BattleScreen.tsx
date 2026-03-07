@@ -218,8 +218,8 @@ export default function BattleScreen() {
                     <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
                       {deck.cards.slice(0, 8).map((card, i) => (
                         <div key={i} className="w-12 h-16 bg-slate-700 rounded flex-shrink-0 flex items-center justify-center">
-                          <img 
-                            src={getCardAsset(card.id).url} 
+                          <img
+                            src={getCardAsset(card.id, card.variant).url} 
                             alt={card.name}
                             className="w-full h-full object-cover rounded"
                           />

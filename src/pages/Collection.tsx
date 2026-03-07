@@ -137,7 +137,7 @@ export default function Collection() {
           {/* Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {filteredCards.map((card, index) => {
-              const asset = getCardAsset(card.id);
+              const asset = getCardAsset(card.id, card.variant);
               return (
                 <CardUI 
                   key={card.id} 
@@ -268,7 +268,7 @@ export default function Collection() {
                   {/* Card Image */}
                   <div className="w-full md:w-64 flex-shrink-0">
                     <img
-                      src={getCardAsset(selectedCard.id).url}
+                      src={getCardAsset(selectedCard.id, selectedCard.variant).url}
                       alt={selectedCard.name}
                       className="w-full rounded-lg"
                     />
