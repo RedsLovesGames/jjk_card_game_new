@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useGame } from '@/context/GameContext';
 import { CardInstance } from '@/types/game';
 import { Swords, Shield, Zap, ArrowRight, Trophy, Skull, Flame, Home, Sparkles, Waves } from 'lucide-react';
-import { getCardAsset } from '@/data/assets';
+import { getCardAsset, getCardBackground } from '@/data/assets';
 
 // Animation types
 interface BattleAnimation {
@@ -95,6 +95,7 @@ export const GameBoard: React.FC = () => {
     const canBeTargeted = targetingMode === 'attack' && ownerId === opponent.id && card.type === 'creature';
     const isExhausted = card.oncePerTurnUsed;
     const asset = getCardAsset(card.id);
+    const bgColor = getCardBackground(card.id, card.rarity || 'C');
     
     return (
       <CardUI 
@@ -104,8 +105,9 @@ export const GameBoard: React.FC = () => {
           ${isSelected ? 'border-yellow-400 scale-110 z-20 shadow-2xl shadow-yellow-500/40 ring-4 ring-yellow-400/30' : ''}
           ${canBeTargeted ? 'border-red-500 animate-pulse ring-4 ring-red-500/50' : 'border-slate-700'}
           ${isExhausted ? 'opacity-50 grayscale' : ''}
-          bg-slate-900 overflow-hidden group hover:scale-105
+          overflow-hidden group hover:scale-105
         `}
+        style={{ background: `linear-gradient(to bottom, ${bgColor}dd, ${bgColor}99)` }}
         onClick={() => handleCardClick(card, ownerId)}
       >
         {/* Card Image */}
@@ -155,6 +157,7 @@ export const GameBoard: React.FC = () => {
 
   const renderHandCard = (card: CardInstance) => {
     const asset = getCardAsset(card.id);
+    const bgColor = getCardBackground(card.id, card.rarity || 'C');
     const canPlay = isMyTurn && card.cost <= player.energy && !winner;
     
     return (
@@ -164,8 +167,9 @@ export const GameBoard: React.FC = () => {
           relative w-24 h-36 cursor-pointer transition-all duration-300 border-2 shrink-0
           ${selectedCardId === card.instanceId ? 'border-yellow-400 scale-110 z-20 shadow-2xl shadow-yellow-500/40' : 'border-slate-700 hover:border-slate-500 hover:scale-105'}
           ${!canPlay ? 'opacity-60' : ''}
-          bg-slate-900 overflow-hidden
+          overflow-hidden
         `}
+        style={{ background: `linear-gradient(to bottom, ${bgColor}dd, ${bgColor}99)` }}
         onClick={() => canPlay && setSelectedCardId(card.instanceId)}
       >
         <div className="absolute inset-0">
@@ -409,8 +413,9 @@ export const GameBoard: React.FC = () => {
                 const card = [...player.hand, ...player.field, ...opponent.field].find(c => c.instanceId === selectedCardId);
                 if (!card) return null;
                 const asset = getCardAsset(card.id);
+                const bgColor = getCardBackground(card.id, card.rarity || 'C');
                 return (
-                  <div className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700">
+                  <div className="rounded-lg overflow-hidden border border-slate-700" style={{ background: `linear-gradient(to bottom, ${bgColor}dd, ${bgColor}99)` }}>
                     <img src={asset.url} alt={card.name} className="w-full h-32 object-cover" />
                     <div className="p-3">
                       <div className="font-bold text-purple-400 mb-1">{card.name}</div>

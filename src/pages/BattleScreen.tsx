@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card as CardUI } from '@/components/ui/card';
 import { Sparkles, Swords, Zap, Shield, Loader2, ArrowLeft, Play } from 'lucide-react';
 import { useGame } from '@/context/GameContext';
-import { getCardAsset } from '@/data/assets';
+import { getCardAsset, getCardBackground } from '@/data/assets';
 
 const STORAGE_KEY = 'jjk_saved_decks';
 

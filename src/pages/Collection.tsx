@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card as CardUI } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { getCardAsset } from '@/data/assets';
+import { getCardAsset, getCardBackground } from '@/data/assets';
 import { Search, Swords, Shield, Zap, Home, Sparkles, Star, Diamond, Circle, Square, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -151,7 +151,8 @@ export default function Collection() {
                   `}
                   style={{ 
                     animationDelay: `${index * 50}ms`,
-                    animationFillMode: 'forwards'
+                    animationFillMode: 'forwards',
+                    background: `linear-gradient(to bottom, ${getCardBackground(card.id, card.rarity)}dd, ${getCardBackground(card.id, card.rarity)}99)`
                   }}
                 >
                   {/* Rarity glow */}

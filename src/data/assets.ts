@@ -5,6 +5,21 @@ export interface AssetMetadata {
   license?: string;
 }
 
+// Generate a background color based on card rarity
+export const getRarityBackground = (rarity: string): string => {
+  switch (rarity) {
+    case 'SSR': return '#FFD700'; // Gold
+    case 'SR': return '#9B59B6';  // Purple
+    case 'R': return '#3498DB';    // Blue
+    default: return '#7F8C8D';    // Gray for Common
+  }
+};
+
+// Get background color for a card based on its rarity
+export const getCardBackground = (cardId: string, rarity: string): string => {
+  return getRarityBackground(rarity);
+};
+
 export const CARD_ASSETS: Record<string, AssetMetadata> = {
   "fushiguro-megumi": { url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMzAwIDQwMCI+CiAgPHJlY3QgZmlsbD0iIzJFN0QzMiIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0MDAiLz4KICA8dGV4dCB4PSIxNTAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+TWVndW1pIEZ1c2hpZ3VybzwvdGV4dD4KPC9zdmc+", attribution: "Placeholder", sourceUrl: "#" },
   "akari-nitta": { url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMzAwIDQwMCI+CiAgPHJlY3QgZmlsbD0iI0U5MUU2MyIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0MDAiLz4KICA8dGV4dCB4PSIxNTAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+QWthcmkgTml0dGE8L3RleHQ+Cjwvc3ZnPg==", attribution: "Placeholder", sourceUrl: "#" },
