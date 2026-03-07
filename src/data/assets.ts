@@ -51,7 +51,7 @@ export const CARD_ASSETS: Record<string, AssetMetadata> = {
   "naoya-zenin": { url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMzAwIDQwMCI+CiAgPHJlY3QgZmlsbD0iIzRDQUY1MCIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0MDAiLz4KICA8dGV4dCB4PSIxNTAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+TmFveWEgWmVuaW48L3RleHQ+Cjwvc3ZnPg==", attribution: "Placeholder", sourceUrl: "#" },
   "kento-nanami": { url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMzAwIDQwMCI+CiAgPHJlY3QgZmlsbD0iI0ZGQzEwNyIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0MDAiLz4KICA8dGV4dCB4PSIxNTAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+S2VudG8gTmFuYW1pPC90ZXh0Pgo8L3N2Zz4=", attribution: "Placeholder", sourceUrl: "#" },
   "yuta-okkotsu": { url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMzAwIDQwMCI+CiAgPHJlY3QgZmlsbD0iIzIxOTZGMyIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0MDAiLz4KICA8dGV4dCB4PSIxNTAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+WXV0YSBPa2tvdHN1PC90ZXh0Pgo8L3N2Zz4=", attribution: "Placeholder", sourceUrl: "#" },
-  "fushiguro-megumi": { url: "/images/fushiguro-megumi/Megumi_Child.svg", attribution: "Local Image", sourceUrl: "#" },
+  "fushiguro-megumi": { url: "/images/fushiguro-megumi/Megumi_Child.webp", attribution: "Local Image", sourceUrl: "#" },
   "kenjaku": { url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMzAwIDQwMCI+CiAgPHJlY3QgZmlsbD0iIzIxMjEyMSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0MDAiLz4KICA8dGV4dCB4PSIxNTAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+S2VuamFrdTwvdGV4dD4KPC9zdmc+", attribution: "Placeholder", sourceUrl: "#" },
   "gojo-satoru": { url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMzAwIDQwMCI+CiAgPHJlY3QgZmlsbD0iIzE1NjVDMCIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0MDAiLz4KICA8dGV4dCB4PSIxNTAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+U2F0b3J1IEdvam88L3RleHQ+Cjwvc3ZnPg==", attribution: "Placeholder", sourceUrl: "#" },
   "ryomen-sukuna": { url: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgMzAwIDQwMCI+CiAgPHJlY3QgZmlsbD0iI0I3MUMxQyIgd2lkdGg9IjMwMCIgaGVpZ2h0PSI0MDAiLz4KICA8dGV4dCB4PSIxNTAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+UnlvbWVuIFN1a3VuYTwvdGV4dD4KPC9zdmc+", attribution: "Placeholder", sourceUrl: "#" },
@@ -150,12 +150,12 @@ export const getCardAsset = (cardId: string, variant?: string): AssetMetadata =>
     if (cardIdLower.includes(escapedKey)) {
       // If we have a variant, try to return the variant-specific image path
       if (variant) {
-        const variantKey = baseKey + '/' + variant.replace(/[^a-zA-Z0-9]/g, '_');
-        // Check if this variant asset exists (we'll handle this in the UI by checking file existence)
-        // For now, return the base asset and the UI will construct the path
+        // Get the original extension from the base asset
+        const baseUrl = CARD_ASSETS[baseKey].url;
+        const ext = baseUrl.includes('.webp') ? '.webp' : baseUrl.includes('.png') ? '.png' : '.svg';
         return { 
           ...CARD_ASSETS[baseKey], 
-          url: `/images/${baseKey}/${variant.replace(/[^a-zA-Z0-9]/g, '_')}.svg`,
+          url: `/images/${baseKey}/${variant.replace(/[^a-zA-Z0-9]/g, '_')}${ext}`,
           variant: variant 
         };
       }
