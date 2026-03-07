@@ -134,11 +134,15 @@ export const CARD_ASSETS: Record<string, AssetMetadata> = {
 };
 
 export const getCardAsset = (cardId: string, variant?: string): AssetMetadata => {
-  // Debug logging
-  console.log('getCardAsset called:', cardId, variant);
-  
   // Direct match
-  if (CARD_ASSETS[cardId]) return CARD_ASSETS[cardId];
+  if (CARD_ASSETS[cardId]) {
+    const asset = CARD_ASSETS[cardId];
+    // If it's a local path (starts with /), add the base URL for GitHub Pages
+    if (asset.url.startsWith('/')) {
+      return { ...asset, url: 'https://redslovesgames.github.io/jjk_card_game_new' + asset.url };
+    }
+    return asset;
+  }
   
   const cardIdLower = cardId.toLowerCase();
   
@@ -164,11 +168,16 @@ export const getCardAsset = (cardId: string, variant?: string): AssetMetadata =>
         
         return { 
           ...CARD_ASSETS[baseKey], 
-          url: `/images/${baseKey}/${charVariant.replace(/[^a-zA-Z0-9]/g, '_')}${ext}`,
+          url: 'https://redslovesgames.github.io/jjk_card_game_new/images/' + baseKey + '/' + charVariant.replace(/[^a-zA-Z0-9]/g, '_') + ext,
           variant: variant 
         };
       }
-      return CARD_ASSETS[baseKey];
+      // For non-variant case, also add base URL
+      const baseAsset = CARD_ASSETS[baseKey];
+      if (baseAsset.url.startsWith('/')) {
+        return { ...baseAsset, url: 'https://redslovesgames.github.io/jjk_card_game_new' + baseAsset.url };
+      }
+      return baseAsset;
     }
   }
   
