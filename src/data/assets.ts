@@ -118,13 +118,23 @@ export const CARD_ASSETS: Record<string, AssetMetadata> = {
 };
 
 export const getCardAsset = (cardId: string): AssetMetadata => {
+  // Direct match
   if (CARD_ASSETS[cardId]) return CARD_ASSETS[cardId];
+  
   const cardIdLower = cardId.toLowerCase();
+  
+  // Try to match by extracting the base name from card ID
+  // Card IDs like "fushiguromegumi-child" should match asset "fushiguro-megumi"
   for (const baseKey of Object.keys(CARD_ASSETS)) {
     if (baseKey === 'default') continue;
-    if (cardIdLower.startsWith(baseKey + '-')) {
+    
+    // Create a regex pattern to match the base key with the card ID
+    // e.g., "fushiguro-megumi" should match "fushiguromegumi-child"
+    const escapedKey = baseKey.replace(/-/g, '');
+    if (cardIdLower.includes(escapedKey)) {
       return CARD_ASSETS[baseKey];
     }
   }
+  
   return CARD_ASSETS["default"];
 };
