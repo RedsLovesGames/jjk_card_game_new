@@ -65,8 +65,11 @@ export class GameEngine {
   }
 
   private initializeDecks(): void {
+    console.log('[GameEngine.initializeDecks] START');
+    
     const players = this.game.getPlayers();
     const allCards = cardData as Card[];
+    console.log('[GameEngine.initializeDecks] Card count:', allCards.length);
 
     players.forEach((player, index) => {
       // Create a basic deck of 40 cards by repeating the available cards
@@ -91,12 +94,19 @@ export class GameEngine {
         });
       }
       
+      console.log('[GameEngine.initializeDecks] Player', index, 'deck size before set:', deck.length);
+      
       // Set the deck using the player's setDeck method
       player.setDeck(deck);
       player.shuffleDeck();
       // Draw opening hand of 5 cards
       player.drawCards(5);
+      
+      console.log('[GameEngine.initializeDecks] Player', index, 'deck size after draw:', player.getDeck().length);
+      console.log('[GameEngine.initializeDecks] Player', index, 'hand size:', player.getHand().length);
     });
+    
+    console.log('[GameEngine.initializeDecks] END');
   }
 
   static generateGameId(): string {
