@@ -59,8 +59,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log('GameContext.nextPhase called! Current state:', gameEngine?.getGameState());
     if (gameEngine) {
       const beforePhase = gameEngine.getGameState().phase;
+      const beforeEnergy = gameEngine.getGameState().players[0].energy;
+      alert(`[nextPhase] BEFORE: phase=${beforePhase}, energy=${beforeEnergy}`);
       gameEngine.nextPhase();
       const state = gameEngine.getGameState();
+      alert(`[nextPhase] AFTER: phase=${state.phase}, energy=${state.players[0].energy}`);
       console.log('GameContext: Phase', beforePhase, '->', state.phase, 'Player:', state.currentPlayer);
       updateState(gameEngine);
     }
