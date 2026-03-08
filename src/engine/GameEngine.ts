@@ -114,11 +114,9 @@ export class GameEngine {
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
     const currentPlayer = this.game.getCurrentPlayer();
-    console.log('=== GameEngine.nextPhase called ===');
-    console.log('  currentPhase:', currentPhase);
-    console.log('  currentPlayer:', currentPlayer?.getName(), '(id:', currentPlayer?.getId(), ')');
-    console.log('  player energy before:', currentPlayer?.getEnergy());
-    console.log('  player hand count before:', currentPlayer?.getHand().length);
+    const msg = `=== nextPhase: ${currentPhase} -> ${this.getNextPhaseName(currentPhase)} ===\nPlayer: ${currentPlayer?.getName()}\nEnergy before: ${currentPlayer?.getEnergy()}\nHand before: ${currentPlayer?.getHand().length}`;
+    console.log(msg);
+    alert(msg);
     
     // Determine next phase based on current phase and execute phase logic
     let nextPhase = currentPhase;
@@ -156,16 +154,26 @@ export class GameEngine {
         break;
       case 'end':
         // Execute end phase logic - resets oncePerTurnUsed and calls nextTurn()
-        // Note: endPhase() already calls nextTurn() internally, which sets phase to 'start'
         this.game.endPhase();
-        // The phase is already set to 'start' by endPhase() -> nextTurn(), so don't override it
-        console.log('  After endPhase - turn:', this.game.getGameState().turn, 'phase:', this.game.getPhase(), 'player:', this.game.getCurrentPlayer()?.getName());
+        alert(`End Phase complete!\nTurn: ${this.game.getGameState().turn}\nPhase: ${this.game.getPhase()}\nNext player: ${this.game.getCurrentPlayer()?.getName()}`);
         return;
     }
     
-    console.log('  Setting phase to:', nextPhase);
     this.game.setPhase(nextPhase);
-    console.log('  After setPhase - phase:', this.game.getPhase(), 'energy:', this.game.getCurrentPlayer()?.getEnergy(), 'hand:', this.game.getCurrentPlayer()?.getHand().length);
+    alert(`Phase set to: ${nextPhase}\nEnergy now: ${this.game.getCurrentPlayer()?.getEnergy()}\nHand now: ${this.game.getCurrentPlayer()?.getHand().length}`);
+  }
+
+  private getNextPhaseName(currentPhase: string): string {
+    switch (currentPhase) {
+      case 'start': return 'draw';
+      case 'draw': return 'energy';
+      case 'energy': return 'main1';
+      case 'main1': return 'battle';
+      case 'battle': return 'main2';
+      case 'main2': return 'end';
+      case 'end': return 'start (new turn)';
+      default: return 'unknown';
+    }
   }
 
   playCard(playerId: string, cardId: string): boolean {
