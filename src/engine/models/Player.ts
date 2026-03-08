@@ -29,7 +29,9 @@ export class PlayerModel {
   }
 
   setEnergy(energy: number): void {
+    console.log('        [PlayerModel.setEnergy] Setting energy to:', energy, '(was:', this.player.energy, ')');
     this.player.energy = Math.max(0, Math.min(10, energy));
+    console.log('        [PlayerModel.setEnergy] Energy is now:', this.player.energy);
   }
 
   getUltimateEnergy(): number {

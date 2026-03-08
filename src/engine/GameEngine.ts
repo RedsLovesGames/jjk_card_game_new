@@ -164,6 +164,13 @@ export class GameEngine {
     }
     
     this.game.setPhase(nextPhase);
+    
+    // Update title with current state
+    if (typeof document !== 'undefined') {
+      const p = this.game.getCurrentPlayer();
+      document.title = `Phase: ${nextPhase} | Energy: ${p.getEnergy()} | Hand: ${p.getHand().length}`;
+    }
+    
     console.log('  Phase set to:', nextPhase);
     console.log('  Player energy after:', this.game.getCurrentPlayer()?.getEnergy());
     console.log('  Player hand after:', this.game.getCurrentPlayer()?.getHand().length);
