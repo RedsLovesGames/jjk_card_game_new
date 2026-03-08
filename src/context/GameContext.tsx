@@ -51,6 +51,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const startGame = useCallback((p1: string, p2: string) => {
+    alert('[GameContext.startGame] Called with: ' + p1 + ' vs ' + p2);
+    console.log('[GameContext.startGame] Called with:', p1, p2);
     const engine = GameEngine.createNewGame(p1, p2);
     // createNewGame already initializes decks and draws initial hands
     // First set gameEngine, THEN call updateState
