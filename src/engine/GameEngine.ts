@@ -113,6 +113,9 @@ export class GameEngine {
 
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
+    console.log('=== GameEngine.nextPhase called ===');
+    console.log('  currentPhase:', currentPhase);
+    console.log('  currentPlayer:', this.game.getCurrentPlayer()?.getName());
     
     // Determine next phase based on current phase and execute phase logic
     let nextPhase = currentPhase;
@@ -156,6 +159,7 @@ export class GameEngine {
         return;
     }
     
+    console.log('  Setting phase to:', nextPhase);
     this.game.setPhase(nextPhase);
   }
 
