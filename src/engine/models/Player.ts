@@ -77,15 +77,21 @@ export class PlayerModel {
   }
 
   drawCards(count: number): CardInstance[] {
+    console.log('      [PlayerModel.drawCards] START, count:', count);
+    console.log('      [PlayerModel.drawCards] Deck length:', this.player.deck.length);
+    
     const drawn: CardInstance[] = [];
     
     for (let i = 0; i < count && this.player.deck.length > 0; i++) {
       const card = this.player.deck.pop()!;
       card.location = 'hand';
       this.player.hand.push(card);
+      console.log('      [PlayerModel.drawCards] Drew card:', card.name, card.instanceId);
       drawn.push(card);
     }
-
+    
+    console.log('      [PlayerModel.drawCards] Hand length after:', this.player.hand.length);
+    console.log('      [PlayerModel.drawCards] END');
     return drawn;
   }
 
