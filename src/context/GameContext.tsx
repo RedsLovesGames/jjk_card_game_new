@@ -34,11 +34,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateState = useCallback((engine: GameEngine) => {
     const newState = engine.getGameState();
-    console.log('updateState called, phase:', newState.phase, 'player:', newState.currentPlayer);
+    console.log('updateState called, phase:', newState.phase, 'player:', newState.currentPlayer, 'turn:', newState.turn);
     setGameState(newState);
     setBattleLog([...engine.getBattleLog()]);
     // Trigger AI if it's not the player's turn and there's no winner
     if (newState.currentPlayer === 1 && !newState.winner) {
+      console.log('Triggering AI for player 1');
       setAiTrigger(prev => prev + 1);
     }
   }, []);
@@ -55,7 +56,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [updateState]);
 
   const nextPhase = useCallback(() => {
-    console.log('GameContext.nextPhase called!');
+    console.log('GameContext.nextPhase called! Current state:', gameEngine?.getGameState());
     if (gameEngine) {
       const beforePhase = gameEngine.getGameState().phase;
       gameEngine.nextPhase();
