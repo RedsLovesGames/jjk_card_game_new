@@ -129,9 +129,13 @@ export class GameModel {
     console.log('    [GameModel.drawPhase] Hand before draw:', currentPlayer.getHand().length);
     console.log('    [GameModel.drawPhase] Deck size:', currentPlayer.getDeck().length);
     
+    // Alert for debugging
+    alert(`DRAW PHASE\nHand before: ${currentPlayer.getHand().length}\nDeck size: ${currentPlayer.getDeck().length}`);
+    
     currentPlayer.drawCards(1);
     
     console.log('    [GameModel.drawPhase] Hand after draw:', currentPlayer.getHand().length);
+    alert(`DRAW COMPLETE\nHand after: ${currentPlayer.getHand().length}`);
     console.log('    [GameModel.drawPhase] END');
   }
 
