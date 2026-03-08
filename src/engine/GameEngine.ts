@@ -112,36 +112,48 @@ export class GameEngine {
   }
 
   nextPhase(): void {
-    console.log('GameEngine.nextPhase called, current phase:', this.game.getPhase());
     const currentPhase = this.game.getPhase();
     
-    // Determine next phase based on current phase
+    // Determine next phase based on current phase and execute phase logic
     let nextPhase = currentPhase;
     
     switch (currentPhase) {
       case 'start':
+        // Execute start phase logic
+        this.game.startPhase();
         nextPhase = 'draw';
         break;
       case 'draw':
+        // Execute draw phase logic - draws a card
+        this.game.drawPhase();
         nextPhase = 'energy';
         break;
       case 'energy':
+        // Execute energy phase logic - grants energy
+        this.game.energyPhase();
         nextPhase = 'main1';
         break;
       case 'main1':
+        // Execute main phase 1 logic
+        this.game.mainPhase1();
         nextPhase = 'battle';
         break;
       case 'battle':
+        // Execute battle phase logic
+        this.game.battlePhase();
         nextPhase = 'main2';
         break;
       case 'main2':
+        // Execute main phase 2 logic
+        this.game.mainPhase2();
         nextPhase = 'end';
         break;
       case 'end':
-        // End of turn - switch to other player and start their turn
-        nextPhase = 'start';
-        this.game.nextTurn();
-        break;
+        // Execute end phase logic - resets oncePerTurnUsed and calls nextTurn()
+        // Note: endPhase() already calls nextTurn() internally, which sets phase to 'start'
+        this.game.endPhase();
+        // The phase is already set to 'start' by endPhase() -> nextTurn(), so don't override it
+        return;
     }
     
     this.game.setPhase(nextPhase);

@@ -112,8 +112,9 @@ export class PlayerModel {
     return card;
   }
 
-  destroyCard(cardId: string): CardInstance | null {
-    const fieldIndex = this.player.field.findIndex(card => card.id === cardId);
+  destroyCard(instanceId: string): CardInstance | null {
+    // Use instanceId to identify the specific card instance on the field
+    const fieldIndex = this.player.field.findIndex(card => card.instanceId === instanceId);
     if (fieldIndex === -1) return null;
 
     const card = this.player.field.splice(fieldIndex, 1)[0];
@@ -123,8 +124,9 @@ export class PlayerModel {
     return card;
   }
 
-  moveToGraveyard(cardId: string): CardInstance | null {
-    const fieldIndex = this.player.field.findIndex(card => card.id === cardId);
+  moveToGraveyard(instanceId: string): CardInstance | null {
+    // Use instanceId to identify the specific card instance on the field
+    const fieldIndex = this.player.field.findIndex(card => card.instanceId === instanceId);
     if (fieldIndex === -1) return null;
 
     const card = this.player.field.splice(fieldIndex, 1)[0];
@@ -134,8 +136,9 @@ export class PlayerModel {
     return card;
   }
 
-  moveToExile(cardId: string): CardInstance | null {
-    const fieldIndex = this.player.field.findIndex(card => card.id === cardId);
+  moveToExile(instanceId: string): CardInstance | null {
+    // Use instanceId to identify the specific card instance on the field
+    const fieldIndex = this.player.field.findIndex(card => card.instanceId === instanceId);
     if (fieldIndex === -1) return null;
 
     const card = this.player.field.splice(fieldIndex, 1)[0];
@@ -145,8 +148,9 @@ export class PlayerModel {
     return card;
   }
 
-  returnToHand(cardId: string): CardInstance | null {
-    const fieldIndex = this.player.field.findIndex(card => card.id === cardId);
+  returnToHand(instanceId: string): CardInstance | null {
+    // Use instanceId to identify the specific card instance on the field
+    const fieldIndex = this.player.field.findIndex(card => card.instanceId === instanceId);
     if (fieldIndex === -1) return null;
 
     const card = this.player.field.splice(fieldIndex, 1)[0];
