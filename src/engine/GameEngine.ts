@@ -66,10 +66,12 @@ export class GameEngine {
 
   private initializeDecks(): void {
     console.log('[GameEngine.initializeDecks] START');
+    alert('[GameEngine.initializeDecks] START');
     
     const players = this.game.getPlayers();
     const allCards = cardData as Card[];
     console.log('[GameEngine.initializeDecks] Card count:', allCards.length);
+    alert('[GameEngine.initializeDecks] Card count: ' + allCards.length);
 
     players.forEach((player, index) => {
       // Create a basic deck of 40 cards by repeating the available cards
@@ -95,6 +97,7 @@ export class GameEngine {
       }
       
       console.log('[GameEngine.initializeDecks] Player', index, 'deck size before set:', deck.length);
+      alert('[GameEngine.initializeDecks] Player ' + index + ' deck size before set: ' + deck.length);
       
       // Set the deck using the player's setDeck method
       player.setDeck(deck);
@@ -104,6 +107,7 @@ export class GameEngine {
       
       console.log('[GameEngine.initializeDecks] Player', index, 'deck size after draw:', player.getDeck().length);
       console.log('[GameEngine.initializeDecks] Player', index, 'hand size:', player.getHand().length);
+      alert('[GameEngine.initializeDecks] Player ' + index + ' deck after draw: ' + player.getDeck().length + ', hand: ' + player.getHand().length);
     });
     
     console.log('[GameEngine.initializeDecks] END');
