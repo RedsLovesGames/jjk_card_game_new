@@ -113,9 +113,12 @@ export class GameEngine {
 
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
+    const currentPlayer = this.game.getCurrentPlayer();
     console.log('=== GameEngine.nextPhase called ===');
     console.log('  currentPhase:', currentPhase);
-    console.log('  currentPlayer:', this.game.getCurrentPlayer()?.getName());
+    console.log('  currentPlayer:', currentPlayer?.getName(), '(id:', currentPlayer?.getId(), ')');
+    console.log('  player energy before:', currentPlayer?.getEnergy());
+    console.log('  player hand count before:', currentPlayer?.getHand().length);
     
     // Determine next phase based on current phase and execute phase logic
     let nextPhase = currentPhase;
@@ -156,11 +159,13 @@ export class GameEngine {
         // Note: endPhase() already calls nextTurn() internally, which sets phase to 'start'
         this.game.endPhase();
         // The phase is already set to 'start' by endPhase() -> nextTurn(), so don't override it
+        console.log('  After endPhase - turn:', this.game.getGameState().turn, 'phase:', this.game.getPhase(), 'player:', this.game.getCurrentPlayer()?.getName());
         return;
     }
     
     console.log('  Setting phase to:', nextPhase);
     this.game.setPhase(nextPhase);
+    console.log('  After setPhase - phase:', this.game.getPhase(), 'energy:', this.game.getCurrentPlayer()?.getEnergy(), 'hand:', this.game.getCurrentPlayer()?.getHand().length);
   }
 
   playCard(playerId: string, cardId: string): boolean {
