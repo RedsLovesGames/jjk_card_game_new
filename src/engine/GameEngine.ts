@@ -16,9 +16,6 @@ export class GameEngine {
   }
 
   static createNewGame(player1Name: string, player2Name: string): GameEngine {
-    alert('[GameEngine.createNewGame] START');
-    console.log('[GameEngine.createNewGame] Creating new game...');
-    
     const gameState: GameState = {
       id: this.generateGameId(),
       players: [
@@ -68,13 +65,8 @@ export class GameEngine {
   }
 
   private initializeDecks(): void {
-    console.log('[GameEngine.initializeDecks] START');
-    alert('[GameEngine.initializeDecks] START');
-    
     const players = this.game.getPlayers();
     const allCards = cardData as Card[];
-    console.log('[GameEngine.initializeDecks] Card count:', allCards.length);
-    alert('[GameEngine.initializeDecks] Card count: ' + allCards.length);
 
     players.forEach((player, index) => {
       // Create a basic deck of 40 cards by repeating the available cards
@@ -99,21 +91,12 @@ export class GameEngine {
         });
       }
       
-      console.log('[GameEngine.initializeDecks] Player', index, 'deck size before set:', deck.length);
-      alert('[GameEngine.initializeDecks] Player ' + index + ' deck size before set: ' + deck.length);
-      
       // Set the deck using the player's setDeck method
       player.setDeck(deck);
       player.shuffleDeck();
       // Draw opening hand of 5 cards
       player.drawCards(5);
-      
-      console.log('[GameEngine.initializeDecks] Player', index, 'deck size after draw:', player.getDeck().length);
-      console.log('[GameEngine.initializeDecks] Player', index, 'hand size:', player.getHand().length);
-      alert('[GameEngine.initializeDecks] Player ' + index + ' deck after draw: ' + player.getDeck().length + ', hand: ' + player.getHand().length);
     });
-    
-    console.log('[GameEngine.initializeDecks] END');
   }
 
   static generateGameId(): string {
@@ -130,80 +113,50 @@ export class GameEngine {
 
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
-    const msg = `nextPhase: ${currentPhase} -> ${this.getNextPhaseName(currentPhase)}`;
-    
-    console.log('===== nextPhase() START =====');
-    console.log('  Current phase:', currentPhase);
     
     // Determine next phase based on current phase and execute phase logic
     let nextPhase = currentPhase;
     
-    // FIRST, call the phase method
     switch (currentPhase) {
       case 'start':
-        console.log('  >> Calling startPhase()...');
+        // Execute start phase logic
         this.game.startPhase();
         nextPhase = 'draw';
         break;
       case 'draw':
-        console.log('  >> Calling drawPhase()...');
+        // Execute draw phase logic - draws a card
         this.game.drawPhase();
-        console.log('  >> drawPhase complete');
         nextPhase = 'energy';
         break;
       case 'energy':
-        console.log('  >> Calling energyPhase()...');
+        // Execute energy phase logic - grants energy
         this.game.energyPhase();
-        console.log('  >> energyPhase complete');
         nextPhase = 'main1';
         break;
       case 'main1':
+        // Execute main phase 1 logic
         this.game.mainPhase1();
         nextPhase = 'battle';
         break;
       case 'battle':
+        // Execute battle phase logic
         this.game.battlePhase();
         nextPhase = 'main2';
         break;
       case 'main2':
+        // Execute main phase 2 logic
         this.game.mainPhase2();
         nextPhase = 'end';
         break;
       case 'end':
+        // Execute end phase logic - resets oncePerTurnUsed and calls nextTurn()
+        // Note: endPhase() already calls nextTurn() internally, which sets phase to 'start'
         this.game.endPhase();
-        console.log('End Phase complete! Turn:', this.game.getGameState().turn, 'Phase:', this.game.getPhase());
+        // The phase is already set to 'start' by endPhase() -> nextTurn(), so don't override it
         return;
     }
     
-    // Get FRESH player reference after phase logic
-    const playerAfter = this.game.getCurrentPlayer();
-    console.log('  Player energy AFTER phase logic:', playerAfter.getEnergy());
-    console.log('  Player hand AFTER phase logic:', playerAfter.getHand().length);
-    
-    // THEN set the phase
     this.game.setPhase(nextPhase);
-    
-    // Update title with current state
-    if (typeof document !== 'undefined') {
-      const p = this.game.getCurrentPlayer();
-      document.title = `Phase: ${nextPhase} | Energy: ${p.getEnergy()} | Hand: ${p.getHand().length}`;
-    }
-    
-    console.log('  Phase set to:', nextPhase);
-    console.log('===== nextPhase() END =====');
-  }
-
-  private getNextPhaseName(currentPhase: string): string {
-    switch (currentPhase) {
-      case 'start': return 'draw';
-      case 'draw': return 'energy';
-      case 'energy': return 'main1';
-      case 'main1': return 'battle';
-      case 'battle': return 'main2';
-      case 'main2': return 'end';
-      case 'end': return 'start (new turn)';
-      default: return 'unknown';
-    }
   }
 
   playCard(playerId: string, cardId: string): boolean {

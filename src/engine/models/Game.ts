@@ -121,36 +121,21 @@ export class GameModel {
   }
 
   drawPhase(): void {
-    console.log('    [GameModel.drawPhase] START');
     this.addToBattleLog(`Turn ${this.gameState.turn} - Draw Phase`);
     
     const currentPlayer = this.getCurrentPlayer();
-    console.log('    [GameModel.drawPhase] Player:', currentPlayer.getName());
-    console.log('    [GameModel.drawPhase] Hand before draw:', currentPlayer.getHand().length);
-    console.log('    [GameModel.drawPhase] Deck size:', currentPlayer.getDeck().length);
-    
-    // Alert for debugging
-    alert(`DRAW PHASE\nHand before: ${currentPlayer.getHand().length}\nDeck size: ${currentPlayer.getDeck().length}`);
-    
     currentPlayer.drawCards(1);
     
-    console.log('    [GameModel.drawPhase] Hand after draw:', currentPlayer.getHand().length);
-    alert(`DRAW COMPLETE\nHand after: ${currentPlayer.getHand().length}`);
-    console.log('    [GameModel.drawPhase] END');
+    // Phase will be advanced by GameEngine.nextPhase()
   }
 
   energyPhase(): void {
-    console.log('    [GameModel.energyPhase] START');
     this.addToBattleLog(`Turn ${this.gameState.turn} - Energy Phase`);
     
     const currentPlayer = this.getCurrentPlayer();
-    console.log('    [GameModel.energyPhase] Player:', currentPlayer.getName());
-    console.log('    [GameModel.energyPhase] Energy before:', currentPlayer.getEnergy());
-    
     currentPlayer.setEnergy(currentPlayer.getEnergy() + 1);
     
-    console.log('    [GameModel.energyPhase] Energy after:', currentPlayer.getEnergy());
-    console.log('    [GameModel.energyPhase] END');
+    // Phase will be advanced by GameEngine.nextPhase()
   }
 
   mainPhase1(): void {
