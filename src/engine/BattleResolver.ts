@@ -14,8 +14,20 @@ export class BattleResolver {
     const currentPlayer = this.game.getCurrentPlayer();
     const opponent = this.game.getOpponent();
 
+    // Validate that we're in battle phase
+    if (this.game.getPhase() !== 'battle') {
+      this.game.addToBattleLog('Attacks can only be made during the battle phase');
+      return null;
+    }
+
     const attacker = currentPlayer.getCardByInstanceId(attackerInstanceId);
     if (!attacker || attacker.type !== 'creature') return null;
+
+    // Check if attacker is in front row
+    if (attacker.position !== 'front') {
+      this.game.addToBattleLog(`${attacker.name} can only attack from the front row`);
+      return null;
+    }
 
     // Check if attacker can attack
     if (attacker.status?.includes('cannot_attack')) {
@@ -24,7 +36,7 @@ export class BattleResolver {
     }
 
     // Check if attacker has already attacked this turn
-    if (attacker.oncePerTurnUsed && attacker.attack && attacker.attack > 0) {
+    if (attacker.oncePerTurnUsed) {
       this.game.addToBattleLog(`${attacker.name} has already attacked this turn`);
       return null;
     }
@@ -33,6 +45,13 @@ export class BattleResolver {
     if (defenderInstanceId) {
       defender = opponent.getCardByInstanceId(defenderInstanceId);
       if (!defender || defender.type !== 'creature') return null;
+    } else {
+      // Direct attack - check if opponent has any front-row creatures
+      const opponentFrontRow = opponent.getFrontRowCreatures();
+      if (opponentFrontRow.length > 0) {
+        this.game.addToBattleLog(`Cannot attack directly - opponent has ${opponentFrontRow.length} front-row creature(s)`);
+        return null;
+      }
     }
 
     // Mark attacker as having attacked
@@ -82,7 +101,8 @@ export class BattleResolver {
         // Defender is destroyed
         this.game.addToBattleLog(`${defender.name} was destroyed in battle`);
         const opponent = this.game.getOpponent();
-        opponent.moveToGraveyard(defender.id);
+        // Use instanceId to correctly identify the specific card instance
+        opponent.moveToGraveyard(defender.instanceId);
         
         // Check for on-death triggers
         this.checkDeathTriggers(defender);
@@ -93,7 +113,8 @@ export class BattleResolver {
       // Defender destroyed
       this.game.addToBattleLog(`${defender.name} was destroyed in battle`);
       const opponent = this.game.getOpponent();
-      opponent.moveToGraveyard(defender.id);
+      // Use instanceId to correctly identify the specific card instance
+      opponent.moveToGraveyard(defender.instanceId);
       
       // Check for on-death triggers
       this.checkDeathTriggers(defender);
@@ -151,11 +172,21 @@ export class BattleResolver {
 
   canAttack(attackerInstanceId: string): boolean {
     const currentPlayer = this.game.getCurrentPlayer();
+    const opponent = this.game.getOpponent();
+    
+    // Must be in battle phase
+    if (this.game.getPhase() !== 'battle') return false;
+    
     const attacker = currentPlayer.getCardByInstanceId(attackerInstanceId);
     
+    // Must be a creature
     if (!attacker || attacker.type !== 'creature') return false;
+    // Must be in front row
+    if (attacker.position !== 'front') return false;
+    // Must not have cannot_attack status
     if (attacker.status?.includes('cannot_attack')) return false;
-    if (attacker.oncePerTurnUsed && attacker.attack && attacker.attack > 0) return false;
+    // Must not have already attacked this turn
+    if (attacker.oncePerTurnUsed) return false;
     
     return true;
   }
@@ -172,6 +203,9 @@ export class BattleResolver {
   }
 
   getValidAttackers(): any[] {
+    // Must be in battle phase
+    if (this.game.getPhase() !== 'battle') return [];
+    
     const currentPlayer = this.game.getCurrentPlayer();
     return currentPlayer.getCreatures().filter(creature => this.canAttack(creature.instanceId));
   }
