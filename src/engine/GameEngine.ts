@@ -16,6 +16,9 @@ export class GameEngine {
   }
 
   static createNewGame(player1Name: string, player2Name: string): GameEngine {
+    alert('[GameEngine.createNewGame] START');
+    console.log('[GameEngine.createNewGame] Creating new game...');
+    
     const gameState: GameState = {
       id: this.generateGameId(),
       players: [
