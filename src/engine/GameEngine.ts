@@ -113,36 +113,31 @@ export class GameEngine {
 
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
-    const currentPlayer = this.game.getCurrentPlayer();
     const msg = `nextPhase: ${currentPhase} -> ${this.getNextPhaseName(currentPhase)}`;
     
-    // Update page title to show phase
-    if (typeof document !== 'undefined') {
-      document.title = `Phase: ${currentPhase}`;
-    }
-    console.log(msg);
-    console.log('  Player energy before:', currentPlayer.getEnergy());
-    console.log('  Player hand before:', currentPlayer.getHand().length);
+    console.log('===== nextPhase() START =====');
+    console.log('  Current phase:', currentPhase);
     
     // Determine next phase based on current phase and execute phase logic
     let nextPhase = currentPhase;
     
+    // FIRST, call the phase method
     switch (currentPhase) {
       case 'start':
-        console.log('  Calling startPhase()...');
+        console.log('  >> Calling startPhase()...');
         this.game.startPhase();
         nextPhase = 'draw';
         break;
       case 'draw':
-        console.log('  Calling drawPhase()...');
+        console.log('  >> Calling drawPhase()...');
         this.game.drawPhase();
-        console.log('  drawPhase complete. Hand now:', currentPlayer.getHand().length);
+        console.log('  >> drawPhase complete');
         nextPhase = 'energy';
         break;
       case 'energy':
-        console.log('  Calling energyPhase()...');
+        console.log('  >> Calling energyPhase()...');
         this.game.energyPhase();
-        console.log('  energyPhase complete. Energy now:', currentPlayer.getEnergy());
+        console.log('  >> energyPhase complete');
         nextPhase = 'main1';
         break;
       case 'main1':
@@ -163,6 +158,12 @@ export class GameEngine {
         return;
     }
     
+    // Get FRESH player reference after phase logic
+    const playerAfter = this.game.getCurrentPlayer();
+    console.log('  Player energy AFTER phase logic:', playerAfter.getEnergy());
+    console.log('  Player hand AFTER phase logic:', playerAfter.getHand().length);
+    
+    // THEN set the phase
     this.game.setPhase(nextPhase);
     
     // Update title with current state
@@ -172,8 +173,7 @@ export class GameEngine {
     }
     
     console.log('  Phase set to:', nextPhase);
-    console.log('  Player energy after:', this.game.getCurrentPlayer()?.getEnergy());
-    console.log('  Player hand after:', this.game.getCurrentPlayer()?.getHand().length);
+    console.log('===== nextPhase() END =====');
   }
 
   private getNextPhaseName(currentPhase: string): string {
