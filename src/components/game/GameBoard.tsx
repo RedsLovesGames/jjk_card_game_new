@@ -285,10 +285,8 @@ export const GameBoard: React.FC = () => {
           {isMyTurn && (
             <Button 
               onClick={(e) => {
-                console.log('END PHASE button onClick fired! Phase:', gameState?.phase);
-                // Use the native click to ensure it fires
                 e.stopPropagation();
-                // Direct call without setTimeout
+                alert('End Phase button clicked! Calling nextPhase()...');
                 nextPhase();
               }}
               className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold shadow-lg shadow-purple-500/25"
