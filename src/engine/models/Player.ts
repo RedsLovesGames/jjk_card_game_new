@@ -43,6 +43,8 @@ export class PlayerModel {
   }
 
   getDeck(): CardInstance[] {
+    console.log('        [PlayerModel.getDeck] Deck length:', this.player.deck.length);
+    console.log('        [PlayerModel.getDeck] Deck:', JSON.stringify(this.player.deck.map(c => c.name)));
     return this.player.deck;
   }
 
