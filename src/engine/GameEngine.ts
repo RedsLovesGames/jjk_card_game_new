@@ -117,8 +117,9 @@ export class GameEngine {
     const msg = `nextPhase: ${currentPhase} -> ${this.getNextPhaseName(currentPhase)}`;
     
     // Update page title to show phase
-    document.title = msg;
-    alert(msg);
+    if (typeof document !== 'undefined') {
+      document.title = `Phase: ${currentPhase}`;
+    }
     console.log(msg);
     
     // Determine next phase based on current phase and execute phase logic
@@ -151,13 +152,12 @@ export class GameEngine {
         break;
       case 'end':
         this.game.endPhase();
-        alert(`End Phase complete! Turn: ${this.game.getGameState().turn}, Phase: ${this.game.getPhase()}, Player: ${this.game.getCurrentPlayer()?.getName()}`);
+        console.log('End Phase complete! Turn:', this.game.getGameState().turn, 'Phase:', this.game.getPhase());
         return;
     }
     
     this.game.setPhase(nextPhase);
-    document.title = `Phase: ${nextPhase} | Energy: ${this.game.getCurrentPlayer()?.getEnergy()} | Hand: ${this.game.getCurrentPlayer()?.getHand().length}`;
-    alert(`Phase set to: ${nextPhase}\nEnergy: ${this.game.getCurrentPlayer()?.getEnergy()}\nHand: ${this.game.getCurrentPlayer()?.getHand().length}`);
+    console.log('Phase set to:', nextPhase, 'Energy:', this.game.getCurrentPlayer()?.getEnergy(), 'Hand:', this.game.getCurrentPlayer()?.getHand().length);
   }
 
   private getNextPhaseName(currentPhase: string): string {
