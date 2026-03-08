@@ -46,6 +46,8 @@ export default function BattleScreen() {
   }, []);
 
   const startBattle = async () => {
+    alert('[BattleScreen.startBattle] START');
+    console.log('[BattleScreen.startBattle] START');
     setLoading(true);
     
     // Simulate loading
