@@ -114,53 +114,50 @@ export class GameEngine {
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
     const currentPlayer = this.game.getCurrentPlayer();
-    const msg = `=== nextPhase: ${currentPhase} -> ${this.getNextPhaseName(currentPhase)} ===\nPlayer: ${currentPlayer?.getName()}\nEnergy before: ${currentPlayer?.getEnergy()}\nHand before: ${currentPlayer?.getHand().length}`;
-    console.log(msg);
+    const msg = `nextPhase: ${currentPhase} -> ${this.getNextPhaseName(currentPhase)}`;
+    
+    // Update page title to show phase
+    document.title = msg;
     alert(msg);
+    console.log(msg);
     
     // Determine next phase based on current phase and execute phase logic
     let nextPhase = currentPhase;
     
     switch (currentPhase) {
       case 'start':
-        // Execute start phase logic
         this.game.startPhase();
         nextPhase = 'draw';
         break;
       case 'draw':
-        // Execute draw phase logic - draws a card
         this.game.drawPhase();
         nextPhase = 'energy';
         break;
       case 'energy':
-        // Execute energy phase logic - grants energy
         this.game.energyPhase();
         nextPhase = 'main1';
         break;
       case 'main1':
-        // Execute main phase 1 logic
         this.game.mainPhase1();
         nextPhase = 'battle';
         break;
       case 'battle':
-        // Execute battle phase logic
         this.game.battlePhase();
         nextPhase = 'main2';
         break;
       case 'main2':
-        // Execute main phase 2 logic
         this.game.mainPhase2();
         nextPhase = 'end';
         break;
       case 'end':
-        // Execute end phase logic - resets oncePerTurnUsed and calls nextTurn()
         this.game.endPhase();
-        alert(`End Phase complete!\nTurn: ${this.game.getGameState().turn}\nPhase: ${this.game.getPhase()}\nNext player: ${this.game.getCurrentPlayer()?.getName()}`);
+        alert(`End Phase complete! Turn: ${this.game.getGameState().turn}, Phase: ${this.game.getPhase()}, Player: ${this.game.getCurrentPlayer()?.getName()}`);
         return;
     }
     
     this.game.setPhase(nextPhase);
-    alert(`Phase set to: ${nextPhase}\nEnergy now: ${this.game.getCurrentPlayer()?.getEnergy()}\nHand now: ${this.game.getCurrentPlayer()?.getHand().length}`);
+    document.title = `Phase: ${nextPhase} | Energy: ${this.game.getCurrentPlayer()?.getEnergy()} | Hand: ${this.game.getCurrentPlayer()?.getHand().length}`;
+    alert(`Phase set to: ${nextPhase}\nEnergy: ${this.game.getCurrentPlayer()?.getEnergy()}\nHand: ${this.game.getCurrentPlayer()?.getHand().length}`);
   }
 
   private getNextPhaseName(currentPhase: string): string {
