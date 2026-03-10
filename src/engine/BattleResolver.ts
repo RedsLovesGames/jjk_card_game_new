@@ -151,7 +151,7 @@ export class BattleResolver {
 
     return {
       attacker,
-      defender: opponent,
+      defender: null as any,
       damageDealt: damage,
       defenderDestroyed: false,
       overflowDamage: 0
