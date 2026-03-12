@@ -52,12 +52,6 @@ export const GameBoard: React.FC = () => {
   const player = gameState.players[0];
   const opponent = gameState.players[1];
 
-  // Debug overlay - show current state
-  const debugInfo = `Phase: ${gameState.phase} | Turn: ${gameState.turn} | Player: ${gameState.currentPlayer} | Energy: ${player.energy} | Hand: ${player.hand.length}`;
-  if (typeof window !== 'undefined') {
-    (window as any).__DEBUG_GAME_STATE__ = debugInfo;
-    document.title = `Phase: ${gameState.phase} | Energy: ${player.energy} | Hand: ${player.hand.length}`;
-  }
 
   const isMyTurn = gameState && gameState.currentPlayer === 0;
   const winner = gameState.winner;
@@ -219,10 +213,6 @@ export const GameBoard: React.FC = () => {
 
   return (
     <div className="h-screen bg-slate-950 text-slate-100 flex flex-col overflow-hidden font-sans">
-      {/* DEBUG OVERLAY */}
-      <div style={{position:'fixed',top:0,left:0,background:'red',color:'white',padding:'10px',zIndex:9999,fontSize:'16px',fontWeight:'bold'}}>
-        {debugInfo}
-      </div>
       {/* Game Over Overlay */}
       {winner && (
         <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">

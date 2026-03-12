@@ -113,7 +113,6 @@ export class GameEngine {
 
   nextPhase(): void {
     const currentPhase = this.game.getPhase();
-    console.log('[GameEngine.nextPhase] START, currentPhase:', currentPhase);
     
     // Determine next phase based on current phase and execute phase logic
     let nextPhase = currentPhase;
@@ -121,54 +120,43 @@ export class GameEngine {
     switch (currentPhase) {
       case 'start':
         // Execute start phase logic
-        console.log('[GameEngine.nextPhase] Calling startPhase()');
         this.game.startPhase();
         nextPhase = 'draw';
         break;
       case 'draw':
         // Execute draw phase logic - draws a card
-        console.log('[GameEngine.nextPhase] Calling drawPhase()');
         this.game.drawPhase();
-        console.log('[GameEngine.nextPhase] drawPhase complete, deck:', this.game.getCurrentPlayer().getDeck().length, 'hand:', this.game.getCurrentPlayer().getHand().length);
         nextPhase = 'energy';
         break;
       case 'energy':
         // Execute energy phase logic - grants energy
-        console.log('[GameEngine.nextPhase] Calling energyPhase()');
         this.game.energyPhase();
-        console.log('[GameEngine.nextPhase] energyPhase complete, energy:', this.game.getCurrentPlayer().getEnergy());
         nextPhase = 'main1';
         break;
       case 'main1':
         // Execute main phase 1 logic
-        console.log('[GameEngine.nextPhase] Calling mainPhase1()');
         this.game.mainPhase1();
         nextPhase = 'battle';
         break;
       case 'battle':
         // Execute battle phase logic
-        console.log('[GameEngine.nextPhase] Calling battlePhase()');
         this.game.battlePhase();
         nextPhase = 'main2';
         break;
       case 'main2':
         // Execute main phase 2 logic
-        console.log('[GameEngine.nextPhase] Calling mainPhase2()');
         this.game.mainPhase2();
         nextPhase = 'end';
         break;
       case 'end':
         // Execute end phase logic - resets oncePerTurnUsed and calls nextTurn()
         // Note: endPhase() already calls nextTurn() internally, which sets phase to 'start'
-        console.log('[GameEngine.nextPhase] Calling endPhase()');
         this.game.endPhase();
         // The phase is already set to 'start' by endPhase() -> nextTurn(), so don't override it
-        console.log('[GameEngine.nextPhase] END (endPhase), phase now:', this.game.getPhase());
         return;
     }
     
     this.game.setPhase(nextPhase);
-    console.log('[GameEngine.nextPhase] Phase set to:', nextPhase, 'Energy:', this.game.getCurrentPlayer().getEnergy());
   }
 
   playCard(playerId: string, cardId: string): boolean {

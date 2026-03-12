@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { GameEngine } from '@/engine/GameEngine';
-import { GameState, CardInstance } from '@/types/game';
+import { GameState } from '@/types/game';
 import { SimpleAI } from '@/engine/ai/SimpleAI';
 
 interface GameContextType {
@@ -34,12 +34,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateState = useCallback((engine: GameEngine) => {
     const newState = engine.getGameState();
-    console.log('updateState called, phase:', newState.phase, 'player:', newState.currentPlayer, 'turn:', newState.turn);
     setGameState(newState);
     setBattleLog([...engine.getBattleLog()]);
     // Trigger AI if it's not the player's turn and there's no winner
     if (newState.currentPlayer === 1 && !newState.winner) {
-      console.log('Triggering AI for player 1');
       setAiTrigger(prev => prev + 1);
     }
   }, []);
@@ -56,15 +54,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [updateState]);
 
   const nextPhase = useCallback(() => {
-    console.log('GameContext.nextPhase called! Current state:', gameEngine?.getGameState());
     if (gameEngine) {
-      const beforePhase = gameEngine.getGameState().phase;
-      const beforeEnergy = gameEngine.getGameState().players[0].energy;
-      alert(`[nextPhase] BEFORE: phase=${beforePhase}, energy=${beforeEnergy}`);
       gameEngine.nextPhase();
-      const state = gameEngine.getGameState();
-      alert(`[nextPhase] AFTER: phase=${state.phase}, energy=${state.players[0].energy}`);
-      console.log('GameContext: Phase', beforePhase, '->', state.phase, 'Player:', state.currentPlayer);
       updateState(gameEngine);
     }
   }, [gameEngine, updateState]);
@@ -82,7 +73,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // AI turn trigger effect
   useEffect(() => {
     if (aiTrigger > 0 && gameEngine && gameState && gameState.currentPlayer === 1 && !gameState.winner) {
-      console.log('AI turn triggered!');
       const ai = new SimpleAI(gameEngine);
       const finalState = ai.makeMove();
       if (finalState) {
