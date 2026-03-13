@@ -35,20 +35,67 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Design system tokens */
+    --color-brand-50: 250 100% 97%;
+    --color-brand-100: 252 96% 90%;
+    --color-brand-200: 252 95% 83%;
+    --color-brand-300: 255 92% 76%;
+    --color-brand-400: 260 88% 67%;
+    --color-brand-500: 267 85% 60%;
+    --color-brand-600: 271 81% 56%;
+    --color-brand-700: 272 72% 47%;
+    --color-brand-800: 273 67% 39%;
+    --color-brand-900: 274 66% 32%;
+
+    --color-surface-50: 210 17% 98%;
+    --color-surface-100: 222 16% 95%;
+    --color-surface-200: 223 13% 87%;
+    --color-surface-300: 218 11% 65%;
+    --color-surface-400: 218 13% 46%;
+    --color-surface-500: 220 19% 30%;
+    --color-surface-600: 222 27% 20%;
+    --color-surface-700: 222 38% 15%;
+    --color-surface-800: 224 53% 11%;
+    --color-surface-900: 228 71% 7%;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    --radius-xs: 0.25rem;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.25rem;
+
+    --shadow-glass: 0 20px 45px rgba(15, 23, 42, 0.35);
+    --shadow-elevated: 0 12px 30px rgba(88, 28, 135, 0.35);
+    --shadow-card: 0 8px 18px rgba(2, 6, 23, 0.45);
+
+    --motion-fast: 150ms;
+    --motion-base: 300ms;
+    --motion-slow: 500ms;
+
+    --z-base: 1;
+    --z-raised: 10;
+    --z-overlay: 50;
+    --z-modal: 100;
+    --z-toast: 120;
   }
 
   .dark {
@@ -88,9 +135,7 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }

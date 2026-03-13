@@ -15,67 +15,15 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Base gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950" />
-        
-        {/* Animated orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-600/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-        
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
-        
-        {/* Animated scan lines */}
-        <div className="absolute inset-0 animate-scan bg-gradient-to-b from-transparent via-purple-500/5 to-transparent" />
-      </div>
-
-      {/* Floating particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-purple-400/50 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${3 + Math.random() * 4}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className={`relative z-10 min-h-screen flex flex-col items-center justify-center p-4 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        {/* Logo / Title */}
-        <div className="text-center mb-16 relative">
-          {/* Glow effect behind title */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[150px] bg-purple-600/30 blur-[80px] rounded-full" />
-          
-          <h1 className="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter relative mb-4">
-            <span className="bg-gradient-to-r from-red-500 via-white to-purple-500 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
-              JJK
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient" style={{ animationDelay: '0.5s' }}>
-              CURSED
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient" style={{ animationDelay: '1s' }}>
-              CLASH
-            </span>
-          </h1>
-          
-          <div className="flex items-center justify-center gap-2 mt-6">
-            <Sparkles className="text-yellow-400 animate-pulse" size={20} />
-            <p className="text-xl md:text-2xl text-slate-300 font-light tracking-[0.3em] uppercase">
-              Jujutsu Kaisen Card Battler
-            </p>
-            <Sparkles className="text-yellow-400 animate-pulse" size={20} />
+    <div className="relative min-h-screen overflow-hidden bg-black text-white">
+      <div className="absolute inset-0 bg-gradient-to-br from-surface-900 via-brand-900/30 to-surface-900" />
+      <div className="relative z-raised mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-4 py-ds10 transition-all duration-slow">
+        <HeroSection title={<><span>JJK</span><br /><span>CURSED CLASH</span></>} subtitle="Jujutsu Kaisen Card Battler">
+          <div className="mt-ds4 flex items-center justify-center gap-3 text-yellow-400">
+            <Sparkles size={18} />
+            <Sparkles size={18} />
           </div>
-        </div>
+        </HeroSection>
 
         {/* Main Menu Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-16 max-w-5xl w-full">
@@ -183,69 +131,16 @@ export default function Index() {
           </Card>
         </div>
 
-        {/* Stats Banner */}
-        <div className={`
-          flex flex-wrap items-center justify-center gap-8 md:gap-16 text-center
-          ${mounted ? 'opacity-100' : 'opacity-0'}
-          transition-opacity duration-1000 delay-700
-        `}>
-          <div>
-            <div className="text-3xl font-black text-white">50+</div>
-            <div className="text-xs text-slate-500 uppercase tracking-widest">Cursed Cards</div>
-          </div>
-          <div className="w-px h-12 bg-slate-800" />
-          <div>
-            <div className="text-3xl font-black text-white">4</div>
-            <div className="text-xs text-slate-500 uppercase tracking-widest">Rarity Tiers</div>
-          </div>
-          <div className="w-px h-12 bg-slate-800" />
-          <div>
-            <div className="text-3xl font-black text-white">∞</div>
-            <div className="text-xs text-slate-500 uppercase tracking-widest">Strategies</div>
-          </div>
+        <div className="mx-auto flex flex-wrap items-center justify-center gap-4">
+          <StatBadge label="Cursed Cards" value="50+" />
+          <StatBadge label="Rarity Tiers" value="4" tone="brand" />
+          <StatBadge label="Strategies" value="∞" />
         </div>
 
-        {/* Footer */}
-        <div className="absolute bottom-8 left-0 right-0 text-center">
-          <p className="text-slate-600 text-sm">
-            <Skull className="inline mr-2" size={14} />
-            Built with passion • Inspired by Jujutsu Kaisen
-          </p>
+        <div className="mt-ds8 text-center text-sm text-slate-600">
+          <Skull className="mr-2 inline" size={14} /> Built with passion • Inspired by Jujutsu Kaisen
         </div>
       </div>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
-        }
-        
-        @keyframes scan {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100%); }
-        }
-        
-        @keyframes gradient {
-          0% { background-position: 0% center; }
-          50% { background-position: 100% center; }
-          100% { background-position: 0% center; }
-        }
-        
-        .animate-float {
-          animation: float 8s infinite linear;
-        }
-        
-        .animate-scan {
-          animation: scan 8s infinite linear;
-        }
-        
-        .animate-gradient {
-          background-size: 200% auto;
-          animation: gradient 3s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }
