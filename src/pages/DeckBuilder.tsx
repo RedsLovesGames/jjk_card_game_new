@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/types/game';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -18,6 +19,7 @@ interface SavedDeck {
 }
 
 export default function DeckBuilder() {
+  const navigate = useNavigate();
   const [library, setLibrary] = useState<Card[]>([]);
   const [deck, setDeck] = useState<Card[]>([]);
   const [deckName, setDeckName] = useState('My Deck');
@@ -193,7 +195,7 @@ export default function DeckBuilder() {
           </h1>
           {deck.length >= 40 && (
             <Button 
-              onClick={() => window.location.hash = '#/battle?deck=' + encodeURIComponent(deckName)}
+              onClick={() => navigate('/battle?deck=' + encodeURIComponent(deckName))}
               className="bg-green-600 hover:bg-green-700"
             >
               <Zap className="mr-2" size={18} /> Battle

@@ -116,8 +116,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setBattleLog([]);
     setSelectedCardId(null);
     setTargetingMode(null);
-    // Navigate to home
-    window.location.hash = '#/';
   }, []);
 
   return (
