@@ -9,9 +9,6 @@ import BattleScreen from '@/pages/BattleScreen';
 import Results from '@/pages/Results';
 import NotFound from '@/pages/NotFound';
 import V2Shell from '@/app/v2/V2Shell';
-import HomeV2 from '@/pages/v2/HomeV2';
-import CollectionV2 from '@/pages/v2/CollectionV2';
-import DeckBuilderV2 from '@/pages/v2/DeckBuilderV2';
 import BattleV2Container from '@/pages/v2/BattleV2Container';
 import AppShell from './AppShell';
 
@@ -48,9 +45,9 @@ const v2Routes = [
     path: '/v2',
     element: <V2Shell />,
     children: [
-      { index: true, element: <HomeV2 /> },
-      { path: 'collection', element: <CollectionV2 /> },
-      { path: 'deck-builder', element: <DeckBuilderV2 /> },
+      { index: true, element: <Index /> },
+      { path: 'collection', element: <Collection /> },
+      { path: 'deck-builder', element: <DeckBuilder /> },
       { path: 'battle', element: <BattleV2Container /> },
       { path: 'game', element: gameRouteElement },
     ],
