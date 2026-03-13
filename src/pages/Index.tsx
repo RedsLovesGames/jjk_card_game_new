@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BookOpen, Layout, Play, Sparkles, Zap, Skull, Swords, Shield, Crown } from 'lucide-react';
 
 export default function Index() {
   const [mounted, setMounted] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
@@ -88,11 +90,7 @@ export default function Index() {
               ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
             style={{ transitionDelay: '0.2s' }}
-            onClick={() => {
-              // Clear query params before setting hash
-              window.history.replaceState(null, '', window.location.pathname);
-              window.location.hash = '#/battle';
-            }}
+            onClick={() => navigate('/battle')}
           >
             {/* Card glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -127,7 +125,7 @@ export default function Index() {
               ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
             style={{ transitionDelay: '0.4s' }}
-            onClick={() => window.location.hash = '#/deck-builder'}
+            onClick={() => navigate('/deck-builder')}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
@@ -161,7 +159,7 @@ export default function Index() {
               ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             `}
             style={{ transitionDelay: '0.6s' }}
-            onClick={() => window.location.hash = '#/collection'}
+            onClick={() => navigate('/collection')}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/types/game';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +13,7 @@ import { Search, Swords, Shield, Zap, Home, Sparkles, Star, Diamond, Circle, Squ
 import { Button } from '@/components/ui/button';
 
 export default function Collection() {
+  const navigate = useNavigate();
   const [cards, setCards] = useState<Card[]>([]);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -84,7 +86,7 @@ export default function Collection() {
             <Button 
               variant="outline" 
               className="border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-slate-300 hover:text-white backdrop-blur-sm"
-              onClick={() => window.location.href = '/'}
+              onClick={() => navigate('/')}
             >
               <Home className="mr-2" size={18} /> Back to Menu
             </Button>
