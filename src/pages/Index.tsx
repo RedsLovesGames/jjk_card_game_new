@@ -13,6 +13,9 @@ interface MenuItem {
 
 export default function Index() {
   const navigate = useNavigate();
+  const motionTier = useMotionTier();
+  const isReducedMotion = motionTier === 'reduced';
+  const particles = useMemo(() => createDeterministicParticles('index-hero', isReducedMotion ? 0 : 14), [isReducedMotion]);
 
   useEffect(() => {
     setMounted(true);

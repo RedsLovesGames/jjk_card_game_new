@@ -160,6 +160,38 @@ export default function Collection() {
                         <p className="text-lg italic text-slate-100">"{selectedCard.ultimateEffect}"</p>
                       </div>
                     )}
+                    <p className="line-clamp-2 text-[11px] italic text-slate-300">"{card.effect}"</p>
+                  </GlassPanel>
+                </CardFrame>
+              );
+            })}
+          </div>
+
+          {filteredCards.length === 0 && (
+            <div className="py-20 text-center">
+              <Search size={40} className="mx-auto mb-4 text-slate-600" />
+              <h3 className="text-2xl font-bold text-slate-400">No cards found</h3>
+            </div>
+          )}
+
+          <Dialog open={!!selectedCard} onOpenChange={() => setSelectedCard(null)}>
+            <DialogContent className="max-w-2xl border-slate-700 bg-slate-900 text-white">
+              {selectedCard && (
+                <div className="relative">
+                  <Button variant="ghost" size="icon" onClick={() => setSelectedCard(null)} className="absolute right-0 top-0 z-raised rounded-full hover:bg-slate-800"><X size={24} /></Button>
+                  <div className="flex flex-col gap-6 md:flex-row">
+                    <div className="w-full md:w-64"><img src={getCardAsset(selectedCard.id, selectedCard.variant).url} alt={selectedCard.name} className="w-full rounded-lg" /></div>
+                    <div className="flex-1">
+                      <h2 className="mb-1 text-3xl font-black">{selectedCard.name}</h2>
+                      <p className="mb-4 text-slate-400">{selectedCard.variant} • {selectedCard.type}</p>
+                      <p className="text-lg italic">"{selectedCard.effect}"</p>
+                      {selectedCard.ultimateEffect && (
+                        <div className="mt-4">
+                          <h4 className="mb-1 flex items-center gap-1 text-sm font-black text-orange-400"><Sparkles size={14} /> ULTIMATE TECHNIQUE</h4>
+                          <p className="text-lg italic">"{selectedCard.ultimateEffect}"</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
