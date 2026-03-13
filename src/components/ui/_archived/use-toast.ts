@@ -1,3 +1,4 @@
-import { useToast, toast } from "@/hooks/use-toast";
-
-export { useToast, toast };
+/**
+ * @deprecated Use `@/lib/toast`.
+ */
+export { dismissToast, notify, showError, showInfo, showLoading, showSuccess, showWarning } from "@/lib/toast";

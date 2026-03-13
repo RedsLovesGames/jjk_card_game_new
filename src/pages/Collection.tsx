@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Home, Search } from 'lucide-react';
 import { Card as GameCard } from '@/types/game';
 import { useDeck } from '@/context/DeckContext';
-import { toast } from 'sonner';
+import { showError, showSuccess } from '@/lib/toast';
 import { getCardAsset } from '@/data/assets';
 import { Button } from '@/components/design-system';
 import { Card } from '@/components/design-system';
@@ -36,11 +36,11 @@ export default function Collection() {
 
   const handleAddToDeck = (card: GameCard) => {
     if (!addCardToDraft(card)) {
-      toast.error('Deck is full (60 cards max).');
+      showError('Deck is full (60 cards max).');
       return;
     }
 
-    toast.success(`${card.name} added to deck.`);
+    showSuccess(`${card.name} added to deck.`);
   };
 
   return (

@@ -1,3 +1,7 @@
+/**
+ * @deprecated Use the unified toast API from `@/lib/toast`.
+ * This hook is retained only for legacy Radix toast compatibility.
+ */
 import * as React from "react";
 
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
