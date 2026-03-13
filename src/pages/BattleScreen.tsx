@@ -1,175 +1,93 @@
 import { useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, Loader2, Play, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useDeck } from '@/context/DeckContext';
 import { useGame } from '@/context/GameContext';
-import { getCardAsset } from '@/data/assets';
-
-const STORAGE_KEY = 'jjk_saved_decks';
-
-interface SavedDeck {
-  name: string;
-  cards: Card[];
-  createdAt: number;
-}
 
 export default function BattleScreen() {
   const navigate = useNavigate();
+  const { savedDecks, activeDeck } = useDeck();
+  const { startGame } = useGame();
 
-  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
-  const [selectedDeck, setSelectedDeck] = useState<SavedDeck | null>(null);
   const [loading, setLoading] = useState(false);
+  const [battleType, setBattleType] = useState<'quick' | 'deck'>(() => (activeDeck ? 'deck' : 'quick'));
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const decks = JSON.parse(saved);
-        setSavedDecks(decks);
-        if (decks.length > 0) {
-          setSelectedDeck(decks[0]);
-          setBattleType('deck');
-        }
-      } catch (e) {
-        console.error('Failed to load decks', e);
-      }
+  const canStartDeckBattle = battleType === 'deck' ? !!activeDeck : true;
+
+  const selectedDeckName = useMemo(() => {
+    if (battleType !== 'deck') {
+      return 'Default starter deck';
     }
-  }, []);
 
-  const startBattle = async () => {
+    return activeDeck?.name ?? 'No active deck';
+  }, [activeDeck, battleType]);
+
+  const handleStartBattle = async () => {
+    if (!canStartDeckBattle) {
+      return;
+    }
+
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     startGame('Sorcerer', 'Cursed Spirit');
     navigate('/game');
   };
 
-  if (requestedDeckMode && !canStartDeckBattle) {
-    return (
-      <main className="min-h-screen bg-slate-950 p-6 text-white">
-        <Card className="mx-auto mt-20 max-w-xl border-amber-500/40 bg-slate-900 p-6">
-          <h1 className="mb-2 text-2xl font-bold">No valid deck selected</h1>
-          <p className="mb-4 text-slate-300">You attempted a deck battle, but there is no active valid deck yet.</p>
-          <div className="flex gap-2">
-            <Button onClick={() => navigate('/deck-builder')}>Build a deck</Button>
-            <Button vhttps://github.com/RedsLovesGames/jjk_card_game_new/pull/8/conflict?name=src%252Fpages%252FCollection.tsx&ancestor_oid=9cb943f2c25e84ff7df7a5cc57cfc8c34fe11e82&base_oid=41c612e29711849600f3130ec0df6cd1a225006b&head_oid=8f91fdc803850057ca7bbb43d5b5860f1afba6edariant="outline" onClick={() => navigate('/battle')}>Switch to quick battle</Button>
-          </div>
-        </Card>
-      </main>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-slate-950 text-white flex flex-col" aria-labelledby="battle-arena-title">
-      <header className="p-4 border-b border-slate-800 flex items-center gap-4 bg-slate-900">
-        <Button variant="ghost" onClick={() => navigate('/')}>
-          <ArrowLeft className="mr-2" size={18} /> Back
+    <main className="min-h-screen bg-slate-950 p-6 text-white">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+        <Button variant="ghost" className="w-fit" onClick={() => navigate('/')}>
+          <ArrowLeft className="mr-2" size={16} /> Back
         </Button>
-        <h1 id="battle-arena-title" className="text-2xl font-bold bg-gradient-to-r from-red-300 to-purple-300 bg-clip-text text-transparent">Battle Arena</h1>
-      </header>
 
-      <div className="flex-1 flex flex-col lg:flex-row">
-        <section aria-labelledby="battle-style-heading" className="lg:w-1/2 p-8 flex flex-col items-center justify-center">
-          <h2 id="battle-style-heading" className="text-3xl font-black mb-8 text-center">Choose Your <span className="text-purple-300">Battle Style</span></h2>
+        <Card className="border-slate-700 bg-slate-900 p-6">
+          <h1 className="text-2xl font-bold">Battle Arena</h1>
+          <p className="mt-2 text-slate-300">Choose your battle type, then start the duel.</p>
 
-          <div className="space-y-4 w-full max-w-md">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <button
               type="button"
               onClick={() => setBattleType('quick')}
-              className={`w-full rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${battleType === 'quick' ? 'ring-2 ring-red-500/50' : ''}`}
-              aria-pressed={battleType === 'quick'}
+              className={`rounded-lg border p-4 text-left ${battleType === 'quick' ? 'border-red-500 bg-red-500/10' : 'border-slate-700 bg-slate-950'}`}
             >
-              <CardUI className={`transition-all p-6 ${battleType === 'quick' ? 'border-red-500 bg-red-500/10' : 'border-slate-700 bg-slate-900 hover:border-slate-500'}`}>
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center"><Swords size={32} /></div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold">Quick Battle</h3>
-                    <p className="text-slate-300 text-sm">Use default deck against AI</p>
-                  </div>
-                  {battleType === 'quick' && <Badge className="bg-red-600">Selected</Badge>}
-                </div>
-              </CardUI>
+              <h2 className="font-semibold">Quick Battle</h2>
+              <p className="text-sm text-slate-300">Start immediately with a default deck.</p>
             </button>
 
             <button
               type="button"
-              onClick={() => savedDecks.length > 0 && setBattleType('deck')}
-              disabled={savedDecks.length === 0}
-              className="w-full rounded-xl text-left disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-              aria-pressed={battleType === 'deck'}
+              onClick={() => setBattleType('deck')}
+              className={`rounded-lg border p-4 text-left ${battleType === 'deck' ? 'border-green-500 bg-green-500/10' : 'border-slate-700 bg-slate-950'}`}
             >
-              <CardUI className={`transition-all p-6 ${battleType === 'deck' ? 'border-green-500 bg-green-500/10 ring-2 ring-green-500/50' : 'border-slate-700 bg-slate-900 hover:border-slate-500'}`}>
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-600 to-teal-600 flex items-center justify-center"><Sparkles size={32} /></div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold">Deck Battle</h3>
-                    <p className="text-slate-300 text-sm">{savedDecks.length > 0 ? `Use your saved deck (${savedDecks.length} available)` : 'No saved decks - build one first!'}</p>
-                  </div>
-                  {battleType === 'deck' && savedDecks.length > 0 && <Badge className="bg-green-600">Selected</Badge>}
-                </div>
-              </CardUI>
+              <h2 className="font-semibold">Deck Battle</h2>
+              <p className="text-sm text-slate-300">Use your active saved deck.</p>
             </button>
           </div>
 
-          <Button onClick={startBattle} disabled={loading || (battleType === 'deck' && !selectedDeck)} className="mt-8 w-full max-w-md h-14 text-lg bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700">
-            {loading ? <Loader2 className="motion-safe:animate-spin mr-2" size={24} /> : <Play className="mr-2" size={24} />}
-            {loading ? 'Loading Battle...' : 'Start Battle'}
-          </Button>
+          <div className="mt-6 rounded-lg border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
+            <p>Selected mode: <span className="font-semibold">{battleType}</span></p>
+            <p>Deck: <span className="font-semibold">{selectedDeckName}</span></p>
+            {battleType === 'deck' && !activeDeck && (
+              <p className="mt-2 text-amber-300">No active deck. Create/select one in Deck Builder first.</p>
+            )}
+            {battleType === 'deck' && activeDeck && (
+              <p className="mt-2 text-slate-300">Cards: {activeDeck.cards.length}</p>
+            )}
+            <p className="mt-2 text-slate-400">Saved decks: {savedDecks.length}</p>
+          </div>
 
-          {loading && (
-            <div className="mt-6 text-center" aria-live="polite">
-              <div className="w-64 h-2 bg-slate-800 rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-red-500 to-purple-500 motion-safe:animate-pulse" style={{ width: '60%' }} /></div>
-              <p className="text-slate-300 text-sm mt-2">Summoning cursed energy...</p>
-            </div>
-          )}
-        </section>
-
-        <aside aria-labelledby="deck-selection-heading" className="lg:w-1/2 bg-slate-900 border-l border-slate-800 p-8">
-          <h2 id="deck-selection-heading" className="text-xl font-bold mb-4">Select Your Deck</h2>
-
-          {savedDecks.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center"><Sparkles size={40} className="text-slate-500" /></div>
-              <p className="text-slate-300 mb-4">No saved decks yet</p>
-              <Button onClick={() => navigate('/deck-builder')} className="bg-purple-600 hover:bg-purple-700">Build Your First Deck</Button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {savedDecks.map((deck, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setSelectedDeck(deck)}
-                  className="w-full rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
-                  aria-label={`Select ${deck.name}`}
-                >
-                  <CardUI className={`transition-all p-4 ${selectedDeck?.name === deck.name ? 'border-green-500 bg-green-500/10 ring-2 ring-green-500/30' : 'border-slate-700 bg-slate-800 hover:border-slate-500'}`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-bold">{deck.name}</h3>
-                        <div className="flex gap-3 mt-1 text-xs text-slate-300">
-                          <span className="flex items-center gap-1"><Swords size={12} className="text-red-300" /> {deckStats(deck).creatures}</span>
-                          <span className="flex items-center gap-1"><Zap size={12} className="text-purple-300" /> {deckStats(deck).spells}</span>
-                          <span className="flex items-center gap-1"><Shield size={12} className="text-orange-300" /> {deckStats(deck).areas}</span>
-                        </div>
-                      </div>
-                      <Badge variant="outline">{deckStats(deck).total} cards</Badge>
-                    </div>
-
-                    {selectedDeck?.name === deck.name && (
-                      <div className="mt-4 flex gap-2 overflow-x-auto pb-2" aria-label="Deck preview cards">
-                        {deck.cards.slice(0, 8).map((card, i) => (
-                          <div key={i} className="w-12 h-16 bg-slate-700 rounded flex-shrink-0 flex items-center justify-center">
-                            <img src={getCardAsset(card.id, card.variant).url} alt={card.name} className="w-full h-full object-cover rounded" />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </CardUI>
-                </button>
-              ))}
-            </div>
-          )}
-        </aside>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button onClick={handleStartBattle} disabled={loading || !canStartDeckBattle}>
+              {loading ? <Loader2 className="mr-2 animate-spin" size={16} /> : <Play className="mr-2" size={16} />}
+              {loading ? 'Starting...' : 'Start Battle'}
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/deck-builder')}>
+              <Sparkles className="mr-2" size={16} /> Open Deck Builder
+            </Button>
+          </div>
+        </Card>
       </div>
     </main>
   );
