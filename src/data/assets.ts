@@ -5,6 +5,24 @@ export interface AssetMetadata {
   license?: string;
 }
 
+const getAppBaseUrl = (): string => {
+  const basePath = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+
+  if (typeof window !== 'undefined' && window.location.origin) {
+    return `${window.location.origin}${basePath}`;
+  }
+
+  return basePath || '';
+};
+
+const resolvePublicAssetUrl = (assetPath: string): string => {
+  if (!assetPath.startsWith('/')) {
+    return assetPath;
+  }
+
+  return `${getAppBaseUrl()}${assetPath}`;
+};
+
 // Generate a background color based on card rarity
 export const getRarityBackground = (rarity: string): string => {
   switch (rarity) {
@@ -137,11 +155,7 @@ export const getCardAsset = (cardId: string, variant?: string): AssetMetadata =>
   // Direct match
   if (CARD_ASSETS[cardId]) {
     const asset = CARD_ASSETS[cardId];
-    // If it's a local path (starts with /), add the base URL for GitHub Pages
-    if (asset.url.startsWith('/')) {
-      return { ...asset, url: 'https://redslovesgames.github.io/jjk_card_game_new' + asset.url };
-    }
-    return asset;
+    return { ...asset, url: resolvePublicAssetUrl(asset.url) };
   }
   
   const cardIdLower = cardId.toLowerCase();
@@ -166,20 +180,17 @@ export const getCardAsset = (cardId: string, variant?: string): AssetMetadata =>
         const charNameCapitalized = charName ? charName.charAt(0).toUpperCase() + charName.slice(1) : '';
         const charVariant = charNameCapitalized ? charNameCapitalized + '_' + variant : variant;
         
-        return { 
+        return {
           ...CARD_ASSETS[baseKey], 
-          url: 'https://redslovesgames.github.io/jjk_card_game_new/images/' + baseKey + '/' + charVariant.replace(/[^a-zA-Z0-9]/g, '_') + ext,
+          url: resolvePublicAssetUrl('/images/' + baseKey + '/' + charVariant.replace(/[^a-zA-Z0-9]/g, '_') + ext),
           variant: variant 
         };
       }
-      // For non-variant case, also add base URL
       const baseAsset = CARD_ASSETS[baseKey];
-      if (baseAsset.url.startsWith('/')) {
-        return { ...baseAsset, url: 'https://redslovesgames.github.io/jjk_card_game_new' + baseAsset.url };
-      }
-      return baseAsset;
+      return { ...baseAsset, url: resolvePublicAssetUrl(baseAsset.url) };
     }
   }
   
-  return CARD_ASSETS["default"];
+  const defaultAsset = CARD_ASSETS['default'];
+  return { ...defaultAsset, url: resolvePublicAssetUrl(defaultAsset.url) };
 };
