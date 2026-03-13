@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:visual-effects": "vitest run src/__tests__/visual-effects-budget.test.tsx",
+    "perf:budget": "npm run build && node scripts/check-performance-budgets.mjs && npm run test:visual-effects"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

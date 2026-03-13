@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useMotionTier } from '@/hooks/use-motion-tier';
 import { Button } from '@/components/ui/button';
 import { useGame } from '@/context/GameContext';
 import { CardInstance } from '@/types/game';
@@ -28,11 +29,12 @@ export const GameBoard: React.FC = () => {
     playCard, 
     resolveCombat,
     switchPosition,
-    endGame,
-    gameEngine
+    endGame
   } = useGame();
 
   const [animations, setAnimations] = useState<BattleAnimation[]>([]);
+  const motionTier = useMotionTier();
+  const isReducedMotion = motionTier === 'reduced';
   const logEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,9 +58,7 @@ export const GameBoard: React.FC = () => {
   const winner = gameState.winner;
 
   // Get current active player info
-  const currentPlayer = gameState.currentPlayer === 0 ? player : opponent;
-  const activePlayer = isMyTurn ? player : opponent;
-
+  
   const handleCardClick = (card: CardInstance, ownerId: string) => {
     if (!isMyTurn || winner) return;
 
@@ -102,7 +102,7 @@ export const GameBoard: React.FC = () => {
       <CardFrame 
         key={card.instanceId}
         interactive
-        className={`w-28 h-40 border-2 shrink-0 ${isSelected ? 'border-yellow-400 scale-110 z-20 ring-4 ring-yellow-400/30' : ''} ${canBeTargeted ? 'border-red-500 animate-pulse ring-4 ring-red-500/50' : 'border-slate-700'} ${isExhausted ? 'opacity-50 grayscale' : ''}` }
+        className={`w-28 h-40 border-2 shrink-0 ${isSelected ? 'border-yellow-400 scale-110 z-20 ring-4 ring-yellow-400/30' : ''} ${canBeTargeted ? `border-red-500 ${isReducedMotion ? '' : 'animate-pulse'} ring-4 ring-red-500/50` : 'border-slate-700'} ${isExhausted ? 'opacity-50 grayscale' : ''}` }
         style={{ background: `linear-gradient(to bottom, ${bgColor}dd, ${bgColor}99)` }}
         onClick={() => handleCardClick(card, ownerId)}
       >
@@ -205,7 +205,7 @@ export const GameBoard: React.FC = () => {
     <div className="h-screen bg-surface-900 text-slate-100 flex flex-col overflow-hidden font-sans">
       {/* Game Over Overlay */}
       {winner && (
-        <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div className={`absolute inset-0 z-50 bg-black/90 flex items-center justify-center p-4 ${isReducedMotion ? '' : 'backdrop-blur-md'}`}>
           <div className="bg-slate-900 border-2 border-slate-700 p-12 rounded-3xl text-center max-w-lg w-full shadow-2xl">
             {winner === player.id ? (
               <>
@@ -263,7 +263,7 @@ export const GameBoard: React.FC = () => {
           </div>
           <div className="w-px h-8 bg-slate-700" />
           {!isMyTurn && !winner && (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-900/50 border border-red-700 animate-pulse">
+            <div className={`flex items-center gap-2 rounded-full border border-red-700 bg-red-900/50 px-3 py-1.5 ${isReducedMotion ? '' : 'animate-pulse'}`}>
               <span className="text-red-400 text-xs font-bold uppercase">AI Thinking...</span>
             </div>
           )}
@@ -347,7 +347,7 @@ export const GameBoard: React.FC = () => {
             {/* Direct Attack Button */}
             {targetingMode === 'attack' && player.field.some(c => !c.oncePerTurnUsed) && (
               <Button 
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-500 animate-bounce font-bold shadow-xl shadow-red-500/50 z-30"
+                className={`absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 bg-red-600 font-bold shadow-xl shadow-red-500/50 hover:bg-red-500 ${isReducedMotion ? '' : 'animate-bounce'}`}
                 onClick={handleDirectAttack}
               >
                 Attack Player! <Swords size={16} className="ml-2" />
