@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card as GameCard } from '@/types/game';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/design-system';
 import { useDeck } from '@/context/DeckContext';
 import { toast } from 'sonner';
 import { RotateCcw, Save, Zap } from 'lucide-react';

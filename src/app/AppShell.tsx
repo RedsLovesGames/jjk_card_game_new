@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useGame } from "@/context/GameContext";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/design-system";
 
 const AppShell = () => {
   const { gameState } = useGame();

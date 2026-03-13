@@ -1,8 +1,8 @@
 import { Card as GameCard } from '@/types/game';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/design-system';
+import { Button } from '@/components/design-system';
+import { Input } from '@/components/design-system';
+import { ScrollArea } from '@/components/design-system';
 import { GlassPanel, StatBadge } from '@/components/design-system';
 import { Loader2, Sparkles, Trash2 } from 'lucide-react';
 

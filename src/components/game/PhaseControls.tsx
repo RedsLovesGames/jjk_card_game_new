@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/design-system';
 import { getCardAsset, getCardBackground } from '@/data/assets';
 import { CardInstance } from '@/types/game';
 import { Swords, Zap } from 'lucide-react';

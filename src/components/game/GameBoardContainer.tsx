@@ -1,6 +1,6 @@
 import React from 'react';
 import { Trophy, Skull } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/design-system';
 import { BattleHeader } from '@/components/game/BattleHeader';
 import { BattleLogPanel } from '@/components/game/BattleLogPanel';
 import { OpponentField } from '@/components/game/OpponentField';

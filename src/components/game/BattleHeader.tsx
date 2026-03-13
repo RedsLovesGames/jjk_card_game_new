@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Home, Shield, Sparkles, Swords, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/design-system';
 import { StatBadge } from '@/components/design-system';
 import { CardInstance } from '@/types/game';
 
