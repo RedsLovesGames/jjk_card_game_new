@@ -31,4 +31,19 @@ export const router = createBrowserRouter([
       { path: '*', element: <Navigate to="/404" replace /> },
     ],
   },
+  ...(featureFlags.v2Enabled
+    ? [
+        {
+          path: "/v2",
+          element: <V2Shell />,
+          children: [
+            { index: true, element: <HomeV2 /> },
+            { path: "collection", element: <CollectionV2 /> },
+            { path: "deck-builder", element: <DeckBuilderV2 /> },
+            { path: "battle", element: <BattleV2Container /> },
+            { path: "game", element: <GameBoard /> },
+          ],
+        },
+      ]
+    : []),
 ]);
