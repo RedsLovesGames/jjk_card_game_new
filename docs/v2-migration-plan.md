@@ -58,3 +58,25 @@
 - Flip `VITE_V2_DEFAULT=true` only after parity + QA signoff.
 - Maintain fallback window for legacy routes until production confidence.
 - Remove legacy routes/components once deprecation criteria is met.
+
+## Module ownership rules
+
+### Legacy-only modules
+- `src/pages/Index.tsx`
+- `src/pages/Collection.tsx`
+- `src/pages/DeckBuilder.tsx`
+- `src/pages/BattleScreen.tsx`
+
+These modules remain the source of truth for legacy routes and can be reused by `/v2/*` routes only when no v2-specific view logic exists yet.
+
+### Shared modules
+- `src/app/router.tsx` (route wiring and feature-flag gates)
+- Game/domain infrastructure used by both route trees (for example `src/components/game/*`, `src/components/GameRouteGuard.tsx`, and shared config under `src/config/*`)
+
+Shared code must stay presentation-agnostic and avoid embedding legacy- or v2-specific visual decisions.
+
+### v2-only modules
+- `src/app/v2/*` shell/layout and v2 navigation
+- `src/pages/v2/BattleV2Container.tsx` and any future `src/pages/v2/*` modules that contain v2-specific UX behavior
+
+When a non-battle v2 page starts to diverge, create a real module in `src/pages/v2/*` and extract shared non-visual logic into `src/pages/shared/*` (hooks/utilities) to prevent copy/paste drift between legacy and v2 page implementations.
