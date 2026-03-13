@@ -1,12 +1,7 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card } from '@/types/game';
+import { useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card as CardUI } from '@/components/ui/card';
-import { Sparkles, Swords, Zap, Shield, Loader2, ArrowLeft, Play } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 import { useGame } from '@/context/GameContext';
 import { getCardAsset } from '@/data/assets';
 
@@ -19,13 +14,11 @@ interface SavedDeck {
 }
 
 export default function BattleScreen() {
-  const { startGame } = useGame();
   const navigate = useNavigate();
 
   const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
   const [selectedDeck, setSelectedDeck] = useState<SavedDeck | null>(null);
   const [loading, setLoading] = useState(false);
-  const [battleType, setBattleType] = useState<'quick' | 'deck'>('quick');
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -50,12 +43,20 @@ export default function BattleScreen() {
     navigate('/game');
   };
 
-  const deckStats = (deck: SavedDeck) => {
-    const creatures = deck.cards.filter(c => c.type === 'creature').length;
-    const spells = deck.cards.filter(c => c.type === 'spell').length;
-    const areas = deck.cards.filter(c => c.type === 'area').length;
-    return { creatures, spells, areas, total: deck.cards.length };
-  };
+  if (requestedDeckMode && !canStartDeckBattle) {
+    return (
+      <main className="min-h-screen bg-slate-950 p-6 text-white">
+        <Card className="mx-auto mt-20 max-w-xl border-amber-500/40 bg-slate-900 p-6">
+          <h1 className="mb-2 text-2xl font-bold">No valid deck selected</h1>
+          <p className="mb-4 text-slate-300">You attempted a deck battle, but there is no active valid deck yet.</p>
+          <div className="flex gap-2">
+            <Button onClick={() => navigate('/deck-builder')}>Build a deck</Button>
+            <Button vhttps://github.com/RedsLovesGames/jjk_card_game_new/pull/8/conflict?name=src%252Fpages%252FCollection.tsx&ancestor_oid=9cb943f2c25e84ff7df7a5cc57cfc8c34fe11e82&base_oid=41c612e29711849600f3130ec0df6cd1a225006b&head_oid=8f91fdc803850057ca7bbb43d5b5860f1afba6edariant="outline" onClick={() => navigate('/battle')}>Switch to quick battle</Button>
+          </div>
+        </Card>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-slate-950 text-white flex flex-col" aria-labelledby="battle-arena-title">

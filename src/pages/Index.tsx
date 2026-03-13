@@ -1,6 +1,3 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Layout, Sparkles, Zap, Skull, Swords, Shield, Crown } from 'lucide-react';
 import { HeroSection, StatBadge } from '@/components/design-system';
@@ -15,7 +12,6 @@ interface MenuItem {
 }
 
 export default function Index() {
-  const [mounted, setMounted] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {

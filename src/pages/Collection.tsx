@@ -1,53 +1,36 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card } from '@/types/game';
+import { Card as GameCard } from '@/types/game';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { getCardAsset, getCardBackground } from '@/data/assets';
 import { Search, Swords, Shield, Zap, Home, Sparkles, Star, Diamond, Circle, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { CardFrame, FilterBar, GlassPanel, PageHeader, StatBadge } from '@/components/design-system';
+import { Card } from '@/components/ui/card';
+import { useDeck } from '@/context/DeckContext';
+import { toast } from 'sonner';
+import { TutorialOverlay } from '@/components/TutorialOverlay';
 
 export default function Collection() {
   const navigate = useNavigate();
-  const [cards, setCards] = useState<Card[]>([]);
+  const [cards, setCards] = useState<GameCard[]>([]);
   const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [rarityFilter, setRarityFilter] = useState('all');
-  const [mounted, setMounted] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const { addCardToDraft, draftDeck } = useDeck();
 
   useEffect(() => {
-    import('@/data/cards.json').then(data => setCards(data.default as Card[]));
-    setMounted(true);
+    import('@/data/cards.json').then(data => setCards(data.default as GameCard[]));
   }, []);
 
-  const filteredCards = cards.filter(card => {
-    const matchesSearch = card.name.toLowerCase().includes(search.toLowerCase());
-    const matchesType = typeFilter === 'all' || card.type === typeFilter;
-    const matchesRarity = rarityFilter === 'all' || card.rarity === rarityFilter;
-    return matchesSearch && matchesType && matchesRarity;
-  });
+  const filtered = useMemo(() => cards.filter(card => card.name.toLowerCase().includes(search.toLowerCase())), [cards, search]);
 
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case 'SSR': return 'from-yellow-400 via-orange-500 to-red-500';
-      case 'SR': return 'from-purple-400 to-pink-500';
-      case 'R': return 'from-blue-400 to-cyan-500';
-      default: return 'from-slate-400 to-slate-600';
+  const onAdd = (card: GameCard) => {
+    const added = addCardToDraft(card);
+    if (!added) {
+      toast.error('Deck is full (60 cards max).');
+      return;
     }
-  };
-
-  const getRarityIcon = (rarity: string) => {
-    switch (rarity) {
-      case 'SSR': return <Diamond size={12} />;
-      case 'SR': return <Star size={12} />;
-      case 'R': return <Circle size={12} />;
-      default: return <Square size={12} />;
-    }
+    toast.success(`${card.name} added to deck.`);
   };
 
   return (
