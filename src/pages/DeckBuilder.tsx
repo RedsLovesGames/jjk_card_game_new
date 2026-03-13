@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/types/game';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -19,6 +20,7 @@ interface SavedDeck {
 }
 
 export default function DeckBuilder() {
+  const navigate = useNavigate();
   const [library, setLibrary] = useState<Card[]>([]);
   const [deck, setDeck] = useState<Card[]>([]);
   const [deckName, setDeckName] = useState('My Deck');
@@ -85,16 +87,33 @@ export default function DeckBuilder() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-900 text-white p-ds4 md:p-ds6">
-      <PageHeader
-        title="Deck Builder"
-        subtitle="Assemble and tune your cursed technique lineup"
-        actions={<>
-          <Button variant="outline" size="sm" onClick={() => setShowSaved(!showSaved)}>Saved Decks ({savedDecks.length})</Button>
-          <Button variant="outline" onClick={() => setDeck([])}><RotateCcw className="mr-2" size={16} />Clear</Button>
-          <Button onClick={saveDeck} className="bg-brand-600 hover:bg-brand-500" disabled={deck.length < 40}><Save className="mr-2" size={16} />Save</Button>
-        </>}
-      />
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col h-screen">
+      <header className="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-900">
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            Deck Builder
+          </h1>
+          {deck.length >= 40 && (
+            <Button 
+              onClick={() => navigate('/battle?deck=' + encodeURIComponent(deckName))}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              <Zap className="mr-2" size={18} /> Battle
+            </Button>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => setShowSaved(!showSaved)}>
+            Saved Decks ({savedDecks.length})
+          </Button>
+          <Button variant="outline" onClick={clearDeck}>
+            <RotateCcw className="mr-2" size={18} /> Clear
+          </Button>
+          <Button onClick={saveDeck} className="bg-purple-600 hover:bg-purple-700" disabled={deck.length < 40}>
+            <Save className="mr-2" size={18} /> Save
+          </Button>
+        </div>
+      </header>
 
       {showSaved && (
         <GlassPanel className="mb-ds6 p-ds4">
