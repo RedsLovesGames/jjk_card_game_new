@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card as GameCard } from '@/types/game';
 import { Button } from '@/components/design-system';
 import { useDeck } from '@/context/DeckContext';
-import { toast } from 'sonner';
+import { showError, showSuccess } from '@/lib/toast';
 import { RotateCcw, Save, Zap } from 'lucide-react';
 import { DeckBuilderLibraryPanel } from '@/pages/deck-builder/DeckBuilderLibraryPanel';
 import { DeckBuilderStatsPanel } from '@/pages/deck-builder/DeckBuilderStatsPanel';
@@ -60,18 +60,18 @@ export default function DeckBuilder() {
   const addToDeck = (card: GameCard) => {
     const added = addCardToDraft(card);
     if (!added) {
-      toast.error('Deck cannot exceed 60 cards');
+      showError('Deck cannot exceed 60 cards');
     }
   };
 
   const saveDeck = () => {
     const result = saveDraftDeck(deckName);
     if (result.ok) {
-      toast.success(result.message);
+      showSuccess(result.message);
       return;
     }
 
-    toast.error(result.message);
+    showError(result.message);
   };
 
   const autoOptimize = () => {
@@ -83,7 +83,7 @@ export default function DeckBuilder() {
         addCardToDraft(card);
       });
       setOptimizing(false);
-      toast.success('Deck optimized!');
+      showSuccess('Deck optimized!');
     }, 500);
   };
 

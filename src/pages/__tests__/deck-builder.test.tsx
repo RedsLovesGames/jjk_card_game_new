@@ -4,14 +4,14 @@ import DeckBuilder from '@/pages/DeckBuilder';
 import { DeckProvider } from '@/context/DeckContext';
 import { vi } from 'vitest';
 
-const { toastMock } = vi.hoisted(() => ({
-  toastMock: {
-    success: vi.fn(),
-    error: vi.fn(),
+const { toastHelpersMock } = vi.hoisted(() => ({
+  toastHelpersMock: {
+    showSuccess: vi.fn(),
+    showError: vi.fn(),
   },
 }));
 
-vi.mock('sonner', () => ({ toast: toastMock }));
+vi.mock('@/lib/toast', () => toastHelpersMock);
 
 vi.mock('@/data/cards.json', () => ({
   default: [
@@ -79,7 +79,7 @@ describe('DeckBuilder interactions', () => {
 
     fireEvent.click(optimizeButton);
 
-    await waitFor(() => expect(toastMock.success).toHaveBeenCalledWith('Deck optimized!'), { timeout: 2000 });
+    await waitFor(() => expect(toastHelpersMock.showSuccess).toHaveBeenCalledWith('Deck optimized!'), { timeout: 2000 });
 
     const cardsStatText = screen.getByText(/\d+\/60/).textContent ?? '0/60';
     const deckCount = Number(cardsStatText.split('/')[0]);
