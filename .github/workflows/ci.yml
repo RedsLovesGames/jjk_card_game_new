@@ -26,5 +26,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: TypeScript hygiene gate
+        run: npm run check:ts-hygiene
+
       - name: Test
         run: npm run test

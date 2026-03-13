@@ -115,6 +115,16 @@ Keep the terminal window open while playing. Closing it will stop the server.
 - **Damage**: ATK vs DEF, excess damage to player
 - **Positioning**: Front row protects back row from direct attacks
 
+## 🌐 GitHub Pages deployment
+
+To ensure GitHub Pages always reflects your latest `main` changes:
+
+- In repository **Settings → Pages**, set **Build and deployment** to **GitHub Actions** (not `Deploy from a branch`).
+- Push to `main`; the `Deploy to GitHub Pages` workflow will build and publish the `dist` artifact.
+- The workflow now writes `version.txt` into the deployed site so you can verify the live commit SHA quickly.
+
+If your Pages site is a project site (`https://<user>.github.io/<repo>/`), the build uses an automatic base path derived from the repository name.
+
 ## 🛠️ Development
 
 ### Project Structure
