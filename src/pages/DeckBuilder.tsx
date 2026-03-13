@@ -1,13 +1,10 @@
-"use client";
-
-import React, { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card } from '@/types/game';
+import { Card as GameCard } from '@/types/game';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Trash2, Plus, Save, Sparkles, RotateCcw, Zap, Loader2 } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { useDeck } from '@/context/DeckContext';
 import { toast } from 'sonner';
 import { CardFrame, FilterBar, GlassPanel, StatBadge } from '@/components/design-system';
 
@@ -21,25 +18,13 @@ interface SavedDeck {
 
 export default function DeckBuilder() {
   const navigate = useNavigate();
-  const [library, setLibrary] = useState<Card[]>([]);
-  const [deck, setDeck] = useState<Card[]>([]);
-  const [deckName, setDeckName] = useState('My Deck');
-  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
-  const [showSaved, setShowSaved] = useState(false);
-  const [optimizing, setOptimizing] = useState(false);
+  const [library, setLibrary] = useState<GameCard[]>([]);
   const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [deckName, setDeckName] = useState('My Deck');
+  const { draftDeck, addCardToDraft, removeCardFromDraft, clearDraftDeck, saveDraftDeck, savedDecks, activeDeckName, setActiveDeckName, isDeckValid } = useDeck();
 
   useEffect(() => {
-    import('@/data/cards.json').then(data => setLibrary(data.default as Card[]));
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setSavedDecks(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to load saved decks', e);
-      }
-    }
+    import('@/data/cards.json').then(data => setLibrary(data.default as GameCard[]));
   }, []);
 
   const filteredLibrary = useMemo(() => library.filter(card => {

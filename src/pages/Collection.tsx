@@ -1,53 +1,36 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card } from '@/types/game';
+import { Card as GameCard } from '@/types/game';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { getCardAsset, getCardBackground } from '@/data/assets';
 import { Search, Swords, Shield, Zap, Home, Sparkles, Star, Diamond, Circle, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { CardFrame, FilterBar, GlassPanel, PageHeader, StatBadge } from '@/components/design-system';
+import { Card } from '@/components/ui/card';
+import { useDeck } from '@/context/DeckContext';
+import { toast } from 'sonner';
+import { TutorialOverlay } from '@/components/TutorialOverlay';
 
 export default function Collection() {
   const navigate = useNavigate();
-  const [cards, setCards] = useState<Card[]>([]);
+  const [cards, setCards] = useState<GameCard[]>([]);
   const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [rarityFilter, setRarityFilter] = useState('all');
-  const [mounted, setMounted] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const { addCardToDraft, draftDeck } = useDeck();
 
   useEffect(() => {
-    import('@/data/cards.json').then(data => setCards(data.default as Card[]));
-    setMounted(true);
+    import('@/data/cards.json').then(data => setCards(data.default as GameCard[]));
   }, []);
 
-  const filteredCards = cards.filter(card => {
-    const matchesSearch = card.name.toLowerCase().includes(search.toLowerCase());
-    const matchesType = typeFilter === 'all' || card.type === typeFilter;
-    const matchesRarity = rarityFilter === 'all' || card.rarity === rarityFilter;
-    return matchesSearch && matchesType && matchesRarity;
-  });
+  const filtered = useMemo(() => cards.filter(card => card.name.toLowerCase().includes(search.toLowerCase())), [cards, search]);
 
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case 'SSR': return 'from-yellow-400 via-orange-500 to-red-500';
-      case 'SR': return 'from-purple-400 to-pink-500';
-      case 'R': return 'from-blue-400 to-cyan-500';
-      default: return 'from-slate-400 to-slate-600';
+  const onAdd = (card: GameCard) => {
+    const added = addCardToDraft(card);
+    if (!added) {
+      toast.error('Deck is full (60 cards max).');
+      return;
     }
-  };
-
-  const getRarityIcon = (rarity: string) => {
-    switch (rarity) {
-      case 'SSR': return <Diamond size={12} />;
-      case 'SR': return <Star size={12} />;
-      case 'R': return <Circle size={12} />;
-      default: return <Square size={12} />;
-    }
+    toast.success(`${card.name} added to deck.`);
   };
 
   return (
@@ -177,6 +160,38 @@ export default function Collection() {
                         <p className="text-lg italic text-slate-100">"{selectedCard.ultimateEffect}"</p>
                       </div>
                     )}
+                    <p className="line-clamp-2 text-[11px] italic text-slate-300">"{card.effect}"</p>
+                  </GlassPanel>
+                </CardFrame>
+              );
+            })}
+          </div>
+
+          {filteredCards.length === 0 && (
+            <div className="py-20 text-center">
+              <Search size={40} className="mx-auto mb-4 text-slate-600" />
+              <h3 className="text-2xl font-bold text-slate-400">No cards found</h3>
+            </div>
+          )}
+
+          <Dialog open={!!selectedCard} onOpenChange={() => setSelectedCard(null)}>
+            <DialogContent className="max-w-2xl border-slate-700 bg-slate-900 text-white">
+              {selectedCard && (
+                <div className="relative">
+                  <Button variant="ghost" size="icon" onClick={() => setSelectedCard(null)} className="absolute right-0 top-0 z-raised rounded-full hover:bg-slate-800"><X size={24} /></Button>
+                  <div className="flex flex-col gap-6 md:flex-row">
+                    <div className="w-full md:w-64"><img src={getCardAsset(selectedCard.id, selectedCard.variant).url} alt={selectedCard.name} className="w-full rounded-lg" /></div>
+                    <div className="flex-1">
+                      <h2 className="mb-1 text-3xl font-black">{selectedCard.name}</h2>
+                      <p className="mb-4 text-slate-400">{selectedCard.variant} • {selectedCard.type}</p>
+                      <p className="text-lg italic">"{selectedCard.effect}"</p>
+                      {selectedCard.ultimateEffect && (
+                        <div className="mt-4">
+                          <h4 className="mb-1 flex items-center gap-1 text-sm font-black text-orange-400"><Sparkles size={14} /> ULTIMATE TECHNIQUE</h4>
+                          <p className="text-lg italic">"{selectedCard.ultimateEffect}"</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}

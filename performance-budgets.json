@@ -1,0 +1,8 @@
+{
+  "maxInitialJsKb": 400,
+  "maxAnimatedUtilityClassesPerView": 6,
+  "maxRenderMs": {
+    "index": 60,
+    "collection": 90
+  }
+}
