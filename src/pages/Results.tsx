@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/design-system';
+import { Card } from '@/components/design-system';
 
 export default function Results() {
   const navigate = useNavigate();

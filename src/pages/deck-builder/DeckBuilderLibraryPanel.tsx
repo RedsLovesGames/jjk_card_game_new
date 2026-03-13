@@ -1,7 +1,7 @@
 import { Card as GameCard } from '@/types/game';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/design-system';
+import { Input } from '@/components/design-system';
+import { ScrollArea } from '@/components/design-system';
 import { CardFrame, FilterBar, GlassPanel } from '@/components/design-system';
 import { Plus } from 'lucide-react';
 

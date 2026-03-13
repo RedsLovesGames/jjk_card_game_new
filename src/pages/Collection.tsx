@@ -5,11 +5,11 @@ import { Card as GameCard } from '@/types/game';
 import { useDeck } from '@/context/DeckContext';
 import { toast } from 'sonner';
 import { getCardAsset } from '@/data/assets';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/design-system';
+import { Card } from '@/components/design-system';
+import { Input } from '@/components/design-system';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/design-system';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/design-system';
 
 export default function Collection() {
   const navigate = useNavigate();

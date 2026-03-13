@@ -7,12 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "lint": "eslint .",
+    "lint": "eslint . && npm run check:ui-primitives",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:visual-effects": "vitest run src/__tests__/visual-effects-budget.test.tsx",
-    "perf:budget": "npm run build && node scripts/check-performance-budgets.mjs && npm run test:visual-effects"
+    "perf:budget": "npm run build && node scripts/check-performance-budgets.mjs && npm run test:visual-effects",
+    "check:ui-primitives": "node scripts/check-ui-primitives-usage.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

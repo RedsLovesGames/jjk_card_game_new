@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Loader2, Play, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/design-system';
+import { Card } from '@/components/design-system';
 import { useDeck } from '@/context/DeckContext';
 import { useGame } from '@/context/GameContext';
 

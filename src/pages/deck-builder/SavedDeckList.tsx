@@ -1,5 +1,5 @@
 import { SavedDeck } from '@/types/deck';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/design-system';
 import { GlassPanel } from '@/components/design-system';
 
 interface SavedDeckListProps {
