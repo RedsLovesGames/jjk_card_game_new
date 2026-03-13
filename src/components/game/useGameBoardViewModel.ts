@@ -9,6 +9,8 @@ export interface BattleAnimation {
   cardId?: string;
 }
 
+type TargetingMode = 'attack' | 'ability' | null;
+
 const PHASE_DISPLAY: Record<string, { name: string; color: string }> = {
   start: { name: 'Start Phase', color: 'text-yellow-400' },
   draw: { name: 'Draw Phase', color: 'text-blue-400' },
@@ -23,7 +25,7 @@ const PHASE_DISPLAY: Record<string, { name: string; color: string }> = {
 export const useGameBoardViewModel = () => {
   const { gameState, battleLog, endGame, nextPhase, playCard, resolveCombat, switchPosition } = useGame();
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-  const [targetingMode, setTargetingMode] = useState<'attack' | 'ability' | null>(null);
+  const [targetingMode, setTargetingMode] = useState<TargetingMode>(null);
   const [animations, setAnimations] = useState<BattleAnimation[]>([]);
 
   const board = useMemo(() => {
@@ -33,12 +35,16 @@ export const useGameBoardViewModel = () => {
 
     const player = gameState.players[0];
     const opponent = gameState.players[1];
-    const cardIndex = new Map<string, CardInstance>();
-    [...player.hand, ...player.field, ...opponent.field].forEach((card) => cardIndex.set(card.instanceId, card));
-
-    const selectedCard = selectedCardId ? cardIndex.get(selectedCardId) ?? null : null;
-    const selectedFromHand = selectedCardId ? player.hand.find((card) => card.instanceId === selectedCardId) ?? null : null;
-    const selectedFromField = selectedCardId ? player.field.find((card) => card.instanceId === selectedCardId) ?? null : null;
+    const selectedFromHand = selectedCardId
+      ? player.hand.find((card) => card.instanceId === selectedCardId) ?? null
+      : null;
+    const selectedFromField = selectedCardId
+      ? player.field.find((card) => card.instanceId === selectedCardId) ?? null
+      : null;
+    const selectedCard =
+      selectedFromHand ??
+      selectedFromField ??
+      (selectedCardId ? opponent.field.find((card) => card.instanceId === selectedCardId) ?? null : null);
 
     const isMyTurn = gameState.currentPlayer === 0;
 
