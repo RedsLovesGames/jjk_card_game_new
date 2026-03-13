@@ -137,6 +137,11 @@ src/
 └── utils/                # Utility functions
 ```
 
+
+### Accessibility requirement for UI PRs
+
+All pull requests that modify UI routes or components must include and complete the accessibility acceptance checklist in `docs/a11y-acceptance-checklist.md`.
+
 ### Key Components
 
 #### Game Engine (`src/engine/`)
