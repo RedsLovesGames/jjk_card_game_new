@@ -6,7 +6,7 @@ Date: 2026-03-13
 
 - Unit tests are passing for `GameEngine` core flows (`11/11` tests).
 - Production build succeeds with Vite.
-- ESLint reports a high number of errors, mainly in legacy/experimental engine and API files.
+- ESLint reports a high number of errors, mainly in legacy/experimental engine files.
 
 ## What still needs to be done
 
@@ -42,7 +42,7 @@ Some asset URL generation had a hardcoded repository URL, which can break previe
 
 ### 4) Lint debt (blocks stronger confidence)
 
-There are numerous lint errors (`no-explicit-any`, switch-case declaration issues, etc.) in engine, importer, UI utility files, and API route code.
+There are numerous lint errors (`no-explicit-any`, switch-case declaration issues, etc.) in engine, importer, and UI utility files.
 
 **Recommendation:**
 1. Triage lint into critical runtime paths vs. legacy scaffolding.

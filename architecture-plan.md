@@ -144,12 +144,11 @@ interface Action {
 - **EnergyDisplay**: Resource tracking
 - **LifePointDisplay**: HP tracking
 
-### 5. API Routes
-- `/api/game` - Game state management
-- `/api/cards` - Card data and search
-- `/api/decks` - Deck management
-- `/api/match` - Matchmaking and multiplayer
-- `/api/health` - Health check
+### 5. Client Data Services (Current Runtime)
+- Frontend runtime is Vite + React with no bundled server API routes.
+- Card data is loaded client-side via local assets/importers.
+- Game state orchestration runs in-memory in client context/engine modules for local play.
+- If online multiplayer is introduced later, move orchestration into a dedicated backend package (for example `server/`) and expose typed client adapters under `src/lib/api/`.
 
 ## Migration Strategy
 
