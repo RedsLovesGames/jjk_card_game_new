@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GameEngine } from '../GameEngine';
 import { GameState, CardInstance } from '@/types/game';
+import { SimpleAI } from '@/engine/ai/SimpleAI';
 
 describe('GameEngine Phase Progression', () => {
   let engine: GameEngine;
@@ -210,5 +211,27 @@ describe('Direct Attack Blocking', () => {
     // The BattleResolver has been updated to check for direct attack blocking
     // when opponent has front-row creatures
     expect(typeof engine.resolveCombat).toBe('function');
+  });
+});
+
+
+describe('SimpleAI turn behavior', () => {
+  it('plays at least one affordable card during its main phase', () => {
+    const engine = GameEngine.createNewGame('Player 1', 'Player 2');
+    const internalGame = (engine as any).game;
+    internalGame.gameState.currentPlayer = 1;
+    internalGame.gameState.phase = 'main1';
+
+    const aiPlayer = internalGame.getCurrentPlayer();
+    aiPlayer.setEnergy(5);
+
+    const initialFieldSize = aiPlayer.getField().length;
+    const ai = new SimpleAI(engine);
+    ai.makeMove();
+
+    const nextState = engine.getGameState();
+    const aiState = nextState.players[1];
+
+    expect(aiState.field.length).toBeGreaterThan(initialFieldSize);
   });
 });

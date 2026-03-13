@@ -5,7 +5,6 @@ import { featureFlags } from '@/config/featureFlags';
 import Index from '@/pages/Index';
 import Collection from '@/pages/Collection';
 import DeckBuilder from '@/pages/DeckBuilder';
-import BattleScreen from '@/pages/BattleScreen';
 import Results from '@/pages/Results';
 import NotFound from '@/pages/NotFound';
 import V2Shell from '@/app/v2/V2Shell';
@@ -28,7 +27,7 @@ const legacyRoutes: RouteObject[] = [
       { index: true, element: rootDefaultElement },
       { path: 'collection', element: <Collection /> },
       { path: 'deck-builder', element: <DeckBuilder /> },
-      { path: 'battle', element: <BattleScreen /> },
+      { path: 'battle', element: <BattleV2Container /> },
       { path: 'results', element: <Results /> },
       {
         path: 'game',
