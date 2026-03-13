@@ -54,6 +54,19 @@ A fully playable trading card game web application based on the popular Jujutsu 
 4. **Open your browser**
    Navigate to `http://localhost:8080`
 
+
+### One-click local launcher (Windows)
+
+If you want to start the app by double-clicking a file on your PC:
+
+1. Double-click `start-local.bat` in the project root.
+2. It will:
+   - install dependencies (only if `node_modules` is missing),
+   - start the Vite dev server,
+   - open `http://localhost:8080` in your default browser.
+
+Keep the terminal window open while playing. Closing it will stop the server.
+
 ## 🎯 How to Play
 
 ### Basic Rules
