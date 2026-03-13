@@ -1,6 +1,6 @@
 # Jujutsu Kaisen Card Game
 
-A fully playable trading card game web application based on the popular Jujutsu Kaisen anime series. Built with modern web technologies and featuring strategic gameplay inspired by Yu-Gi-Oh mechanics.
+A fully playable trading card game web application based on the popular Jujutsu Kaisen anime series. Built with modern web technologies and featuring strategic gameplay inspired by Yu-Gi-Oh mechanics. The runtime is frontend-only (Vite + React), with no bundled server API routes.
 
 ## 🎮 Game Features
 
@@ -20,7 +20,7 @@ A fully playable trading card game web application based on the popular Jujutsu 
 - **AI Opponent**: Extensible AI system for single-player mode
 
 ### Technical Features
-- **Modern Stack**: Next.js 14, TypeScript, Tailwind CSS
+- **Modern Stack**: Vite, React 19, TypeScript, Tailwind CSS
 - **Game Engine**: Robust TypeScript-based game logic
 - **Effect System**: Unified effect resolution with structured data
 - **Data Import**: CSV-based card data import and parsing
@@ -120,7 +120,7 @@ Keep the terminal window open while playing. Closing it will stop the server.
 ### Project Structure
 ```
 src/
-├── app/                    # Next.js app router
+├── app/                    # Client app shell and routing
 ├── components/             # React components
 │   ├── game/              # Game-specific components
 │   ├── ui/                # shadcn/ui components
@@ -221,7 +221,6 @@ npm test
 
 ### Environment Variables
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8080/api
 NEXT_PUBLIC_IMAGE_BASE_URL=https://example.com/images
 ```
 
@@ -236,7 +235,7 @@ NEXT_PUBLIC_IMAGE_BASE_URL=https://example.com/images
 ### Build for Production
 ```bash
 npm run build
-npm run start
+npm run preview
 ```
 
 ### Vercel Deployment
