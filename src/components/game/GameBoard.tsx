@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Card as CardUI } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { useGame } from '@/context/GameContext';
 import { CardInstance } from '@/types/game';
-import { Swords, Shield, Zap, ArrowRight, Trophy, Skull, Flame, Home, Sparkles, Waves } from 'lucide-react';
+import { Swords, Shield, Zap, ArrowRight, Trophy, Skull, Home, Sparkles, Waves } from 'lucide-react';
 import { getCardAsset, getCardBackground } from '@/data/assets';
+import { CardFrame, GlassPanel, StatBadge } from '@/components/design-system';
 
 // Animation types
 interface BattleAnimation {
@@ -100,15 +99,10 @@ export const GameBoard: React.FC = () => {
     const bgColor = getCardBackground(card.id, card.rarity || 'C');
     
     return (
-      <CardUI 
+      <CardFrame 
         key={card.instanceId}
-        className={`
-          relative w-28 h-40 cursor-pointer transition-all duration-300 border-2 shrink-0
-          ${isSelected ? 'border-yellow-400 scale-110 z-20 shadow-2xl shadow-yellow-500/40 ring-4 ring-yellow-400/30' : ''}
-          ${canBeTargeted ? 'border-red-500 animate-pulse ring-4 ring-red-500/50' : 'border-slate-700'}
-          ${isExhausted ? 'opacity-50 grayscale' : ''}
-          overflow-hidden group hover:scale-105
-        `}
+        interactive
+        className={`w-28 h-40 border-2 shrink-0 ${isSelected ? 'border-yellow-400 scale-110 z-20 ring-4 ring-yellow-400/30' : ''} ${canBeTargeted ? 'border-red-500 animate-pulse ring-4 ring-red-500/50' : 'border-slate-700'} ${isExhausted ? 'opacity-50 grayscale' : ''}` }
         style={{ background: `linear-gradient(to bottom, ${bgColor}dd, ${bgColor}99)` }}
         onClick={() => handleCardClick(card, ownerId)}
       >
@@ -153,7 +147,7 @@ export const GameBoard: React.FC = () => {
             </span>
           </div>
         )}
-      </CardUI>
+      </CardFrame>
     );
   };
 
@@ -163,14 +157,10 @@ export const GameBoard: React.FC = () => {
     const canPlay = isMyTurn && card.cost <= player.energy && !winner;
     
     return (
-      <CardUI 
+      <CardFrame 
         key={card.instanceId}
-        className={`
-          relative w-24 h-36 cursor-pointer transition-all duration-300 border-2 shrink-0
-          ${selectedCardId === card.instanceId ? 'border-yellow-400 scale-110 z-20 shadow-2xl shadow-yellow-500/40' : 'border-slate-700 hover:border-slate-500 hover:scale-105'}
-          ${!canPlay ? 'opacity-60' : ''}
-          overflow-hidden
-        `}
+        interactive
+        className={`w-24 h-36 border-2 shrink-0 ${selectedCardId === card.instanceId ? 'border-yellow-400 scale-110 z-20' : 'border-slate-700'} ${!canPlay ? 'opacity-60' : ''}` }
         style={{ background: `linear-gradient(to bottom, ${bgColor}dd, ${bgColor}99)` }}
         onClick={() => canPlay && setSelectedCardId(card.instanceId)}
       >
@@ -190,7 +180,7 @@ export const GameBoard: React.FC = () => {
         <div className="absolute bottom-0 left-0 right-0 p-1.5 bg-gradient-to-t from-black to-transparent">
           <div className="text-[8px] font-bold text-white truncate">{card.name}</div>
         </div>
-      </CardUI>
+      </CardFrame>
     );
   };
 
@@ -212,7 +202,7 @@ export const GameBoard: React.FC = () => {
   const phaseInfo = getPhaseDisplay();
 
   return (
-    <div className="h-screen bg-slate-950 text-slate-100 flex flex-col overflow-hidden font-sans">
+    <div className="h-screen bg-surface-900 text-slate-100 flex flex-col overflow-hidden font-sans">
       {/* Game Over Overlay */}
       {winner && (
         <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
@@ -256,14 +246,7 @@ export const GameBoard: React.FC = () => {
           </div>
           <div>
             <div className="text-sm font-bold">{opponent.name}</div>
-            <div className="flex gap-1.5">
-              <Badge className="bg-red-900/80 text-red-300 border-red-700 text-[10px] px-1.5">
-                ♥ {opponent.life}
-              </Badge>
-              <Badge className="bg-blue-900/80 text-blue-300 border-blue-700 text-[10px] px-1.5">
-                ⚡ {opponent.energy}
-              </Badge>
-            </div>
+            <div className="flex gap-1.5"><StatBadge label="HP" value={opponent.life} tone="danger" className="px-2 py-1" /><StatBadge label="EN" value={opponent.energy} tone="brand" className="px-2 py-1" /></div>
           </div>
         </div>
 
@@ -300,14 +283,7 @@ export const GameBoard: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="text-right">
             <div className="text-sm font-bold">{player.name}</div>
-            <div className="flex gap-1.5 justify-end">
-              <Badge className="bg-red-900/80 text-red-300 border-red-700 text-[10px] px-1.5">
-                ♥ {player.life}
-              </Badge>
-              <Badge className="bg-blue-900/80 text-blue-300 border-blue-700 text-[10px] px-1.5">
-                ⚡ {player.energy}/10
-              </Badge>
-            </div>
+            <div className="flex gap-1.5 justify-end"><StatBadge label="HP" value={player.life} tone="danger" className="px-2 py-1" /><StatBadge label="EN" value={`${player.energy}/10`} tone="brand" className="px-2 py-1" /></div>
           </div>
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center border-2 border-blue-500 overflow-hidden">
             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=player" alt="Player" />
@@ -318,7 +294,7 @@ export const GameBoard: React.FC = () => {
       {/* Main Battle Area */}
       <div className="flex-1 flex overflow-hidden">
         {/* Battle Log */}
-        <div className="w-56 bg-slate-900/80 border-r border-slate-800 flex flex-col">
+        <GlassPanel className="w-56 border-r border-slate-800 flex flex-col rounded-none">
           <div className="p-3 border-b border-slate-800 text-xs font-bold uppercase tracking-tighter text-slate-500 flex items-center gap-2">
             <Waves size={12} /> Battle Log
           </div>
@@ -330,7 +306,7 @@ export const GameBoard: React.FC = () => {
             ))}
             <div ref={logEndRef} />
           </div>
-        </div>
+        </GlassPanel>
 
         {/* The Field */}
         <div className="flex-1 relative flex flex-col">
@@ -401,7 +377,7 @@ export const GameBoard: React.FC = () => {
         </div>
 
         {/* Right Panel - Actions */}
-        <div className="w-64 bg-slate-900/80 border-l border-slate-800 p-4 flex flex-col">
+        <GlassPanel className="w-64 border-l border-slate-800 p-4 flex flex-col rounded-none">
           {/* Selected Card */}
           <div className="text-xs font-bold uppercase tracking-tighter text-slate-500 mb-3">Selected Card</div>
           
@@ -481,7 +457,7 @@ export const GameBoard: React.FC = () => {
               />
             </div>
           </div>
-        </div>
+        </GlassPanel>
       </div>
 
       {/* Player Hand */}
