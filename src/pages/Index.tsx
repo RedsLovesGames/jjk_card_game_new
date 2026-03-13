@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Layout, Sparkles, Zap, Skull, Swords, Shield, Crown } from 'lucide-react';
 import { HeroSection, StatBadge } from '@/components/design-system';
@@ -13,9 +14,7 @@ interface MenuItem {
 
 export default function Index() {
   const navigate = useNavigate();
-  const motionTier = useMotionTier();
-  const isReducedMotion = motionTier === 'reduced';
-  const particles = useMemo(() => createDeterministicParticles('index-hero', isReducedMotion ? 0 : 14), [isReducedMotion]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);

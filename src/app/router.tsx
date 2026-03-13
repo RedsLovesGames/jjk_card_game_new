@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
 import { GameBoard } from '@/components/game/GameBoard';
 import { GameRouteGuard } from '@/components/GameRouteGuard';
 import { featureFlags } from '@/config/featureFlags';
@@ -20,7 +20,7 @@ const gameRouteElement = (
 
 const rootDefaultElement = featureFlags.v2Default ? <Navigate to="/v2" replace /> : <Index />;
 
-const legacyRoutes = [
+const legacyRoutes: RouteObject[] = [
   {
     path: '/',
     element: <AppShell />,
@@ -40,7 +40,7 @@ const legacyRoutes = [
   },
 ];
 
-const v2Routes = [
+const v2Routes: RouteObject[] = [
   {
     path: '/v2',
     element: <V2Shell />,
