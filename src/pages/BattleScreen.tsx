@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Card } from '@/types/game';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +21,8 @@ interface SavedDeck {
 export default function BattleScreen() {
   const { startGame } = useGame();
   const navigate = useNavigate();
+  const location = useLocation();
+  const routePrefix = location.pathname.startsWith('/v2') ? '/v2' : '';
   
   const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
   const [selectedDeck, setSelectedDeck] = useState<SavedDeck | null>(null);
@@ -28,8 +30,8 @@ export default function BattleScreen() {
   const [battleType, setBattleType] = useState<'quick' | 'deck'>('quick');
 
   // Navigation helpers
-  const goHome = () => navigate('/');
-  const goDeckBuilder = () => navigate('/deck-builder');
+  const goHome = () => navigate(routePrefix || '/');
+  const goDeckBuilder = () => navigate(`${routePrefix}/deck-builder`);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -61,7 +63,7 @@ export default function BattleScreen() {
     }
     
     // Navigate to game
-    navigate('/game');
+    navigate(`${routePrefix}/game`);
   };
 
   const deckStats = (deck: SavedDeck) => {
