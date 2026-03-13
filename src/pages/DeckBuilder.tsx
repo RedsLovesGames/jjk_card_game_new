@@ -1,180 +1,121 @@
-"use client";
-
-import React, { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card } from '@/types/game';
+import { Card as GameCard } from '@/types/game';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Trash2, Plus, Save, Sparkles, RotateCcw, Zap, Loader2 } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { useDeck } from '@/context/DeckContext';
 import { toast } from 'sonner';
-import { CardFrame, FilterBar, GlassPanel, PageHeader, StatBadge } from '@/components/design-system';
-
-const STORAGE_KEY = 'jjk_saved_decks';
-
-interface SavedDeck {
-  name: string;
-  cards: Card[];
-  createdAt: number;
-}
+import { MIN_DECK_SIZE } from '@/types/deck';
+import { TutorialOverlay } from '@/components/TutorialOverlay';
 
 export default function DeckBuilder() {
   const navigate = useNavigate();
-  const [library, setLibrary] = useState<Card[]>([]);
-  const [deck, setDeck] = useState<Card[]>([]);
-  const [deckName, setDeckName] = useState('My Deck');
-  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]);
-  const [showSaved, setShowSaved] = useState(false);
-  const [optimizing, setOptimizing] = useState(false);
+  const [library, setLibrary] = useState<GameCard[]>([]);
   const [search, setSearch] = useState('');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [deckName, setDeckName] = useState('My Deck');
+  const { draftDeck, addCardToDraft, removeCardFromDraft, clearDraftDeck, saveDraftDeck, savedDecks, activeDeckName, setActiveDeckName, isDeckValid } = useDeck();
 
   useEffect(() => {
-    import('@/data/cards.json').then(data => setLibrary(data.default as Card[]));
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setSavedDecks(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to load saved decks', e);
-      }
-    }
+    import('@/data/cards.json').then(data => setLibrary(data.default as GameCard[]));
   }, []);
 
-  const filteredLibrary = useMemo(() => library.filter(card => {
-    const matchesSearch = card.name.toLowerCase().includes(search.toLowerCase());
-    const matchesType = typeFilter === 'all' || card.type === typeFilter;
-    return matchesSearch && matchesType;
-  }), [library, search, typeFilter]);
+  const filtered = useMemo(() => library.filter(card => card.name.toLowerCase().includes(search.toLowerCase())), [library, search]);
 
-  const deckStats = useMemo(() => {
-    const creatures = deck.filter(c => c.type === 'creature').length;
-    const spells = deck.filter(c => c.type === 'spell').length;
-    const areas = deck.filter(c => c.type === 'area').length;
-    const avgCost = deck.length > 0 ? deck.reduce((sum, c) => sum + c.cost, 0) / deck.length : 0;
-    return { creatures, spells, areas, avgCost: avgCost.toFixed(1) };
-  }, [deck]);
-
-  const addToDeck = (card: Card) => {
-    if (deck.length >= 60) return toast.error('Deck cannot exceed 60 cards');
-    setDeck([...deck, card]);
-  };
-
-  const removeFromDeck = (index: number) => {
-    const newDeck = [...deck];
-    newDeck.splice(index, 1);
-    setDeck(newDeck);
-  };
-
-  const saveDeck = () => {
-    if (deck.length < 40) return toast.error('Deck must have at least 40 cards');
-    if (!deckName.trim()) return toast.error('Please enter a deck name');
-    const newDeck: SavedDeck = { name: deckName, cards: [...deck], createdAt: Date.now() };
-    const updated = [...savedDecks, newDeck];
-    setSavedDecks(updated);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    toast.success(`Deck "${deckName}" saved!`);
-  };
-
-  const autoOptimize = () => {
-    setOptimizing(true);
-    setTimeout(() => {
-      setDeck([...library].sort(() => 0.5 - Math.random()).slice(0, 50));
-      setOptimizing(false);
-      toast.success('Deck optimized!');
-    }, 500);
+  const save = () => {
+    const result = saveDraftDeck(deckName);
+    if (result.ok) {
+      toast.success(result.message);
+      return;
+    }
+    toast.error(result.message);
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col h-screen">
-      <header className="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-900">
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Deck Builder
-          </h1>
-          {deck.length >= 40 && (
-            <Button 
-              onClick={() => navigate('/battle?deck=' + encodeURIComponent(deckName))}
-              className="bg-green-600 hover:bg-green-700"
-            >
-              <Zap className="mr-2" size={18} /> Battle
-            </Button>
-          )}
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setShowSaved(!showSaved)}>
-            Saved Decks ({savedDecks.length})
-          </Button>
-          <Button variant="outline" onClick={clearDeck}>
-            <RotateCcw className="mr-2" size={18} /> Clear
-          </Button>
-          <Button onClick={saveDeck} className="bg-purple-600 hover:bg-purple-700" disabled={deck.length < 40}>
-            <Save className="mr-2" size={18} /> Save
-          </Button>
-        </div>
-      </header>
+    <main className="min-h-screen bg-slate-950 p-6 text-white">
+      <TutorialOverlay
+        pageKey="deck-builder"
+        title="Deck Builder Tips"
+        steps={[
+          'Your draft is persistent, even if you move between pages.',
+          `Build a valid deck (${MIN_DECK_SIZE}+ cards) before battling with it.`,
+          'Use Use this deck to set the active deck for battle.',
+        ]}
+      />
+      <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-[2fr_1fr]">
+        <section>
+          <h1 className="text-3xl font-black">Deck Builder</h1>
+          <p className="mb-4 text-slate-300">Assemble your deck and set the one you want to use in battle.</p>
+          <div className="mb-3 flex gap-2">
+            <Input placeholder="Search library" value={search} onChange={e => setSearch(e.target.value)} className="max-w-sm" />
+            <Button onClick={() => navigate('/battle?mode=deck')} variant="outline">Go to battle</Button>
+            <Button onClick={() => navigate('/collection')} variant="outline">Back to collection</Button>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.slice(0, 24).map(card => (
+              <Card key={`${card.id}-${card.variant}`} className="border-slate-700 bg-slate-900 p-3">
+                <p className="font-bold">{card.name}</p>
+                <p className="mb-2 text-xs text-slate-400">{card.type}</p>
+                <Button size="sm" onClick={() => addCardToDraft(card)}>Add to deck</Button>
+              </Card>
+            ))}
+          </div>
+        </section>
 
-      {showSaved && (
-        <GlassPanel className="mb-ds6 p-ds4">
-          {savedDecks.length === 0 ? <p className="text-slate-400">No saved decks yet</p> : savedDecks.map((d, i) => (
-            <div key={i} className="mb-2 flex items-center justify-between rounded-ds bg-surface-800 p-3">
-              <span className="font-bold">{d.name}</span>
-              <span className="text-xs text-slate-400">{d.cards.length} cards</span>
+        <aside>
+          <Card className="border-slate-700 bg-slate-900 p-4">
+            <Input value={deckName} onChange={e => setDeckName(e.target.value)} className="mb-3" />
+            <p className="mb-3 text-sm text-slate-300">Cards: {draftDeck.length}</p>
+            <div className="mb-3 flex gap-2">
+              <Button onClick={save}>Save deck</Button>
+              <Button variant="outline" onClick={clearDraftDeck}>Clear</Button>
             </div>
-          ))}
-        </GlassPanel>
-      )}
+            <Button
+              className="w-full"
+              disabled={!isDeckValid(draftDeck)}
+              onClick={() => {
+                const result = saveDraftDeck(deckName);
+                if (result.ok) {
+                  toast.success('Use this deck set successfully.');
+                  navigate('/battle?mode=deck');
+                } else {
+                  toast.error(result.message);
+                }
+              }}
+            >
+              Use this deck
+            </Button>
+            {!isDeckValid(draftDeck) && <p className="mt-2 text-xs text-amber-300">Build at least {MIN_DECK_SIZE} cards to use this deck in battle.</p>}
+          </Card>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
-        <GlassPanel className="p-ds4">
-          <FilterBar className="mb-ds4 p-0 border-0 bg-transparent shadow-none">
-            <Input placeholder="Search cards..." value={search} onChange={e => setSearch(e.target.value)} className="bg-slate-800 border-slate-700" />
-            <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="rounded-md border border-slate-700 bg-slate-800 px-3 text-sm">
-              <option value="all">All Types</option><option value="creature">Creature</option><option value="spell">Spell</option><option value="area">Area</option>
-            </select>
-          </FilterBar>
-          <ScrollArea className="h-[62vh]">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
-              {filteredLibrary.map(card => (
-                <CardFrame key={card.id} className="p-2">
-                  <div className="mb-1 truncate text-xs font-bold">{card.name}</div>
-                  <div className="mb-2 text-[10px] text-slate-400">{card.type} | Cost: {card.cost}</div>
-                  <Button size="sm" className="h-6 w-full text-xs" onClick={() => addToDeck(card)}><Plus size={12} /></Button>
-                </CardFrame>
+          <Card className="mt-3 border-slate-700 bg-slate-900 p-4">
+            <h3 className="mb-2 font-bold">Saved decks</h3>
+            <div className="space-y-2">
+              {savedDecks.map(deck => (
+                <button
+                  key={deck.name}
+                  onClick={() => setActiveDeckName(deck.name)}
+                  className={`w-full rounded border p-2 text-left text-sm ${activeDeckName === deck.name ? 'border-emerald-500' : 'border-slate-700'}`}
+                >
+                  {deck.name} ({deck.cards.length})
+                </button>
               ))}
             </div>
-          </ScrollArea>
-        </GlassPanel>
+          </Card>
 
-        <GlassPanel className="p-ds4">
-          <Input value={deckName} onChange={e => setDeckName(e.target.value)} className="mb-ds4 bg-slate-800 border-slate-700" />
-          <Button onClick={autoOptimize} disabled={optimizing || library.length === 0} className="mb-ds4 w-full bg-gradient-to-r from-blue-600 to-brand-600">
-            {optimizing ? <Loader2 className="mr-2 animate-spin" size={16} /> : <Sparkles className="mr-2" size={16} />} Auto Optimize
-          </Button>
-          <div className="mb-ds4 grid grid-cols-2 gap-2">
-            <StatBadge label="Cards" value={`${deck.length}/60`} tone={deck.length >= 40 ? 'success' : 'danger'} />
-            <StatBadge label="Avg Cost" value={deckStats.avgCost} tone="brand" />
-            <StatBadge label="Creatures" value={deckStats.creatures} />
-            <StatBadge label="Spells" value={deckStats.spells} />
-          </div>
-          <ScrollArea className="h-[45vh]">
-            <div className="space-y-1">
-              {deck.map((card, index) => (
-                <div key={`${card.id}-${index}`} className="flex items-center justify-between rounded-ds bg-surface-700 p-2 text-xs">
-                  <div className="flex items-center gap-2"><Badge variant="outline" className="h-5 text-[8px]">{card.cost}</Badge>{card.name}</div>
-                  <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => removeFromDeck(index)}><Trash2 size={12} /></Button>
+          <Card className="mt-3 max-h-72 overflow-auto border-slate-700 bg-slate-900 p-4">
+            <h3 className="mb-2 font-bold">Draft cards</h3>
+            <div className="space-y-1 text-sm">
+              {draftDeck.map((card, index) => (
+                <div key={`${card.id}-${index}`} className="flex items-center justify-between rounded bg-slate-800 px-2 py-1">
+                  <span>{card.name}</span>
+                  <Button variant="ghost" size="sm" onClick={() => removeCardFromDraft(index)}>Remove</Button>
                 </div>
               ))}
             </div>
-          </ScrollArea>
-          {deck.length >= 40 && (
-            <Button onClick={() => (window.location.hash = '#/battle?deck=' + encodeURIComponent(deckName))} className="mt-ds3 w-full bg-emerald-600 hover:bg-emerald-500">
-              <Zap className="mr-2" size={16} /> Battle
-            </Button>
-          )}
-        </GlassPanel>
+          </Card>
+        </aside>
       </div>
-    </div>
+    </main>
   );
 }

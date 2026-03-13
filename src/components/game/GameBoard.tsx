@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useGame } from '@/context/GameContext';
 import { CardInstance } from '@/types/game';
@@ -34,6 +35,7 @@ export const GameBoard: React.FC = () => {
 
   const [animations, setAnimations] = useState<BattleAnimation[]>([]);
   const logEndRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     logEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -226,9 +228,13 @@ export const GameBoard: React.FC = () => {
             )}
             <Button 
               className="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-6 text-xl rounded-xl"
-              onClick={endGame}
+              onClick={() => {
+                const currentWinner = gameState.winner;
+                endGame();
+                navigate('/results', { state: { winner: currentWinner } });
+              }}
             >
-              Return to Menu
+              Continue to Results
             </Button>
           </div>
         </div>
