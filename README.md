@@ -30,8 +30,8 @@ A fully playable trading card game web application based on the popular Jujutsu 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+- Node.js 18+
+- npm (the repo standard package manager)
 
 ### Installation
 
@@ -43,7 +43,7 @@ A fully playable trading card game web application based on the popular Jujutsu 
 
 2. **Install dependencies**
    ```bash
-   npm install
+   npm ci
    ```
 
 3. **Run the development server**
@@ -125,6 +125,12 @@ To ensure GitHub Pages always reflects your latest `main` changes:
 
 If your Pages site is a project site (`https://<user>.github.io/<repo>/`), the build uses an automatic base path derived from the repository name.
 
+Repository note about `docs/`:
+
+- `docs/*.md` are hand-maintained project documentation source files.
+- `docs/assets/*` is generated deployment output mirrored from `dist/assets/*` via `npm run build:docs-assets`; do not edit it manually.
+- See `CONTRIBUTING.md` for commit expectations around generated artifacts.
+
 ## 🛠️ Development
 
 ### Project Structure
@@ -188,6 +194,8 @@ The game uses a structured effect system that supports:
 ## 🎨 Art and Assets
 
 ### Image System
+- **Canonical store**: `public/images` is the single source of truth for character assets.
+- **Docs sync**: run `npm run docs:images` (or `npm run build:docs`) to generate `docs/images` from `public/images` when publishing docs artifacts.
 - **Remote URLs**: Cards use external image URLs
 - **Attribution**: Source tracking and metadata
 - **Fallbacks**: Graceful degradation for missing images
@@ -274,6 +282,12 @@ CMD ["npm", "start"]
 3. **Document Code**: Add JSDoc comments
 4. **Style Guide**: Follow existing code style
 5. **Game Balance**: Consider impact on game balance
+6. **Lockfile policy**: Use npm only, commit `package-lock.json` changes with dependency updates, and do not add `pnpm-lock.yaml`
+
+### Dependency and lockfile workflow
+- Use `npm ci` for reproducible installs from `package-lock.json`.
+- When intentionally changing dependencies, run `npm install <pkg>` (or `npm install`) and commit the resulting `package-lock.json` update in the same PR.
+- CI enforces npm as the single package manager and fails if a `pnpm-lock.yaml` file exists.
 
 ### Pull Request Process
 1. **Fork Repository**: Create your own fork

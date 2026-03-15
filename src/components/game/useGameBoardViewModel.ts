@@ -2,13 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { useGame } from '@/context/GameContext';
 import { CardInstance } from '@/types/game';
 
-export interface BattleAnimation {
-  type: 'attack' | 'play' | 'damage' | 'death';
-  from?: string;
-  to?: string;
-  cardId?: string;
-}
-
 type TargetingMode = 'attack' | 'ability' | null;
 
 const PHASE_DISPLAY: Record<string, { name: string; color: string }> = {
@@ -26,7 +19,6 @@ export const useGameBoardViewModel = () => {
   const { gameState, battleLog, endGame, nextPhase, playCard, resolveCombat, switchPosition } = useGame();
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [targetingMode, setTargetingMode] = useState<TargetingMode>(null);
-  const [animations, setAnimations] = useState<BattleAnimation[]>([]);
 
   const board = useMemo(() => {
     if (!gameState) {
@@ -85,7 +77,6 @@ export const useGameBoardViewModel = () => {
 
     if (targetingMode === 'attack' && ownerId === board.opponent.id && card.type === 'creature') {
       if (selectedCardId) {
-        setAnimations((prev) => [...prev, { type: 'attack', from: selectedCardId, to: card.instanceId }]);
         resolveCombat(selectedCardId, card.instanceId);
         clearSelection();
       }
@@ -105,7 +96,6 @@ export const useGameBoardViewModel = () => {
       return;
     }
 
-    setAnimations((prev) => [...prev, { type: 'attack', from: selectedCardId, to: 'opponent' }]);
     resolveCombat(selectedCardId);
     clearSelection();
   }, [board, clearSelection, resolveCombat, selectedCardId, targetingMode]);
@@ -115,7 +105,6 @@ export const useGameBoardViewModel = () => {
       return;
     }
 
-    setAnimations((prev) => [...prev, { type: 'play', cardId: selectedCardId }]);
     if (playCard(selectedCardId)) {
       clearSelection();
     }
@@ -147,7 +136,6 @@ export const useGameBoardViewModel = () => {
     battleLog,
     selectedCardId,
     targetingMode,
-    animations,
     board,
     actions: {
       endGame,
