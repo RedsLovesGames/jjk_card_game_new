@@ -125,6 +125,12 @@ To ensure GitHub Pages always reflects your latest `main` changes:
 
 If your Pages site is a project site (`https://<user>.github.io/<repo>/`), the build uses an automatic base path derived from the repository name.
 
+Repository note about `docs/`:
+
+- `docs/*.md` are hand-maintained project documentation source files.
+- `docs/assets/*` is generated deployment output mirrored from `dist/assets/*` via `npm run build:docs-assets`; do not edit it manually.
+- See `CONTRIBUTING.md` for commit expectations around generated artifacts.
+
 ## 🛠️ Development
 
 ### Project Structure
