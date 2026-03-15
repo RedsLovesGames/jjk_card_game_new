@@ -30,8 +30,8 @@ A fully playable trading card game web application based on the popular Jujutsu 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+- Node.js 18+
+- npm (the repo standard package manager)
 
 ### Installation
 
@@ -43,7 +43,7 @@ A fully playable trading card game web application based on the popular Jujutsu 
 
 2. **Install dependencies**
    ```bash
-   npm install
+   npm ci
    ```
 
 3. **Run the development server**
@@ -274,6 +274,12 @@ CMD ["npm", "start"]
 3. **Document Code**: Add JSDoc comments
 4. **Style Guide**: Follow existing code style
 5. **Game Balance**: Consider impact on game balance
+6. **Lockfile policy**: Use npm only, commit `package-lock.json` changes with dependency updates, and do not add `pnpm-lock.yaml`
+
+### Dependency and lockfile workflow
+- Use `npm ci` for reproducible installs from `package-lock.json`.
+- When intentionally changing dependencies, run `npm install <pkg>` (or `npm install`) and commit the resulting `package-lock.json` update in the same PR.
+- CI enforces npm as the single package manager and fails if a `pnpm-lock.yaml` file exists.
 
 ### Pull Request Process
 1. **Fork Repository**: Create your own fork
