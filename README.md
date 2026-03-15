@@ -188,6 +188,8 @@ The game uses a structured effect system that supports:
 ## 🎨 Art and Assets
 
 ### Image System
+- **Canonical store**: `public/images` is the single source of truth for character assets.
+- **Docs sync**: run `npm run docs:images` (or `npm run build:docs`) to generate `docs/images` from `public/images` when publishing docs artifacts.
 - **Remote URLs**: Cards use external image URLs
 - **Attribution**: Source tracking and metadata
 - **Fallbacks**: Graceful degradation for missing images
