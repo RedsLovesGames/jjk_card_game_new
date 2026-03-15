@@ -11,6 +11,15 @@ export default defineConfig(() => ({
     host: "::",
     port: 8080,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name][extname]',
+      },
+    },
+  },
   plugins: [dyadComponentTagger(), react()],
   resolve: {
     alias: {
