@@ -14,7 +14,9 @@
     "test:visual-effects": "vitest run src/__tests__/visual-effects-budget.test.tsx",
     "perf:budget": "npm run build && node scripts/check-performance-budgets.mjs && npm run test:visual-effects",
     "check:ui-primitives": "node scripts/check-ui-primitives-usage.mjs",
-    "check:ts-hygiene": "node scripts/check-ts-hygiene.mjs"
+    "check:ts-hygiene": "node scripts/check-ts-hygiene.mjs",
+    "docs:images": "node scripts/copy-docs-images.mjs",
+    "build:docs": "vite build --outDir docs && npm run docs:images"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
