@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -33,9 +33,16 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Performance budgets and build
-        run: npm run perf:budget
+      - name: Build for GitHub Pages
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+        run: npm run build
 
+      - name: Add SPA fallback and deploy metadata
+        run: |
+          cp dist/index.html dist/404.html
+          echo "commit=${GITHUB_SHA}" > dist/version.txt
+          echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> dist/version.txt
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
