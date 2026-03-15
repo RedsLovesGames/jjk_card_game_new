@@ -1,5 +1,6 @@
 import { GameEngine } from '../GameEngine';
 import { CardInstance, GameState } from '@/types/game';
+import { PlayerModel } from '@/engine/models/Player';
 
 export class SimpleAI {
   private engine: GameEngine;
@@ -10,7 +11,7 @@ export class SimpleAI {
 
   makeMove(): GameState | null {
     let gameState = this.engine.getGameState();
-    let currentPlayer = this.engine.getCurrentPlayer();
+    let currentPlayer = this.engine.getCurrentPlayer() as PlayerModel;
     let moves = 0;
     const maxMoves = 30; // Prevent infinite loops
     
@@ -31,7 +32,7 @@ export class SimpleAI {
           // Refresh player reference to get updated energy
           currentPlayer = this.engine.getCurrentPlayer();
           // If couldn't play anything or no more energy, move to next phase
-          if (!played || !currentPlayer || currentPlayer.energy <= 0) {
+          if (!played || currentPlayer.getEnergy() <= 0) {
             this.engine.nextPhase();
           }
           break;
@@ -61,15 +62,15 @@ export class SimpleAI {
     return this.engine.getGameState();
   }
 
-  private playCardsAndAbilities(currentPlayer: any): boolean {
+  private playCardsAndAbilities(currentPlayer: PlayerModel): boolean {
     // Priority: Areas > Spells > Creatures
     
-    let energy = currentPlayer.energy;
+    let energy = currentPlayer.getEnergy();
     let playedAny = false;
     
     // Keep playing while we have energy and playable cards
     while (energy > 0) {
-      const playableCards = currentPlayer.hand.filter((card: CardInstance) => 
+      const playableCards = currentPlayer.getHand().filter((card: CardInstance) =>
         card.cost <= energy
       );
 
@@ -98,7 +99,7 @@ export class SimpleAI {
       if (!cardToPlay) break;
 
       // Play the card
-      const success = this.engine.playCard(currentPlayer.id, cardToPlay.instanceId);
+      const success = this.engine.playCard(currentPlayer.getId(), cardToPlay.instanceId);
       if (success) {
         energy -= cardToPlay.cost;
         playedAny = true;
@@ -114,8 +115,8 @@ export class SimpleAI {
     return playedAny;
   }
 
-  private activateAbilities(currentPlayer: any): void {
-    const field = currentPlayer.field || [];
+  private activateAbilities(currentPlayer: PlayerModel): void {
+    const field = currentPlayer.getField();
     
     for (const card of field) {
       // Check if card has abilities and can use them
@@ -126,10 +127,10 @@ export class SimpleAI {
     }
   }
 
-  private attackWithCreatures(currentPlayer: any, gameState: any): void {
+  private attackWithCreatures(currentPlayer: PlayerModel, gameState: GameState): void {
     // Get all attackers
     const attackers = this.engine.getValidAttackers();
-    const opponent = currentPlayer.id === gameState.players[0]?.id 
+    const opponent = currentPlayer.getId() === gameState.players[0]?.id
       ? gameState.players[1] 
       : gameState.players[0];
     const opponentField = opponent?.field || [];
@@ -140,8 +141,6 @@ export class SimpleAI {
       if (!this.engine.canAttack(attacker.instanceId)) continue;
 
       // Check if attacker has already attacked this turn (has attacked flag)
-      if (attacker.hasAttacked) continue;
-
       // Get valid blockers
       const blockers = this.engine.getValidBlockers();
       
