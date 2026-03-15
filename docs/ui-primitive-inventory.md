@@ -29,4 +29,4 @@ rg "@/components/ui/" src --glob '!src/components/ui/**'
 
 ## Archived primitives
 
-Unused primitives were moved to `src/components/ui/_archived/` after reference checks and build validation, so the live `src/components/ui/` directory now only contains actively used primitives.
+Unused primitives were moved to `archive/ui-primitives/` after reference checks and build validation, so the live `src/components/ui/` directory now only contains actively used primitives while archived references stay outside the compiled `src/` tree.

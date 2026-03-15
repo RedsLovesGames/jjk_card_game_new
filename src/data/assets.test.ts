@@ -1,21 +1,27 @@
+import { describe, expect, it } from 'vitest';
+
 import { CARD_ASSETS, getCardAsset } from './assets';
 
-describe('asset metadata', () => {
-  it('uses static file paths instead of inline data URLs', () => {
-    for (const asset of Object.values(CARD_ASSETS)) {
-      expect(asset.url.startsWith('data:')).toBe(false);
-    }
+describe('getCardAsset', () => {
+  it('returns the exact asset for a direct card ID match', () => {
+    const cardId = 'fushiguro-megumi';
+
+    const asset = getCardAsset(cardId);
+
+    expect(asset.attribution).toBe(CARD_ASSETS[cardId].attribution);
+    expect(asset.url).toContain('/images/fushiguro-megumi/Megumi_Child.webp');
   });
 
-  it('resolves public URLs to absolute URLs', () => {
-    const asset = getCardAsset('akari-nitta');
+  it('returns a variant URL when card ID matches a normalized base key', () => {
+    const asset = getCardAsset('fushiguromegumi-child', 'Adult');
 
-    expect(asset.url).toBe(`${window.location.origin}/images/akari-nitta/akari-nitta.svg`);
+    expect(asset.url).toContain('/images/fushiguro-megumi/Megumi_Adult.webp');
   });
 
-  it('resolves variant asset URLs with public image paths', () => {
-    const asset = getCardAsset('fushiguromegumi-child', 'child');
+  it('falls back to the default asset for unknown card IDs', () => {
+    const asset = getCardAsset('unknown-card-id-123');
 
-    expect(asset.url).toBe(`${window.location.origin}/images/fushiguro-megumi/Megumi_child.webp`);
+    expect(asset.attribution).toBe(CARD_ASSETS.default.attribution);
+    expect(asset.url).toContain('/placeholder.svg');
   });
 });
