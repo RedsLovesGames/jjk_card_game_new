@@ -53,7 +53,12 @@ const v2Routes: RouteObject[] = [
   },
 ];
 
-export const router = createBrowserRouter([
-  ...legacyRoutes,
-  ...(featureFlags.v2Enabled ? v2Routes : []),
-]);
+export const router = createBrowserRouter(
+  [
+    ...legacyRoutes,
+    ...(featureFlags.v2Enabled ? v2Routes : []),
+  ],
+  {
+    basename: import.meta.env.BASE_URL,
+  },
+);
