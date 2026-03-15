@@ -151,6 +151,28 @@ export const CARD_ASSETS: Record<string, AssetMetadata> = {
   "default": { url: "/placeholder.svg", attribution: "System Placeholder", sourceUrl: "#" }
 };
 
+const normalizeBaseAssetKey = (key: string): string => key.replace(/-/g, '').toLowerCase();
+
+const NON_DEFAULT_CARD_ASSET_ENTRIES = Object.entries(CARD_ASSETS)
+  .filter(([key]) => key !== 'default')
+  .map(([key, asset]) => ({
+    baseKey: key,
+    normalizedBaseKey: normalizeBaseAssetKey(key),
+    asset,
+  }));
+
+const CARD_ASSET_BY_NORMALIZED_BASE_KEY = new Map(
+  NON_DEFAULT_CARD_ASSET_ENTRIES.map((entry) => [entry.normalizedBaseKey, entry]),
+);
+
+const CARD_ASSET_VARIANT_INDEX = NON_DEFAULT_CARD_ASSET_ENTRIES.reduce((index, entry) => {
+  const prefix = entry.normalizedBaseKey.charAt(0);
+  const existingEntries = index.get(prefix) ?? [];
+  existingEntries.push(entry);
+  index.set(prefix, existingEntries);
+  return index;
+}, new Map<string, typeof NON_DEFAULT_CARD_ASSET_ENTRIES>());
+
 export const getCardAsset = (cardId: string, variant?: string): AssetMetadata => {
   // Direct match
   if (CARD_ASSETS[cardId]) {
@@ -159,20 +181,22 @@ export const getCardAsset = (cardId: string, variant?: string): AssetMetadata =>
   }
   
   const cardIdLower = cardId.toLowerCase();
+  const variantCandidates = CARD_ASSET_VARIANT_INDEX.get(cardIdLower.charAt(0)) ?? NON_DEFAULT_CARD_ASSET_ENTRIES;
   
   // Try to match by extracting the base name from card ID
   // Card IDs like "fushiguromegumi-child" should match asset "fushiguro-megumi"
-  for (const baseKey of Object.keys(CARD_ASSETS)) {
-    if (baseKey === 'default') continue;
-    
-    // Create a regex pattern to match the base key with the card ID
-    // e.g., "fushiguro-megumi" should match "fushiguromegumi-child"
-    const escapedKey = baseKey.replace(/-/g, '');
-    if (cardIdLower.includes(escapedKey)) {
+  for (const candidate of variantCandidates) {
+    if (cardIdLower.includes(candidate.normalizedBaseKey)) {
+      const baseEntry = CARD_ASSET_BY_NORMALIZED_BASE_KEY.get(candidate.normalizedBaseKey);
+      if (!baseEntry) {
+        continue;
+      }
+
+      const { baseKey, asset } = baseEntry;
       // If we have a variant, try to return the variant-specific image path
       if (variant) {
         // Get the original extension from the base asset
-        const baseUrl = CARD_ASSETS[baseKey].url;
+        const baseUrl = asset.url;
         const ext = baseUrl.includes('.webp') ? '.webp' : baseUrl.includes('.png') ? '.png' : '.svg';
         
         // Extract character name from baseKey (e.g., "fushiguro-megumi" -> "Megumi")
@@ -181,13 +205,12 @@ export const getCardAsset = (cardId: string, variant?: string): AssetMetadata =>
         const charVariant = charNameCapitalized ? charNameCapitalized + '_' + variant : variant;
         
         return {
-          ...CARD_ASSETS[baseKey], 
+          ...asset,
           url: resolvePublicAssetUrl('/images/' + baseKey + '/' + charVariant.replace(/[^a-zA-Z0-9]/g, '_') + ext),
           variant: variant 
         };
       }
-      const baseAsset = CARD_ASSETS[baseKey];
-      return { ...baseAsset, url: resolvePublicAssetUrl(baseAsset.url) };
+      return { ...asset, url: resolvePublicAssetUrl(asset.url) };
     }
   }
   
