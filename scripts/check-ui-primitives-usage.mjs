@@ -1,8 +1,16 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const uiDir = 'src/components/ui';
+const legacyArchivedUiDir = 'src/components/ui/_archived';
 const searchRoots = ['src/app', 'src/pages', 'src/components', 'src/hooks'];
+
+if (existsSync(legacyArchivedUiDir)) {
+  console.error(
+    `Legacy archived UI directory detected at ${legacyArchivedUiDir}. Move archived references to archive/ui-primitives/ so they stay out of the compiled src tree.`,
+  );
+  process.exit(1);
+}
 
 const uiFiles = readdirSync(uiDir)
   .filter((file) => /\.(ts|tsx)$/.test(file))
@@ -14,7 +22,7 @@ function walk(dir) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const next = join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (next === 'src/components/ui' || next === 'src/components/ui/_archived') continue;
+      if (next === uiDir) continue;
       walk(next);
       continue;
     }
