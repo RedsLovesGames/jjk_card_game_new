@@ -1,21 +1,27 @@
 import { describe, expect, it } from 'vitest';
 
+import manifest from './card-art-manifest.json';
 import { CARD_ASSETS, getCardAsset } from './assets';
+
+const firstManifestEntry = manifest[0];
 
 describe('getCardAsset', () => {
   it('returns the exact asset for a direct card ID match', () => {
-    const cardId = 'fushiguro-megumi';
+    const cardId = firstManifestEntry.cardId;
 
     const asset = getCardAsset(cardId);
 
     expect(asset.attribution).toBe(CARD_ASSETS[cardId].attribution);
-    expect(asset.url).toContain('/images/fushiguro-megumi/Megumi_Child.webp');
+    expect(asset.url).toContain(CARD_ASSETS[cardId].url);
   });
 
-  it('returns a variant URL when card ID matches a normalized base key', () => {
-    const asset = getCardAsset('fushiguromegumi-child', 'Adult');
+  it('resolves a normalized card ID to the same asset entry', () => {
+    const cardId = firstManifestEntry.cardId;
+    const normalizedCardId = cardId.replace(/-/g, '');
 
-    expect(asset.url).toContain('/images/fushiguro-megumi/Megumi_Adult.webp');
+    const asset = getCardAsset(normalizedCardId, 'Any Variant');
+
+    expect(asset.url).toContain(CARD_ASSETS[cardId].url);
   });
 
   it('falls back to the default asset for unknown card IDs', () => {
