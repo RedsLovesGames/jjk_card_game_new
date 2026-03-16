@@ -318,3 +318,27 @@ For issues, questions, or contributions:
 ---
 
 **Built with ❤️ using Dyad, React, TypeScript, and Tailwind CSS**
+
+## 🖼️ Card art sourcing policy
+
+The card art pipeline is script-based (`npm run art:fetch`) and manifest-driven (`src/data/card-art-manifest.json`).
+
+### Allowed source domains
+- `local-placeholder://` (current default provider used by `scripts/fetch-card-art.mjs`)
+- Additional providers must explicitly whitelist domains before use.
+
+### Licensing requirements
+- Each manifest entry must include `license`, `attribution`, and `sourceUrl`.
+- Placeholder strings (for example `#`, `TODO`, or `placeholder`) are rejected by `npm run art:validate`.
+- Assets without clear licensing metadata must not be merged.
+
+### Robots/compliance limits
+- Providers must honor robots.txt and Terms of Service for every target site.
+- Aggressive crawling is forbidden; use conservative request rates and cache responses.
+- If a provider cannot verify compliance, mark the image as flagged and require manual replacement.
+
+### Manual review workflow for flagged images
+1. Run `npm run art:fetch` (or `npm run art:refresh` for stale entries).
+2. Run `npm run art:validate`.
+3. Review generated manifest entries for licensing and attribution quality.
+4. For any flagged source/compliance issue, replace or remove the image before merge.

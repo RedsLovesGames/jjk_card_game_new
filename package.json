@@ -15,7 +15,10 @@
     "perf:budget": "npm run build && node scripts/check-performance-budgets.mjs && npm run test:visual-effects",
     "check:ui-primitives": "node scripts/check-ui-primitives-usage.mjs",
     "check:ts-hygiene": "node scripts/check-ts-hygiene.mjs",
-    "check:lockfile": "node scripts/check-lockfile-manager.mjs"
+    "check:lockfile": "node scripts/check-lockfile-manager.mjs",
+    "art:fetch": "node scripts/fetch-card-art.mjs",
+    "art:validate": "node scripts/validate-card-art.mjs",
+    "art:refresh": "node scripts/fetch-card-art.mjs --refresh"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
