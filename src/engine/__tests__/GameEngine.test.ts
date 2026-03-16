@@ -235,3 +235,195 @@ describe('SimpleAI turn behavior', () => {
     expect(aiState.field.length).toBeGreaterThan(initialFieldSize);
   });
 });
+
+
+describe('BattleResolver Combat Resolution', () => {
+  let engine: GameEngine;
+
+  const moveToBattlePhase = () => {
+    engine.nextPhase(); // start -> draw
+    engine.nextPhase(); // draw -> energy
+    engine.nextPhase(); // energy -> main1
+    engine.nextPhase(); // main1 -> battle
+  };
+
+  const createCreature = (baseCard: CardInstance, overrides: Partial<CardInstance>): CardInstance => ({
+    ...baseCard,
+    id: overrides.id ?? baseCard.id,
+    instanceId: overrides.instanceId || `test_${Math.random().toString(36).slice(2)}`,
+    ownerId: overrides.ownerId ?? baseCard.ownerId,
+    location: 'field',
+    type: 'creature',
+    position: 'front',
+    status: [],
+    currentAttack: 0,
+    currentDefense: 0,
+    currentHealth: 0,
+    ...overrides,
+  });
+
+  beforeEach(() => {
+    engine = GameEngine.createNewGame('Player 1', 'Player 2');
+  });
+
+  it('attack less than defense: no destroy and no overflow', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'att_lt_def',
+      ownerId: player.getId(),
+      currentAttack: 100,
+      currentDefense: 0,
+      currentHealth: 100,
+    });
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'def_lt_def',
+      ownerId: opponent.getId(),
+      currentAttack: 0,
+      currentDefense: 150,
+      currentHealth: 200,
+    });
+
+    player.getField().push(attacker);
+    opponent.getField().push(defender);
+
+    const result = engine.resolveCombat(attacker.instanceId, defender.instanceId);
+    expect(result).not.toBeNull();
+    expect(result.defenderDestroyed).toBe(false);
+    expect(result.overflowDamage).toBe(0);
+
+    const state = engine.getGameState();
+    expect(state.players[1].field.some(c => c.instanceId === defender.instanceId)).toBe(true);
+    expect(state.players[1].life).toBe(2000);
+    expect(state.players[1].field.find(c => c.instanceId === defender.instanceId)?.currentHealth).toBe(200);
+  });
+
+  it('attack equal defense: no destroy and no overflow', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'att_eq_def',
+      ownerId: player.getId(),
+      currentAttack: 150,
+      currentHealth: 100,
+    });
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'def_eq_def',
+      ownerId: opponent.getId(),
+      currentDefense: 150,
+      currentHealth: 200,
+    });
+
+    player.getField().push(attacker);
+    opponent.getField().push(defender);
+
+    const result = engine.resolveCombat(attacker.instanceId, defender.instanceId);
+    expect(result).not.toBeNull();
+    expect(result.defenderDestroyed).toBe(false);
+    expect(result.overflowDamage).toBe(0);
+
+    const state = engine.getGameState();
+    expect(state.players[1].field.some(c => c.instanceId === defender.instanceId)).toBe(true);
+    expect(state.players[1].life).toBe(2000);
+  });
+
+  it('attack greater defense: destroys defender and overflows excess to defending player', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'att_gt_def',
+      ownerId: player.getId(),
+      currentAttack: 260,
+      currentHealth: 100,
+    });
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'def_gt_def',
+      ownerId: opponent.getId(),
+      currentDefense: 100,
+      currentHealth: 120,
+    });
+
+    player.getField().push(attacker);
+    opponent.getField().push(defender);
+
+    const result = engine.resolveCombat(attacker.instanceId, defender.instanceId);
+    expect(result).not.toBeNull();
+    expect(result.defenderDestroyed).toBe(true);
+    expect(result.damageDealt).toBe(120);
+    expect(result.overflowDamage).toBe(40);
+
+    const state = engine.getGameState();
+    expect(state.players[1].field.some(c => c.instanceId === defender.instanceId)).toBe(false);
+    expect(state.players[1].graveyard.some(c => c.instanceId === defender.instanceId)).toBe(true);
+    expect(state.players[1].life).toBe(1960);
+  });
+
+  it('direct attack still works unchanged', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'direct_attacker',
+      ownerId: player.getId(),
+      currentAttack: 300,
+      currentHealth: 100,
+    });
+
+    player.getField().push(attacker);
+
+    const result = engine.resolveCombat(attacker.instanceId);
+    expect(result).not.toBeNull();
+    expect(result.defender).toBeNull();
+    expect(result.damageDealt).toBe(300);
+    expect(result.overflowDamage).toBe(0);
+
+    const state = engine.getGameState();
+    expect(state.players[1].life).toBe(1700);
+  });
+
+  it('ignore_defense status enables overflow from full attack power', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'att_ignore_defense',
+      ownerId: player.getId(),
+      currentAttack: 200,
+      currentHealth: 100,
+      status: ['ignore_defense'],
+    });
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'def_ignore_defense',
+      ownerId: opponent.getId(),
+      currentDefense: 180,
+      currentHealth: 50,
+    });
+
+    player.getField().push(attacker);
+    opponent.getField().push(defender);
+
+    const result = engine.resolveCombat(attacker.instanceId, defender.instanceId);
+    expect(result).not.toBeNull();
+    expect(result.defenderDestroyed).toBe(true);
+    expect(result.damageDealt).toBe(50);
+    expect(result.overflowDamage).toBe(150);
+
+    const state = engine.getGameState();
+    expect(state.players[1].life).toBe(1850);
+    const combatLogs = state.battleLog.join(' | ');
+    expect(combatLogs).toContain('is destroyed by');
+    expect(combatLogs).toContain('Overflow damage to Player 2: 150');
+  });
+});

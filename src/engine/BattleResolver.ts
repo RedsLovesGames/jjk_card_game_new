@@ -70,16 +70,14 @@ export class BattleResolver {
     const attackerModel = new CardModel(attacker);
     const defenderModel = new CardModel(defender);
 
-    let attackerAttack = attacker.currentAttack || attackerModel.getAttack();
-    let defenderDefense = defender.currentDefense || defenderModel.getDefense();
+    const attackPower = attacker.currentAttack || attackerModel.getAttack();
+    const baseDefense = defender.currentDefense || defenderModel.getDefense();
+    const effectiveHealth = defender.currentHealth ?? defenderModel.getHealth();
 
     // Check for ignore defense
     const hasIgnoreDefense = attacker.status?.includes('ignore_defense') || 
                             defender.status?.includes('ignore_defense');
-    
-    if (hasIgnoreDefense) {
-      defenderDefense = 0;
-    }
+    const effectiveDefense = hasIgnoreDefense ? 0 : baseDefense;
 
     // Check for linked damage
     const hasLinkedDamage = attacker.status?.includes('linked_damage');
@@ -88,44 +86,34 @@ export class BattleResolver {
       this.game.addToBattleLog(`${attacker.name} deals linked damage`);
     }
 
-    // Calculate damage
-    const damageDealt = Math.max(0, attackerAttack - defenderDefense);
-    let overflowDamage = 0;
+    // DEF + HP model: DEF mitigates first, then remaining damage is applied to HP.
+    const penetratingDamage = Math.max(0, attackPower - effectiveDefense);
+    const damageDealt = Math.min(penetratingDamage, effectiveHealth);
+    const remainingHealth = Math.max(0, effectiveHealth - penetratingDamage);
+    const defenderDestroyed = remainingHealth <= 0;
+    const overflowDamage = defenderDestroyed ? Math.max(0, penetratingDamage - effectiveHealth) : 0;
 
-    // Apply damage to defender
-    if (defender.currentHealth !== undefined) {
-      const newHealth = Math.max(0, defender.currentHealth - damageDealt);
-      defender.currentHealth = newHealth;
-      
-      if (newHealth <= 0) {
-        // Defender is destroyed
-        this.game.addToBattleLog(`${defender.name} was destroyed in battle`);
-        const opponent = this.game.getOpponent();
-        // Use instanceId to correctly identify the specific card instance
-        opponent.moveToGraveyard(defender.instanceId);
-        
-        // Check for on-death triggers
-        this.checkDeathTriggers(defender);
-      } else {
-        this.game.addToBattleLog(`${defender.name} took ${damageDealt} damage, health: ${newHealth}`);
-      }
+    defender.currentHealth = remainingHealth;
+
+    if (penetratingDamage <= 0) {
+      this.game.addToBattleLog(
+        `${defender.name} blocks ${attacker.name} (ATK ${attackPower} vs DEF ${effectiveDefense}) - no break or overflow`
+      );
+    } else if (!defenderDestroyed) {
+      this.game.addToBattleLog(
+        `${defender.name} blocks ${attacker.name} and survives: ${damageDealt} damage, ${remainingHealth} HP left`
+      );
     } else {
-      // Defender destroyed
-      this.game.addToBattleLog(`${defender.name} was destroyed in battle`);
       const opponent = this.game.getOpponent();
-      // Use instanceId to correctly identify the specific card instance
       opponent.moveToGraveyard(defender.instanceId);
-      
-      // Check for on-death triggers
+      this.game.addToBattleLog(`${defender.name} is destroyed by ${attacker.name}`);
       this.checkDeathTriggers(defender);
     }
 
-    // Check for damage overflow
-    if (damageDealt > defenderDefense && defenderDefense > 0) {
-      overflowDamage = damageDealt - defenderDefense;
+    if (overflowDamage > 0) {
       const opponent = this.game.getOpponent();
       opponent.setLife(opponent.getLife() - overflowDamage);
-      this.game.addToBattleLog(`Overflow damage: ${overflowDamage} to ${opponent.getName()}`);
+      this.game.addToBattleLog(`Overflow damage to ${opponent.getName()}: ${overflowDamage}`);
     }
 
     // Check for on-hit triggers
@@ -135,7 +123,7 @@ export class BattleResolver {
       attacker,
       defender,
       damageDealt,
-      defenderDestroyed: defender.currentHealth === 0 || defender.currentHealth === undefined,
+      defenderDestroyed,
       overflowDamage
     };
   }
