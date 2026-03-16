@@ -19,22 +19,15 @@ interface CardArtManifestEntry {
   fetchedAt: string;
 }
 
-const getAppBaseUrl = (): string => {
-  const basePath = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
-
-  if (typeof window !== 'undefined' && window.location.origin) {
-    return `${window.location.origin}${basePath}`;
-  }
-
-  return basePath || '';
-};
-
 const resolvePublicAssetUrl = (assetPath: string): string => {
-  if (!assetPath.startsWith('/')) {
+  if (/^https?:\/\//.test(assetPath) || !assetPath.startsWith('/')) {
     return assetPath;
   }
 
-  return `${getAppBaseUrl()}${assetPath}`;
+  const basePath = import.meta.env.BASE_URL ?? '/';
+  const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
+
+  return `${normalizedBasePath}${assetPath.slice(1)}`;
 };
 
 export const getRarityBackground = (rarity: string): string => {
