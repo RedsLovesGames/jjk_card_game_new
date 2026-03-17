@@ -11,7 +11,12 @@ export interface AssetMetadata {
 
 interface CardArtManifestEntry {
   cardId: string;
-  localPath: string;
+  localPathOriginal?: string;
+  localPathCard?: string;
+  localPath?: string;
+  width?: number;
+  height?: number;
+  format?: string;
   attribution: string;
   sourceUrl: string;
   license?: string;
@@ -45,7 +50,7 @@ export const getCardBackground = (_cardId: string, rarity: string): string => {
 
 const buildCardAssetsFromManifest = (manifest: CardArtManifestEntry[]): Record<string, AssetMetadata> => {
   const entries = manifest.map((entry) => ([entry.cardId, {
-    url: entry.localPath,
+    url: entry.localPathCard ?? entry.localPath ?? '/placeholder.svg',
     attribution: entry.attribution,
     sourceUrl: entry.sourceUrl,
     license: entry.license,
