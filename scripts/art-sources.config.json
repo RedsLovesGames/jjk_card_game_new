@@ -1,0 +1,24 @@
+{
+  "target": {
+    "width": 700,
+    "height": 1000,
+    "format": "png"
+  },
+  "providers": [
+    {
+      "id": "wikimedia-commons",
+      "enabled": true,
+      "fallback": false,
+      "licenseRequirements": ["license", "sourceUrl", "attribution"],
+      "attributionFields": ["artist", "credit", "licenseShortName"],
+      "userAgent": "jjk-card-game-art-pipeline/1.0"
+    },
+    {
+      "id": "local-placeholder",
+      "enabled": true,
+      "fallback": true,
+      "licenseRequirements": ["license", "sourceUrl", "attribution"],
+      "attributionFields": ["attribution"]
+    }
+  ]
+}

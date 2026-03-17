@@ -18,7 +18,8 @@
     "check:lockfile": "node scripts/check-lockfile-manager.mjs",
     "art:fetch": "node scripts/fetch-card-art.mjs",
     "art:validate": "node scripts/validate-card-art.mjs",
-    "art:refresh": "node scripts/fetch-card-art.mjs --refresh"
+    "art:refresh": "node scripts/fetch-card-art.mjs --refresh",
+    "art:coverage": "node scripts/card-art-coverage-report.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.2",
