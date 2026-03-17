@@ -2,12 +2,15 @@ import { GameModel } from './models/Game';
 import { PlayerModel } from './models/Player';
 import { CardModel } from './models/Card';
 import { BattleResult } from '@/types/game';
+import { EffectEngine, TriggerEventPayload } from './effects/EffectEngine';
 
 export class BattleResolver {
   private game: GameModel;
+  private effectEngine: EffectEngine;
 
-  constructor(game: GameModel) {
+  constructor(game: GameModel, effectEngine: EffectEngine) {
     this.game = game;
+    this.effectEngine = effectEngine;
   }
 
   resolveCombat(attackerInstanceId: string, defenderInstanceId?: string): BattleResult | null {
@@ -107,7 +110,13 @@ export class BattleResolver {
       const opponent = this.game.getOpponent();
       opponent.moveToGraveyard(defender.instanceId);
       this.game.addToBattleLog(`${defender.name} is destroyed by ${attacker.name}`);
-      this.checkDeathTriggers(defender);
+      this.checkDeathTriggers({
+        sourceCard: attacker,
+        targetCard: defender,
+        owner: opponent.getId(),
+        damageDealt,
+        overflow: overflowDamage,
+      });
     }
 
     if (overflowDamage > 0) {
@@ -117,7 +126,13 @@ export class BattleResolver {
     }
 
     // Check for on-hit triggers
-    this.checkHitTriggers(attacker, defender);
+    this.checkHitTriggers({
+      sourceCard: attacker,
+      targetCard: defender,
+      owner: attacker.ownerId,
+      damageDealt,
+      overflow: overflowDamage,
+    });
 
     return {
       attacker,
@@ -146,16 +161,12 @@ export class BattleResolver {
     };
   }
 
-  private checkDeathTriggers(defender: any): void {
-    // Check for on-death effects and triggers
-    // This would be implemented as part of the effect system
-    this.game.addToBattleLog(`Checking death triggers for ${defender.name}`);
+  private checkDeathTriggers(payload: TriggerEventPayload): void {
+    this.effectEngine.resolveTriggerEvent('on_destroy', payload);
   }
 
-  private checkHitTriggers(attacker: any, defender: any): void {
-    // Check for on-hit effects and triggers
-    // This would be implemented as part of the effect system
-    this.game.addToBattleLog(`Checking hit triggers for ${attacker.name}`);
+  private checkHitTriggers(payload: TriggerEventPayload): void {
+    this.effectEngine.resolveTriggerEvent('on_hit', payload);
   }
 
   canAttack(attackerInstanceId: string): boolean {

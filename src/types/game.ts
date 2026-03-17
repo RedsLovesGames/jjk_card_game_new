@@ -57,7 +57,7 @@ export interface Effect {
   id: string;
   type: 'triggered' | 'activated' | 'passive' | 'continuous';
   category: 'damage' | 'heal' | 'buff' | 'debuff' | 'summon' | 'destroy' | 'move' | 'status';
-  trigger?: 'on_play' | 'on_attack' | 'on_damage' | 'on_destroy' | 'start_turn' | 'end_turn' | 'on_summon';
+  trigger?: 'on_play' | 'on_attack' | 'on_damage' | 'on_destroy' | 'on_hit' | 'start_turn' | 'end_turn' | 'on_summon';
   cost?: number;
   target: TargetSelector;
   actions: Action[];
@@ -102,6 +102,7 @@ export interface CardInstance extends Card {
   expiresAt?: number;
   oncePerTurnUsed?: boolean;
   oncePerGameUsed?: boolean;
+  triggerEffects?: Effect[];
 }
 
 export interface BattleResult {

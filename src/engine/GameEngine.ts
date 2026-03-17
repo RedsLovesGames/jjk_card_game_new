@@ -12,7 +12,7 @@ export class GameEngine {
   constructor(gameState: GameState) {
     this.game = new GameModel(gameState);
     this.effectEngine = new EffectEngine(this.game);
-    this.battleResolver = new BattleResolver(this.game);
+    this.battleResolver = new BattleResolver(this.game, this.effectEngine);
   }
 
   static createNewGame(player1Name: string, player2Name: string): GameEngine {

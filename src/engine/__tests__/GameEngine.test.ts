@@ -427,3 +427,213 @@ describe('BattleResolver Combat Resolution', () => {
     expect(combatLogs).toContain('Overflow damage to Player 2: 150');
   });
 });
+
+describe('BattleResolver trigger event integration', () => {
+  let engine: GameEngine;
+
+  const moveToBattlePhase = () => {
+    engine.nextPhase();
+    engine.nextPhase();
+    engine.nextPhase();
+    engine.nextPhase();
+  };
+
+  const createCreature = (baseCard: CardInstance, overrides: Partial<CardInstance>): CardInstance => ({
+    ...baseCard,
+    instanceId: overrides.instanceId || `trigger_${Math.random().toString(36).slice(2)}`,
+    ownerId: overrides.ownerId ?? baseCard.ownerId,
+    location: 'field',
+    type: 'creature',
+    position: 'front',
+    status: [],
+    currentAttack: 0,
+    currentDefense: 0,
+    currentHealth: 0,
+    ...overrides,
+  });
+
+  beforeEach(() => {
+    engine = GameEngine.createNewGame('Player 1', 'Player 2');
+  });
+
+  it('triggers on_destroy effects through EffectEngine', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'attacker_on_destroy',
+      ownerId: player.getId(),
+      currentAttack: 260,
+      currentDefense: 100,
+      currentHealth: 100,
+      triggerEffects: [
+        {
+          id: 'eff_on_destroy_buff',
+          type: 'triggered',
+          category: 'buff',
+          trigger: 'on_destroy',
+          target: {
+            type: 'creature',
+            zone: 'field',
+            count: 1,
+            conditions: [{ field: 'instanceId', operator: 'equals', value: 'attacker_on_destroy' }],
+          },
+          actions: [
+            {
+              type: 'buff_atk',
+              value: 30,
+              target: {
+                type: 'creature',
+                zone: 'field',
+                count: 1,
+                conditions: [{ field: 'instanceId', operator: 'equals', value: 'attacker_on_destroy' }],
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'defender_for_destroy_trigger',
+      ownerId: opponent.getId(),
+      currentDefense: 100,
+      currentHealth: 120,
+    });
+
+    player.getField().push(attacker);
+    opponent.getField().push(defender);
+
+    const result = engine.resolveCombat(attacker.instanceId, defender.instanceId);
+    expect(result).not.toBeNull();
+    expect(result.defenderDestroyed).toBe(true);
+
+    const state = engine.getGameState();
+    const updatedAttacker = state.players[0].field.find(c => c.instanceId === attacker.instanceId);
+    expect(updatedAttacker?.currentAttack).toBe(290);
+  });
+
+  it('triggers on_hit effects through EffectEngine', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'attacker_on_hit',
+      ownerId: player.getId(),
+      currentAttack: 140,
+      currentHealth: 100,
+      triggerEffects: [
+        {
+          id: 'eff_on_hit_buff',
+          type: 'triggered',
+          category: 'buff',
+          trigger: 'on_hit',
+          target: {
+            type: 'creature',
+            zone: 'field',
+            count: 1,
+            conditions: [{ field: 'instanceId', operator: 'equals', value: 'attacker_on_hit' }],
+          },
+          actions: [
+            {
+              type: 'buff_atk',
+              value: 20,
+              target: {
+                type: 'creature',
+                zone: 'field',
+                count: 1,
+                conditions: [{ field: 'instanceId', operator: 'equals', value: 'attacker_on_hit' }],
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'defender_for_hit_trigger',
+      ownerId: opponent.getId(),
+      currentDefense: 100,
+      currentHealth: 100,
+    });
+
+    player.getField().push(attacker);
+    opponent.getField().push(defender);
+
+    const result = engine.resolveCombat(attacker.instanceId, defender.instanceId);
+    expect(result).not.toBeNull();
+    expect(result.defenderDestroyed).toBe(false);
+
+    const state = engine.getGameState();
+    const updatedAttacker = state.players[0].field.find(c => c.instanceId === attacker.instanceId);
+    expect(updatedAttacker?.currentAttack).toBe(160);
+  });
+
+  it('orders on_destroy trigger after graveyard move and before overflow life damage', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'attacker_ordering',
+      ownerId: player.getId(),
+      currentAttack: 260,
+      currentHealth: 100,
+      triggerEffects: [
+        {
+          id: 'eff_ordering_destroy',
+          type: 'triggered',
+          category: 'buff',
+          trigger: 'on_destroy',
+          target: {
+            type: 'creature',
+            zone: 'field',
+            count: 1,
+            conditions: [{ field: 'instanceId', operator: 'equals', value: 'attacker_ordering' }],
+          },
+          actions: [
+            {
+              type: 'buff_atk',
+              value: 10,
+              target: {
+                type: 'creature',
+                zone: 'field',
+                count: 1,
+                conditions: [{ field: 'instanceId', operator: 'equals', value: 'attacker_ordering' }],
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'defender_ordering',
+      ownerId: opponent.getId(),
+      currentDefense: 100,
+      currentHealth: 120,
+    });
+
+    player.getField().push(attacker);
+    opponent.getField().push(defender);
+
+    engine.resolveCombat(attacker.instanceId, defender.instanceId);
+
+    const state = engine.getGameState();
+    expect(state.players[1].graveyard.some(c => c.instanceId === defender.instanceId)).toBe(true);
+    expect(state.players[1].life).toBe(1960);
+
+    const destroyIndex = state.battleLog.findIndex(log => log.includes('is destroyed by'));
+    const triggerIndex = state.battleLog.findIndex(log => log.includes('Trigger on_destroy'));
+    const overflowIndex = state.battleLog.findIndex(log => log.includes('Overflow damage to Player 2: 40'));
+
+    expect(destroyIndex).toBeGreaterThan(-1);
+    expect(triggerIndex).toBeGreaterThan(destroyIndex);
+    expect(overflowIndex).toBeGreaterThan(triggerIndex);
+  });
+});
