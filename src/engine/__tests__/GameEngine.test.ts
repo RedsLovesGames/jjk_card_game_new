@@ -391,6 +391,85 @@ describe('BattleResolver Combat Resolution', () => {
     expect(state.players[1].life).toBe(1700);
   });
 
+
+  it('uses currentAttack of 0 for creature combat and direct attack', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const zeroAttackAttacker = createCreature(player.getHand()[0], {
+      instanceId: 'att_zero_attack',
+      ownerId: player.getId(),
+      attack: 300,
+      currentAttack: 0,
+      currentHealth: 100,
+    });
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'def_vs_zero_attack',
+      ownerId: opponent.getId(),
+      currentDefense: 0,
+      currentHealth: 120,
+    });
+
+    player.getField().push(zeroAttackAttacker);
+    opponent.getField().push(defender);
+
+    const creatureCombat = engine.resolveCombat(zeroAttackAttacker.instanceId, defender.instanceId);
+    expect(creatureCombat).not.toBeNull();
+    expect(creatureCombat.damageDealt).toBe(0);
+    expect(creatureCombat.defenderDestroyed).toBe(false);
+    expect(creatureCombat.overflowDamage).toBe(0);
+
+    const postCreatureState = engine.getGameState();
+    expect(postCreatureState.players[1].field.find(c => c.instanceId === defender.instanceId)?.currentHealth).toBe(120);
+    expect(postCreatureState.players[1].life).toBe(2000);
+
+    zeroAttackAttacker.oncePerTurnUsed = false;
+    opponent.getField().splice(opponent.getField().findIndex((c: CardInstance) => c.instanceId === defender.instanceId), 1);
+
+    const directAttack = engine.resolveCombat(zeroAttackAttacker.instanceId);
+    expect(directAttack).not.toBeNull();
+    expect(directAttack.damageDealt).toBe(0);
+
+    const postDirectState = engine.getGameState();
+    expect(postDirectState.players[1].life).toBe(2000);
+  });
+
+  it('uses currentDefense of 0 so intentional zero defense causes destruction and overflow', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'att_vs_zero_defense',
+      ownerId: player.getId(),
+      currentAttack: 200,
+      currentHealth: 100,
+    });
+    const zeroDefenseDefender = createCreature(opponent.getHand()[0], {
+      instanceId: 'def_zero_defense',
+      ownerId: opponent.getId(),
+      defense: 500,
+      currentDefense: 0,
+      currentHealth: 120,
+    });
+
+    player.getField().push(attacker);
+    opponent.getField().push(zeroDefenseDefender);
+
+    const result = engine.resolveCombat(attacker.instanceId, zeroDefenseDefender.instanceId);
+    expect(result).not.toBeNull();
+    expect(result.damageDealt).toBe(120);
+    expect(result.defenderDestroyed).toBe(true);
+    expect(result.overflowDamage).toBe(80);
+
+    const state = engine.getGameState();
+    expect(state.players[1].field.some(c => c.instanceId === zeroDefenseDefender.instanceId)).toBe(false);
+    expect(state.players[1].graveyard.some(c => c.instanceId === zeroDefenseDefender.instanceId)).toBe(true);
+    expect(state.players[1].life).toBe(1920);
+  });
   it('ignore_defense status enables overflow from full attack power', () => {
     moveToBattlePhase();
     const game = (engine as any).game;

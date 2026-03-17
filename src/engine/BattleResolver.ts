@@ -70,8 +70,8 @@ export class BattleResolver {
     const attackerModel = new CardModel(attacker);
     const defenderModel = new CardModel(defender);
 
-    const attackPower = attacker.currentAttack || attackerModel.getAttack();
-    const baseDefense = defender.currentDefense || defenderModel.getDefense();
+    const attackPower = attacker.currentAttack ?? attackerModel.getAttack();
+    const baseDefense = defender.currentDefense ?? defenderModel.getDefense();
     const effectiveHealth = defender.currentHealth ?? defenderModel.getHealth();
 
     // Check for ignore defense
@@ -132,7 +132,7 @@ export class BattleResolver {
     const attackerModel = new CardModel(attacker);
     const opponent = this.game.getOpponent();
 
-    const damage = attacker.currentAttack || attackerModel.getAttack();
+    const damage = attacker.currentAttack ?? attackerModel.getAttack();
     opponent.setLife(opponent.getLife() - damage);
 
     this.game.addToBattleLog(`${attacker.name} attacks directly for ${damage} damage`);
