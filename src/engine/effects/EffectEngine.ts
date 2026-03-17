@@ -3,6 +3,17 @@ import { GameModel } from '../models/Game';
 import { PlayerModel } from '../models/Player';
 import { CardModel } from '../models/Card';
 
+
+export type TriggerEventType = 'on_destroy' | 'on_hit';
+
+export interface TriggerEventPayload {
+  sourceCard: CardInstance;
+  targetCard: CardInstance;
+  owner: string;
+  damageDealt: number;
+  overflow: number;
+}
+
 export class EffectEngine {
   private game: GameModel;
 
@@ -427,5 +438,24 @@ export class EffectEngine {
   private adaptOnHit(target: any, adaptation: string): void {
     // Implementation for on-hit adaptation
     this.game.addToBattleLog(`Adaptation on hit: ${adaptation}`);
+  }
+
+  resolveTriggerEvent(eventType: TriggerEventType, payload: TriggerEventPayload): void {
+    const owners = this.game.getPlayers();
+
+    owners.forEach(player => {
+      player.getField().forEach(card => {
+        const triggerEffects = card.triggerEffects || [];
+
+        triggerEffects
+          .filter(effect => effect.type === 'triggered' && effect.trigger === eventType)
+          .forEach(effect => {
+            this.game.addToBattleLog(
+              `Trigger ${eventType} from ${card.name} (source: ${payload.sourceCard.name}, target: ${payload.targetCard.name}, damage: ${payload.damageDealt}, overflow: ${payload.overflow})`
+            );
+            this.resolveEffect(effect);
+          });
+      });
+    });
   }
 }
