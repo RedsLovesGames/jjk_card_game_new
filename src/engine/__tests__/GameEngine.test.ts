@@ -367,6 +367,82 @@ describe('BattleResolver Combat Resolution', () => {
     expect(state.players[1].life).toBe(1960);
   });
 
+
+
+  it('rejects attacking a defender in graveyard and keeps state unchanged', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'att_invalid_graveyard',
+      ownerId: player.getId(),
+      currentAttack: 200,
+      currentHealth: 100,
+    });
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'def_invalid_graveyard',
+      ownerId: opponent.getId(),
+      location: 'graveyard',
+      currentDefense: 100,
+      currentHealth: 100,
+    });
+
+    player.getField().push(attacker);
+    opponent.getGraveyard().push(defender);
+
+    const stateBefore = JSON.parse(JSON.stringify(engine.getGameState()));
+    const result = engine.resolveCombat(attacker.instanceId, defender.instanceId);
+    const stateAfter = engine.getGameState();
+
+    expect(result).toBeNull();
+    expect(stateAfter.players[0].field.find(c => c.instanceId === attacker.instanceId)?.oncePerTurnUsed).toBe(
+      stateBefore.players[0].field.find(c => c.instanceId === attacker.instanceId)?.oncePerTurnUsed
+    );
+    expect(stateAfter.players[1].life).toBe(stateBefore.players[1].life);
+    expect(stateAfter.players[1].graveyard.some(c => c.instanceId === defender.instanceId)).toBe(true);
+    expect(stateAfter.players[1].field.some(c => c.instanceId === defender.instanceId)).toBe(false);
+    expect(stateAfter.battleLog[stateAfter.battleLog.length - 1]).toContain('is not on the field');
+  });
+
+  it('rejects attacking a defender in hand and keeps state unchanged', () => {
+    moveToBattlePhase();
+    const game = (engine as any).game;
+    const player = game.getCurrentPlayer();
+    const opponent = game.getOpponent();
+
+    const attacker = createCreature(player.getHand()[0], {
+      instanceId: 'att_invalid_hand',
+      ownerId: player.getId(),
+      currentAttack: 200,
+      currentHealth: 100,
+    });
+    const defender = createCreature(opponent.getHand()[0], {
+      instanceId: 'def_invalid_hand',
+      ownerId: opponent.getId(),
+      location: 'hand',
+      currentDefense: 100,
+      currentHealth: 100,
+    });
+
+    player.getField().push(attacker);
+    opponent.getHand().push(defender);
+
+    const stateBefore = JSON.parse(JSON.stringify(engine.getGameState()));
+    const result = engine.resolveCombat(attacker.instanceId, defender.instanceId);
+    const stateAfter = engine.getGameState();
+
+    expect(result).toBeNull();
+    expect(stateAfter.players[0].field.find(c => c.instanceId === attacker.instanceId)?.oncePerTurnUsed).toBe(
+      stateBefore.players[0].field.find(c => c.instanceId === attacker.instanceId)?.oncePerTurnUsed
+    );
+    expect(stateAfter.players[1].life).toBe(stateBefore.players[1].life);
+    expect(stateAfter.players[1].hand.some(c => c.instanceId === defender.instanceId)).toBe(true);
+    expect(stateAfter.players[1].field.some(c => c.instanceId === defender.instanceId)).toBe(false);
+    expect(stateAfter.battleLog[stateAfter.battleLog.length - 1]).toContain('is not on the field');
+  });
+
   it('direct attack still works unchanged', () => {
     moveToBattlePhase();
     const game = (engine as any).game;
