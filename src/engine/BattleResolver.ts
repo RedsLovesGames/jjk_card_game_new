@@ -44,7 +44,32 @@ export class BattleResolver {
     let defender: any = null;
     if (defenderInstanceId) {
       defender = opponent.getCardByInstanceId(defenderInstanceId);
-      if (!defender || defender.type !== 'creature') return null;
+      if (!defender) {
+        this.game.addToBattleLog('Attack target is invalid: defender was not found');
+        return null;
+      }
+
+      if (defender.ownerId !== opponent.getId()) {
+        this.game.addToBattleLog(`Attack target is invalid: ${defender.name} does not belong to the opponent`);
+        return null;
+      }
+
+      if (defender.location !== 'field') {
+        this.game.addToBattleLog(`Attack target is invalid: ${defender.name} is not on the field`);
+        return null;
+      }
+
+      if (defender.type !== 'creature') {
+        this.game.addToBattleLog(`Attack target is invalid: ${defender.name} is not a creature`);
+        return null;
+      }
+
+      const opponentFrontRow = opponent.getFrontRowCreatures();
+      const hasFrontRowBlocker = opponentFrontRow.some(creature => creature.instanceId !== defender.instanceId);
+      if (defender.position === 'back' && hasFrontRowBlocker) {
+        this.game.addToBattleLog(`Attack target is invalid: ${defender.name} cannot be targeted while a front-row creature is present`);
+        return null;
+      }
     } else {
       // Direct attack - check if opponent has any front-row creatures
       const opponentFrontRow = opponent.getFrontRowCreatures();
