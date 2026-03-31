@@ -30,9 +30,12 @@ export default function BattleScreen() {
     }
 
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    startGame('Sorcerer', 'Cursed Spirit');
-    navigate('/game');
+    try {
+      await startGame('Sorcerer', 'Cursed Spirit');
+      navigate('/game');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
