@@ -1,14 +1,15 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { GameEngine } from '@/engine/GameEngine';
 import { GameState } from '@/types/game';
 import { SimpleAI } from '@/engine/ai/SimpleAI';
 
 interface GameContextType {
   gameState: GameState | null;
+  isStartingGame: boolean;
   battleLog: string[];
-  startGame: (p1: string, p2: string) => void;
+  startGame: (p1: string, p2: string) => Promise<void>;
   endGame: () => void;
   nextPhase: () => void;
   playCard: (cardId: string) => boolean;
@@ -21,8 +22,10 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [gameEngine, setGameEngine] = useState<GameEngine | null>(null);
   const [gameState, setGameState] = useState<GameState | null>(null);
+  const [isStartingGame, setIsStartingGame] = useState(false);
   const [battleLog, setBattleLog] = useState<string[]>([]);
   const [aiTrigger, setAiTrigger] = useState<number>(0);
+  const startGameResolverRef = useRef<(() => void) | null>(null);
 
   const updateState = useCallback((engine: GameEngine) => {
     const newState = engine.getGameState();
@@ -33,13 +36,25 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const startGame = useCallback((p1: string, p2: string) => {
+  const startGame = useCallback(async (p1: string, p2: string) => {
+    setIsStartingGame(true);
     const engine = GameEngine.createNewGame(p1, p2);
-    setGameEngine(engine);
-    setTimeout(() => {
+    await new Promise<void>((resolve) => {
+      startGameResolverRef.current = resolve;
+      setGameEngine(engine);
       updateState(engine);
-    }, 50);
+    });
   }, [updateState]);
+
+  useEffect(() => {
+    if (!isStartingGame || !gameEngine || !gameState) {
+      return;
+    }
+
+    setIsStartingGame(false);
+    startGameResolverRef.current?.();
+    startGameResolverRef.current = null;
+  }, [gameEngine, gameState, isStartingGame]);
 
   const nextPhase = useCallback(() => {
     if (!gameEngine) {
@@ -96,6 +111,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [gameEngine, gameState, updateState]);
 
   const endGame = useCallback(() => {
+    startGameResolverRef.current = null;
+    setIsStartingGame(false);
     setGameEngine(null);
     setGameState(null);
     setBattleLog([]);
@@ -105,6 +122,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <GameContext.Provider
       value={{
         gameState,
+        isStartingGame,
         battleLog,
         startGame,
         endGame,
